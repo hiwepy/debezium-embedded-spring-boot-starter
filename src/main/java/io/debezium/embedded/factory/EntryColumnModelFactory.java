@@ -1,14 +1,14 @@
 package io.debezium.embedded.factory;
 
 
-import io.debezium.enums.TableNameEnum;
-import io.debezium.handler.EntryHandler;
-import io.debezium.protocol.DebeziumEntry;
-import io.debezium.util.GenericUtil;
-import io.debezium.util.HandlerUtil;
+import io.debezium.embedded.enums.TableNameEnum;
+import io.debezium.embedded.handler.EntryHandler;
+import io.debezium.embedded.protocol.DebeziumEntry;
 import com.baomidou.mybatisplus.core.metadata.TableFieldInfo;
 import com.baomidou.mybatisplus.core.metadata.TableInfo;
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
+import io.debezium.embedded.util.GenericUtil;
+import io.debezium.embedded.util.HandlerUtil;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -23,8 +23,8 @@ public class EntryColumnModelFactory extends AbstractModelFactory<List<DebeziumE
 
     @Override
     public <R> R newInstance(EntryHandler entryHandler, List<DebeziumEntry.Column> columns) throws Exception {
-        String canalTableName = HandlerUtil.getCanalTableNameCombination(entryHandler);
-        if (TableNameEnum.ALL.name().toLowerCase().equals(canalTableName)) {
+        String debeziumTableName = HandlerUtil.getDebeziumTableNameCombination(entryHandler);
+        if (TableNameEnum.ALL.name().toLowerCase().equals(debeziumTableName)) {
             Map<String, String> map = columns.stream().collect(Collectors.toMap(DebeziumEntry.Column::getName, DebeziumEntry.Column::getValue));
             return (R) map;
         }
@@ -37,8 +37,8 @@ public class EntryColumnModelFactory extends AbstractModelFactory<List<DebeziumE
 
     @Override
     public <R> R newInstance(EntryHandler entryHandler, List<DebeziumEntry.Column> columns, Set<String> updateColumn) throws Exception {
-        String canalTableName = HandlerUtil.getCanalTableNameCombination(entryHandler);
-        if (TableNameEnum.ALL.name().toLowerCase().equals(canalTableName)) {
+        String debeziumTableName = HandlerUtil.getDebeziumTableNameCombination(entryHandler);
+        if (TableNameEnum.ALL.name().toLowerCase().equals(debeziumTableName)) {
             Map<String, String> map = columns.stream().filter(column -> updateColumn.contains(column.getName()))
                     .collect(Collectors.toMap(DebeziumEntry.Column::getName, DebeziumEntry.Column::getValue));
             return (R) map;

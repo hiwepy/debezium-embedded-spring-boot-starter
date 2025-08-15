@@ -31,7 +31,7 @@ import java.util.function.Function;
 @Data
 public class DebeziumThreadPoolProperties {
 
-	public static final String PREFIX = "canal.thread-pool";
+	public static final String PREFIX = "debezium.thread-pool";
 
 	/**
 	 * Set the ThreadPoolExecutor's core pool size. Default is 1.
@@ -101,22 +101,14 @@ public class DebeziumThreadPoolProperties {
 	 */
 	public enum RejectedPolicy {
 
-		AbortPolicy((e) -> {
-			return new ThreadPoolExecutor.AbortPolicy();
-		}),
-		CallerRunsPolicy((e) -> {
-			return new ThreadPoolExecutor.CallerRunsPolicy();
-		}),
-		DiscardPolicy((e) -> {
-			return new ThreadPoolExecutor.DiscardPolicy();
-		}),
-		DiscardOldestPolicy((e) -> {
-			return new ThreadPoolExecutor.DiscardOldestPolicy();
-		});
+		AbortPolicy((e) -> new ThreadPoolExecutor.AbortPolicy()),
+		CallerRunsPolicy((e) -> new ThreadPoolExecutor.CallerRunsPolicy()),
+		DiscardPolicy((e) -> new ThreadPoolExecutor.DiscardPolicy()),
+		DiscardOldestPolicy((e) -> new ThreadPoolExecutor.DiscardOldestPolicy());
 
-		private Function<Object, RejectedExecutionHandler> function;
+		private final Function<Object, RejectedExecutionHandler> function;
 
-		private RejectedPolicy(Function<Object, RejectedExecutionHandler> function) {
+		RejectedPolicy(Function<Object, RejectedExecutionHandler> function) {
 			this.function = function;
 		}
 

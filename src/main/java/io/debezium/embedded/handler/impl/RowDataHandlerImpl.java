@@ -30,7 +30,7 @@ public class RowDataHandlerImpl implements RowDataHandler<DebeziumEntry.RowData>
             return;
         }
         switch (eventType) {
-            case INSERT:
+            case CREATE:
                 R object = modelFactory.newInstance(entryHandler, rowData.getAfterColumnsList());
                 entryHandler.insert(object);
                 break;

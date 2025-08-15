@@ -6,14 +6,14 @@ import org.springframework.stereotype.Component;
 import java.lang.annotation.*;
 
 /**
- * Canal 处理器注解，继承 @Component
- * 用于标注 Canal 处理器
+ * Debezium 处理器注解，继承 @Component
+ * 用于标注 Debezium 处理器
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Component
-public @interface CanalEventHandler {
+public @interface DebeziumEventHandler {
 
     /**
      * 继承 @Component 的 value 属性

@@ -4,7 +4,7 @@ import io.debezium.handler.EntryHandler;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CanalMessageEntryHandler implements EntryHandler<UserInfo> {
+public class DebeziumMessageEntryHandler implements EntryHandler<UserInfo> {
 
     @Override
     public void insert(UserInfo t) {

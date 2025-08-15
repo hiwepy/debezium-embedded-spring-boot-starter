@@ -1,7 +1,9 @@
 package io.debezium.embedded.client;
 
-import io.debezium.handler.MessageHandler;
-import io.debezium.protocol.DebeziumEntry;
+import io.debezium.embedded.handler.ChangeEventHandler;
+import io.debezium.embedded.handler.RecordChangeEventHandler;
+import io.debezium.embedded.protocol.DebeziumEntry;
+import io.debezium.engine.DebeziumEngine;
 import lombok.experimental.Accessors;
 import org.apache.commons.lang3.StringUtils;
 
@@ -10,7 +12,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Accessors(chain = true)
-public abstract class AbstractClientBuilder<R extends CanalClient, C extends CanalConnector> {
+public abstract class AbstractClientBuilder<D extends DebeziumClient, E> {
 
     /**
      * 消息过滤
@@ -35,38 +37,44 @@ public abstract class AbstractClientBuilder<R extends CanalClient, C extends Can
     /**
      * 消息处理器
      */
-    protected MessageHandler messageHandler;
+    protected ChangeEventHandler changeEventHandler;
+    protected RecordChangeEventHandler recordChangeEventHandler;
 
-    public AbstractClientBuilder filter(String filter) {
+    public AbstractClientBuilder<D, E> filter(String filter) {
         this.filter = filter;
         return this;
     }
 
-    public AbstractClientBuilder batchSize(Integer batchSize) {
+    public AbstractClientBuilder<D, E> batchSize(Integer batchSize) {
         this.batchSize = batchSize;
         return this;
     }
 
-    public AbstractClientBuilder timeout(Long timeout) {
+    public AbstractClientBuilder<D, E> timeout(Long timeout) {
         this.timeout = timeout;
         return this;
     }
 
-    public AbstractClientBuilder unit(TimeUnit unit) {
+    public AbstractClientBuilder<D, E> unit(TimeUnit unit) {
         this.unit = unit;
         return this;
     }
 
-    public AbstractClientBuilder setSubscribeTypes(List<DebeziumEntry.EntryType> subscribeTypes) {
+    public AbstractClientBuilder<D, E> setSubscribeTypes(List<DebeziumEntry.EntryType> subscribeTypes) {
         this.subscribeTypes = subscribeTypes;
         return this;
     }
 
-    public AbstractClientBuilder messageHandler(MessageHandler messageHandler) {
-        this.messageHandler = messageHandler;
+    public AbstractClientBuilder<D, E> changeEventHandler(ChangeEventHandler changeEventHandler) {
+        this.changeEventHandler = changeEventHandler;
         return this;
     }
 
-    public abstract R build(List<C> connectors);
+    public AbstractClientBuilder<D, E> recordChangeEventHandler(RecordChangeEventHandler recordChangeEventHandler) {
+        this.recordChangeEventHandler = recordChangeEventHandler;
+        return this;
+    }
+
+    public abstract D build(List<DebeziumEngine<E>> debeziumEngines);
 
 }

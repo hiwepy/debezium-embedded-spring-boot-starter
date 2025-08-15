@@ -1,11 +1,9 @@
 package io.debezium.embedded.util;
 
 
-import io.debezium.annotation.CanalEventHolder;
-import io.debezium.annotation.CanalTable;
-import io.debezium.annotation.OnCanalEvent;
-import io.debezium.enums.TableNameEnum;
-import io.debezium.handler.EntryHandler;
+import io.debezium.embedded.annotation.DebeziumEventHolder;
+import io.debezium.embedded.enums.TableNameEnum;
+import io.debezium.embedded.handler.EntryHandler;
 import io.debezium.embedded.protocol.DebeziumEntry;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
@@ -20,21 +18,21 @@ import java.util.stream.Collectors;
  */
 public class HandlerUtil {
 
-    protected static Map<String, Predicate<CanalEventHolder>> eventPredicateMap = new ConcurrentHashMap<>();
+    protected static Map<String, Predicate<DebeziumEventHolder>> eventPredicateMap = new ConcurrentHashMap<>();
 
     public static EntryHandler getEntryHandler(List<? extends EntryHandler> entryHandlers, String schemaName, String tableName) {
         StringJoiner joiner = new StringJoiner(".").add(schemaName).add(tableName);
         EntryHandler globalHandler = null;
         for (EntryHandler handler : entryHandlers) {
-            String canalTableNameCombination = getCanalTableNameCombination(handler);
-            if (StringUtils.isBlank(canalTableNameCombination)) {
+            String debeziumTableNameCombination = getDebeziumTableNameCombination(handler);
+            if (StringUtils.isBlank(debeziumTableNameCombination)) {
                 continue;
             }
-            if (TableNameEnum.ALL.name().toLowerCase().equals(canalTableNameCombination)) {
+            if (TableNameEnum.ALL.name().toLowerCase().equals(debeziumTableNameCombination)) {
                 globalHandler = handler;
                 continue;
             }
-            if (canalTableNameCombination.equals(joiner.toString().toLowerCase())) {
+            if (debeziumTableNameCombination.equals(joiner.toString().toLowerCase())) {
                 return handler;
             }
             String name = GenericUtil.getTableGenericProperties(handler);
@@ -54,9 +52,9 @@ public class HandlerUtil {
             return map;
         }
         for (EntryHandler handler : entryHandlers) {
-            String canalTableNameCombination = getCanalTableNameCombination(handler);
-            if (StringUtils.isNotBlank(canalTableNameCombination)) {
-                map.putIfAbsent(canalTableNameCombination.toLowerCase(), handler);
+            String debeziumTableNameCombination = getDebeziumTableNameCombination(handler);
+            if (StringUtils.isNotBlank(debeziumTableNameCombination)) {
+                map.putIfAbsent(debeziumTableNameCombination.toLowerCase(), handler);
             } else {
                 String name = GenericUtil.getTableGenericProperties(handler);
                 if (name != null) {
@@ -72,24 +70,24 @@ public class HandlerUtil {
      * @param eventHolders
      * @return
      */
-    public static Map<String, List<CanalEventHolder>> getEventHolderMap(List<CanalEventHolder> eventHolders) {
-        Map<String, List<CanalEventHolder>> map = new ConcurrentHashMap<>();
+    public static Map<String, List<DebeziumEventHolder>> getEventHolderMap(List<DebeziumEventHolder> eventHolders) {
+        Map<String, List<DebeziumEventHolder>> map = new ConcurrentHashMap<>();
         if (CollectionUtils.isEmpty(eventHolders)) {
             return map;
         }
-        for (CanalEventHolder holder : eventHolders) {
-            List<String> canalTableNameCombinations = getCanalTableNameCombinations(holder);
-            if (CollectionUtils.isEmpty(canalTableNameCombinations)) {
+        for (DebeziumEventHolder holder : eventHolders) {
+            List<String> debeziumTableNameCombinations = getDebeziumTableNameCombinations(holder);
+            if (CollectionUtils.isEmpty(debeziumTableNameCombinations)) {
                 continue;
             }
-            for (String canalTableNameCombination : canalTableNameCombinations) {
-                map.computeIfAbsent(canalTableNameCombination, k -> new ArrayList<>()).add(holder);
+            for (String debeziumTableNameCombination : debeziumTableNameCombinations) {
+                map.computeIfAbsent(debeziumTableNameCombination, k -> new ArrayList<>()).add(holder);
             }
         }
         return map;
     }
 
-    public static List<CanalEventHolder> getEventHolders(Map<String, List<CanalEventHolder>> map,
+    public static List<DebeziumEventHolder> getEventHolders(Map<String, List<DebeziumEventHolder>> map,
                                                         String destination,
                                                         String schemaName,
                                                         String tableName,
@@ -97,7 +95,7 @@ public class HandlerUtil {
         // 获取四个属性的拼接值
         String key = getCombinationValue(destination, schemaName, tableName, eventType);
         // 获取唯一值对应的过滤器
-        Predicate<CanalEventHolder> predicate =  eventPredicateMap.computeIfAbsent(key, k -> getAnnotationFilter(destination, schemaName, tableName, eventType));
+        Predicate<DebeziumEventHolder> predicate =  eventPredicateMap.computeIfAbsent(key, k -> getAnnotationFilter(destination, schemaName, tableName, eventType));
         // 返回过滤后的结果
         return map.getOrDefault(key, Collections.emptyList()).stream().filter(predicate).collect(Collectors.toList());
     }
@@ -113,48 +111,48 @@ public class HandlerUtil {
 
     /**
      * 获取注解过滤器
-     * @param destination canal 指令
+     * @param destination debezium 指令
      * @param schemaName 数据库实例
      * @param tableName 表名
      * @param eventType 事件类型
      * @return 过滤器
      */
-    protected static Predicate<CanalEventHolder> getAnnotationFilter(String destination,
+    protected static Predicate<DebeziumEventHolder> getAnnotationFilter(String destination,
                                                                      String schemaName,
                                                                      String tableName,
                                                                      DebeziumEntry.EventType eventType) {
 
         // 比较 destination 是否一致，如果没有指定 destination 则默认为所有
-        Predicate<CanalEventHolder> df = holder -> StringUtils.isEmpty(holder.getEvent().destination())
+        Predicate<DebeziumEventHolder> df = holder -> StringUtils.isEmpty(holder.getEvent().destination())
                 || holder.getEvent().destination().equals(destination) || destination == null;
 
         // 比较数据库实例名是否一致
-        Predicate<CanalEventHolder> sf = holder -> StringUtils.isNotBlank(holder.getEvent().schema())
+        Predicate<DebeziumEventHolder> sf = holder -> StringUtils.isNotBlank(holder.getEvent().schema())
                 && holder.getEvent().schema().equalsIgnoreCase(schemaName);
 
         // 比较表名是否一致，如果没有指定表名则默认为所有
-        Predicate<CanalEventHolder> tf = holder -> StringUtils.isNotBlank(holder.getEvent().table())
+        Predicate<DebeziumEventHolder> tf = holder -> StringUtils.isNotBlank(holder.getEvent().table())
                 && ( holder.getEvent().table().equalsIgnoreCase(tableName) || holder.getEvent().table().equals(TableNameEnum.ALL.getTable()) );
 
         // 比较事件类型是否一致
-        Predicate<CanalEventHolder> ef = holder -> holder.getEvent().eventType().length > 0 && Arrays.stream(holder.getEvent().eventType()).anyMatch(ev -> ev == eventType) ;
+        Predicate<DebeziumEventHolder> ef = holder -> holder.getEvent().eventType().length > 0 && Arrays.stream(holder.getEvent().eventType()).anyMatch(ev -> ev == eventType) ;
 
         return df.and(sf).and(tf).and(ef);
     }
 
-    public static String getCanalTableNameCombination(EntryHandler entryHandler) {
-        CanalTable canalTable = entryHandler.getClass().getAnnotation(CanalTable.class);
-        if (Objects.nonNull(canalTable)) {
-            return getCombinationValue(canalTable.destination(), canalTable.schema(), canalTable.table());
+    public static String getDebeziumTableNameCombination(EntryHandler entryHandler) {
+        DebeziumTable debeziumTable = entryHandler.getClass().getAnnotation(DebeziumTable.class);
+        if (Objects.nonNull(debeziumTable)) {
+            return getCombinationValue(debeziumTable.destination(), debeziumTable.schema(), debeziumTable.table());
         }
         return null;
     }
 
-    public static List<String> getCanalTableNameCombinations(CanalEventHolder eventHolder) {
-        OnCanalEvent canalEvent = eventHolder.getEvent();
-        if (Objects.nonNull(canalEvent) && Objects.nonNull(canalEvent.eventType()) && canalEvent.eventType().length > 0) {
-            return Arrays.stream(canalEvent.eventType())
-                    .map(eventType -> getCombinationValue(canalEvent.destination(), canalEvent.schema(), canalEvent.table(), eventType))
+    public static List<String> getDebeziumTableNameCombinations(DebeziumEventHolder eventHolder) {
+        OnDebeziumEvent debeziumEvent = eventHolder.getEvent();
+        if (Objects.nonNull(debeziumEvent) && Objects.nonNull(debeziumEvent.eventType()) && debeziumEvent.eventType().length > 0) {
+            return Arrays.stream(debeziumEvent.eventType())
+                    .map(eventType -> getCombinationValue(debeziumEvent.destination(), debeziumEvent.schema(), debeziumEvent.table(), eventType))
                     .distinct().collect(Collectors.toList());
         }
         return null;

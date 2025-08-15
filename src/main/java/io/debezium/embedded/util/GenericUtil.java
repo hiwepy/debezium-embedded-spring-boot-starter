@@ -1,7 +1,7 @@
 package io.debezium.embedded.util;
 
 
-import io.debezium.handler.EntryHandler;
+import io.debezium.embedded.handler.EntryHandler;
 import io.debezium.embedded.model.DebeziumModel;
 import io.debezium.embedded.protocol.DebeziumEntry;
 import com.baomidou.mybatisplus.core.metadata.TableInfo;

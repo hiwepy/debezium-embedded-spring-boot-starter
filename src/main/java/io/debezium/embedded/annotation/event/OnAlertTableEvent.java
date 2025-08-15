@@ -1,7 +1,7 @@
 package io.debezium.embedded.annotation.event;
 
-import io.debezium.embedded.annotation.OnCanalEvent;
-import io.debezium.protocol.DebeziumEntry;
+import io.debezium.embedded.annotation.OnDebeziumEvent;
+import io.debezium.embedded.protocol.DebeziumEntry;
 import org.springframework.core.annotation.AliasFor;
 
 import java.lang.annotation.*;
@@ -13,22 +13,22 @@ import java.lang.annotation.*;
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@OnCanalEvent(eventType = DebeziumEntry.EventType.ALTER)
+@OnDebeziumEvent(eventType = DebeziumEntry.EventType.ALTER)
 public @interface OnAlertTableEvent {
 
     /**
-     * canal 指令
+     * debezium 指令
      * default for all
-     * @return canal destination
+     * @return debezium destination
      */
-    @AliasFor(annotation = OnCanalEvent.class)
+    @AliasFor(annotation = OnDebeziumEvent.class)
     String destination() default "";
 
     /**
      * 数据库实例
      * @return 数据库实例
      */
-    @AliasFor(annotation = OnCanalEvent.class)
+    @AliasFor(annotation = OnDebeziumEvent.class)
     String schema();
 
     /**
@@ -36,6 +36,6 @@ public @interface OnAlertTableEvent {
      * default for all
      * @return 监听的表
      */
-    @AliasFor(annotation = OnCanalEvent.class)
+    @AliasFor(annotation = OnDebeziumEvent.class)
     String table();
 }

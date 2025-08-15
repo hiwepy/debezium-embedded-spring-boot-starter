@@ -1,6 +1,7 @@
 package io.debezium.embedded.annotation;
 
-import io.debezium.protocol.DebeziumEntry;
+
+import io.debezium.embedded.protocol.DebeziumEntry;
 
 import java.lang.annotation.*;
 
@@ -13,10 +14,10 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface OnCanalEvent {
+public @interface OnDebeziumEvent {
 
     /**
-     * canal 指令
+     * debezium 指令
      * default for all
      * @return destination name
      */

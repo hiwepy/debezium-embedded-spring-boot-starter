@@ -1,31 +1,30 @@
 package io.debezium.embedded.client;
 
-import org.springframework.util.ReflectionUtils;
+import io.debezium.config.Configuration;
+import io.debezium.engine.DebeziumEngine;
+import io.debezium.engine.RecordChangeEvent;
+import org.apache.kafka.connect.source.SourceRecord;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
 /**
  * Simple 模式 Debezium 客户端
  */
-public class SimpleDebeziumClient extends AbstractDebeziumClient<SimpleCanalConnector> {
+public class SimpleDebeziumClient extends AbstractDebeziumClient {
 
-    private SimpleDebeziumClient(List<SimpleCanalConnector> connectors) {
-        super(connectors);
+    private SimpleDebeziumClient(List<Configuration> configurations) {
+        super(configurations);
     }
 
     @Override
-    protected String getDestination(SimpleCanalConnector connector) { // Changed from SimpleCanalConnector to SimpleCanalConnector
-        Field clientIdentityField = ReflectionUtils.findField(SimpleCanalConnector.class, "clientIdentity");
-        ReflectionUtils.makeAccessible(clientIdentityField);
-        ClientIdentity clientIdentity = (ClientIdentity) ReflectionUtils.getField(clientIdentityField, connector);
-        return clientIdentity.getDestination();
+    public void handle(boolean success, String message, Throwable error) {
+
     }
 
-    public static final class Builder extends AbstractClientBuilder<SimpleDebeziumClient, SimpleCanalConnector> {
+    public static final class Builder extends AbstractClientBuilder<SimpleDebeziumClient, RecordChangeEvent<SourceRecord>> {
 
         @Override
-        public SimpleDebeziumClient build(List<SimpleCanalConnector> connectors) {
+        public SimpleDebeziumClient build(List<DebeziumEngine<RecordChangeEvent<SourceRecord>>> connectors) {
             SimpleDebeziumClient debeziumClient = new SimpleDebeziumClient(connectors);
             debeziumClient.setBatchSize(batchSize);
             debeziumClient.setFilter(filter);

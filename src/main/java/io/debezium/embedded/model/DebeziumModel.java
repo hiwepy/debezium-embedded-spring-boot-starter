@@ -7,16 +7,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * canal 消息模型
+ * debezium 消息模型
  */
 @Setter
 @Getter
 @Builder
 public class DebeziumModel {
 
-    import lombok.Data;
-
-    public class ChangeListenerModel {
+    public static class ChangeListenerModel {
         /**
          * 当前DB
          */
@@ -33,14 +31,6 @@ public class DebeziumModel {
          * 操作时间
          */
         private Long changeTime;
-        /**
-         * 现数据
-         */
-        private String data;
-        /**
-         * 之前数据
-         */
-        private String beforeData;
     }
 
     /**
@@ -52,7 +42,6 @@ public class DebeziumModel {
      * 库名
      */
     private String destination;
-
     /**
      * 库名
      */
@@ -66,10 +55,17 @@ public class DebeziumModel {
      */
     private DebeziumEntry.EventType eventType;
     /**
-     * binlog executeTime
+     * 现数据
      */
-    private Long executeTime;
-
+    private String data;
+    /**
+     * 之前数据
+     */
+    private String beforeData;
+    /**
+     * binlog changeTime
+     */
+    private Long changeTime;
     /**
      * dml build timeStamp
      */
@@ -77,12 +73,12 @@ public class DebeziumModel {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("CanalModel{");
+        final StringBuilder sb = new StringBuilder("DebeziumModel{");
         sb.append("id=").append(id);
         sb.append(", schema='").append(schema).append('\'');
         sb.append(", table='").append(table).append('\'');
         sb.append(", eventType='").append(eventType).append('\'');
-        sb.append(", executeTime=").append(executeTime);
+        sb.append(", changeTime=").append(changeTime);
         sb.append(", createTime=").append(createTime);
         sb.append('}');
         return sb.toString();

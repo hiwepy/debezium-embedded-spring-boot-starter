@@ -1,7 +1,7 @@
 package io.debezium.embedded.handler.impl;
 
 
-import io.debezium.embedded.handler.AbstractMessageHandler;
+import io.debezium.embedded.handler.AbstractChangeEventHandler;
 import io.debezium.embedded.handler.EntryHandler;
 import io.debezium.embedded.handler.RowDataHandler;
 import io.debezium.embedded.protocol.DebeziumEntry;
@@ -13,21 +13,21 @@ import java.util.List;
 /**
  *
  */
-public class AsyncMessageHandlerImpl extends AbstractMessageHandler {
+public class AsyncChangeEventHandlerImplAbstract extends AbstractChangeEventHandler {
 
     private ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
-    public AsyncMessageHandlerImpl(List<? extends EntryHandler> entryHandlers,
-                                   RowDataHandler<DebeziumEntry.RowData> rowDataHandler,
-                                   ThreadPoolTaskExecutor threadPoolTaskExecutor) {
+    public AsyncChangeEventHandlerImplAbstract(List<? extends EntryHandler> entryHandlers,
+                                               RowDataHandler<DebeziumEntry.RowData> rowDataHandler,
+                                               ThreadPoolTaskExecutor threadPoolTaskExecutor) {
         super(null, entryHandlers, rowDataHandler);
         this.threadPoolTaskExecutor = threadPoolTaskExecutor;
     }
 
-    public AsyncMessageHandlerImpl(List<DebeziumEntry.EntryType> subscribeTypes,
-                                   List<? extends EntryHandler> entryHandlers,
-                                   RowDataHandler<DebeziumEntry.RowData> rowDataHandler,
-                                   ThreadPoolTaskExecutor threadPoolTaskExecutor) {
+    public AsyncChangeEventHandlerImplAbstract(List<DebeziumEntry.EntryType> subscribeTypes,
+                                               List<? extends EntryHandler> entryHandlers,
+                                               RowDataHandler<DebeziumEntry.RowData> rowDataHandler,
+                                               ThreadPoolTaskExecutor threadPoolTaskExecutor) {
         super(subscribeTypes, entryHandlers, rowDataHandler);
         this.threadPoolTaskExecutor = threadPoolTaskExecutor;
     }

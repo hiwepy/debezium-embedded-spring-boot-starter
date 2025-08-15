@@ -33,9 +33,9 @@ import java.util.List;
 /**
  * @author 		： <a href="https://github.com/hiwepy">hiwepy</a>
  */
-public class CanalUtils {
+public class DebeziumUtils {
 
-	protected final static Logger             logger             = LoggerFactory.getLogger(CanalUtils.class);
+	protected final static Logger             logger             = LoggerFactory.getLogger(DebeziumUtils.class);
 	protected static final String             SEP                = SystemUtils.LINE_SEPARATOR;
 	protected static final String             DATE_FORMAT        = "yyyy-MM-dd HH:mm:ss";
     protected static String                   context_format     = null;

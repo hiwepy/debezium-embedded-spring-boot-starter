@@ -5,10 +5,10 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface CanalTable {
+public @interface DebeziumTable {
 
     /**
-     * canal 指令
+     * debezium 指令
      * default for all
      * @return destination name
      */

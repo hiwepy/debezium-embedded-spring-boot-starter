@@ -1,13 +1,10 @@
 #########################################################################################################################################################
-###Canal (CanalProperties、CanalKafkaProperties、CanalRabbitMQProperties、CanalRocketMQProperties、CanalPulsarProperties、CanalTcpProperties) 基本配置：
+###Debezium (DebeziumProperties、DebeziumKafkaProperties、DebeziumRabbitMQProperties、DebeziumRocketMQProperties、DebeziumPulsarProperties、DebeziumTcpProperties) 基本配置：
 #########################################################################################################################################################
-canal:
-  # Canal Server 模式。默认为 simple
+debezium:
+  # Debezium Server 模式。默认为 simple
   mode: simple
-  # 是否异步处理消息。默认为 false
-  async: true
   batch-size: 1000
-  filter: xxx
   subscribe-types:
     - ROWDATA
     - TRANSACTIONEND
@@ -15,7 +12,7 @@ canal:
   timeout: 60
   unit: SECONDS
   # 是否开启消息队列。默认为 false
-  # Canal 异步消费线程池配置
+  # Debezium 异步消费线程池配置
   thread-pool:
     # 线程池核心线程数。默认为 1
     core-pool-size: 1
@@ -28,15 +25,13 @@ canal:
   # Simple 客户端模式配置
   simple:
     instances:
-      - # Canal Server 主机地址。如果设置了address属性，则忽略。
+      - # Debezium Server 主机地址。如果设置了address属性，则忽略。
         host: 127.0.0.1
-        # Canal Server 端口。如果设置了address属性，则忽略。默认为 5672
+        # Debezium Server 端口。如果设置了address属性，则忽略。默认为 5672
         port: 11111
-        # Canal Server 地址。如果设置了该属性，则忽略host和port属性。
-        addresses: xxx
-        # Canal Server 用户名
+        # Debezium Server 用户名
         username: xxx
-        # Canal Server 密码
+        # Debezium Server 密码
         password: xxx
         # Socket 连接超时时间，单位：毫秒。默认为 60000
         so-timeout: 60000
@@ -49,17 +44,13 @@ canal:
   # Cluster 客户端模式配置
   cluster:
     instances:
-      - # Canal Server 主机地址。如果设置了address属性，则忽略。
-        host: 127.0.0.1
-        # Canal Server 端口。如果设置了address属性，则忽略。默认为 5672
-        port: 11111
-        # Canal Server 地址。如果设置了该属性，则忽略host和port属性。
+      - # Debezium Server 地址。如果设置了该属性，则忽略host和port属性。
         addresses: xxx
-        #  Canal Zookeeper 地址
+        #  Debezium Zookeeper 地址
         zk-servers: : xxx
-        # Canal Server 用户名
+        # Debezium Server 用户名
         username: xxx
-        # Canal Server 密码
+        # Debezium Server 密码
         password: xxx
         # Socket 连接超时时间，单位：毫秒。默认为 60000
         so-timeout: 60000
@@ -69,7 +60,7 @@ canal:
         retry-times: 3
         # 重试间隔时间，单位：毫秒。默认为 1000
         retry-interval: 1000
-  # Canal Kafka 消息队列配置
+  # Debezium Kafka 消息队列配置
   kafka:
     instances:
       - # 启动时从未消费的消息位置开始
@@ -84,7 +75,7 @@ canal:
         group-id: xxx
         # 批量获取数据的大小
         batch-size: 64
-  # Canal RabbitMQ 消息队列配置
+  # Debezium RabbitMQ 消息队列配置
   rabbitmq:
     instances:
       - # RabbitMQ服务器地址
@@ -103,7 +94,7 @@ canal:
         password: xxx
         #资源所有者的ID
         resource-owner-id: 000000
-  # Canal RocketMQ 消息队列配置
+  # Debezium RocketMQ 消息队列配置
   rocketmq:
     instances:
       - # RocketMQ NameServer 服务地址
@@ -126,7 +117,7 @@ canal:
         customized-trace-topic: xxx
         # 批量获取数据的大小
         batch-size: 64
-  # Canal Pulsar 消息队列配置
+  # Debezium Pulsar 消息队列配置
   pulsar:
     instances:
       - # PulsarMQ 服务地址
@@ -151,32 +142,3 @@ canal:
         retry-d-l-q-upper-case: true
         # 最大重试次数
         max-redelivery-count: 10
-
-timely:
-  # 是否开启
-  switch: true
-  # 偏移量文件
-  offset-file-name: D:\IdeaProjects\ETFramework\debezium\docker\offsets.dat
-  # 是否启东时清除偏移量文件
-  offset-file-clean: true
-  # 偏移量提交时间 单位ms
-  offset-time: 1
-  # 读取历史记录文件
-  history-file-name: D:\IdeaProjects\ETFramework\debezium\docker\dbhistory.dat
-  # 读取的数据库信息
-  offline:
-    ip: 127.0.0.1
-    port: 3306
-    username: root
-    password: root
-    # 保证每个数据库读取的 instance-name  logic-name 不能相同
-    # 实例名
-    instance-name: mysql-connector
-    # 逻辑名
-    logic-name: mysql-customer
-    # 读取的表
-    include-table: dbo.vehicle
-    # 读取的库
-    include-db: demo
-    #mysql.cnf 配置的 server-id
-    server-id: 1

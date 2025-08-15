@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
  * @author Ryan
  */
 @Configuration
-@ConfigurationProperties(prefix = "debezium")
 public class MysqlConfig {
 
     private List<DatabaseData> database;

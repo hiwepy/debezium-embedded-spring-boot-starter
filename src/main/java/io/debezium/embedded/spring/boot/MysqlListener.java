@@ -29,57 +29,14 @@ public class MysqlListener {
             this.engineList.add(DebeziumEngine.create(Json.class)
                     .using(props)
                     .notifying(record -> {
+                        ChangeEvent<String, String> changeEvent = record;
                         receiveChangeEvent(record.value(), props);
                     }).build());
         }
     }
 
     private void receiveChangeEvent(String value, Properties props) {
-        if (Objects.nonNull(value)) {
-            try {
-                // 解析JSON字符串
-                JSONObject jsonValue = JSON.parseObject(value);
-                JSONObject payload = jsonValue.getJSONObject("payload");
-                if (payload != null) {
-                    ChangeDataMessage message = new ChangeDataMessage();
-                    // 设置操作类型
-                    String handleType = JSON.parseObject(JSON.toJSONString(payload.get("op")), String.class);
-                    message.setDataType(handleType);
-                    // 设置变更前后的数据
-                    JSONObject beforeData = payload.getJSONObject("before");
-                    if (beforeData != null) {
-                        message.setBeforeData(beforeData.toJSONString());
-                    }
-                    JSONObject afterData = payload.getJSONObject("after");
-                    if (afterData != null) {
-                        message.setAfterData(afterData.toJSONString());
-                    }
-                    // 设置数据库名称和表名称
-                    JSONObject source = payload.getJSONObject("source");
-                    if (source != null) {
-                        message.setDatabaseName(source.getString("db"));
-                        message.setTableName(source.getString("table"));
-                        // 设置数据库类型为MySQL
-                        message.setDbType(props.getProperty("database.dbType"));
-                        // 设置偏移量
-                        Long offset = source.getLong("pos");
-                        if (offset != null) {
-                            message.setOffset(offset);
-                        }
-                    }
-                    // 这里可以添加对message的后续处理，例如发送到消息队列等
-                    log.info("解析变更事件成功: {}", message);
-                    SyncDataStrategy strategy = syncDataStrategyRouter.switchStrategy(message.getTableName());
-                    if(Objects.isNull(strategy)){
-                        log.error("未找到当前数据表的处理器");
-                    }else{
-                        strategy.syncTableData(message);
-                    }
-                }
-            } catch (Exception e) {
-                log.error("解析变更事件失败: {}", e.getMessage());
-            }
-        }
+
     }
 
     @PostConstruct

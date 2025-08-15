@@ -1,17 +1,17 @@
 package io.debezium.spring.boot;
 
 import com.alibaba.fastjson.JSONObject;
-import io.debezium.annotation.CanalEventHandler;
+import io.debezium.annotation.DebeziumEventHandler;
 import io.debezium.annotation.event.*;
 import io.debezium.model.DebeziumModel;
-import io.debezium.protocol.DebeziumEntry;
+import io.debezium.embedded.protocol.DebeziumEntry;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
-@CanalEventHandler
+@DebeziumEventHandler
 @Slf4j
-public class CanalMessageEventHandler {
+public class DebeziumMessageEventHandler {
 
     @OnCreateTableEvent(schema = "my_auth")
     public void onCreateTableEvent(DebeziumModel model, DebeziumEntry.RowChange rowChange) {

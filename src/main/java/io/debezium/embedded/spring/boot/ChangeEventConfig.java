@@ -5,6 +5,8 @@ package com.et.debezium.config;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import io.debezium.connector.mysql.MySqlConnector;
 import io.debezium.embedded.Connect;
+import io.debezium.embedded.handler.ChangeEventHandler;
+import io.debezium.embedded.handler.RecordChangeEventHandler;
 import io.debezium.engine.DebeziumEngine;
 import io.debezium.engine.RecordChangeEvent;
 import io.debezium.engine.format.ChangeEventFormat;
@@ -34,7 +36,7 @@ import java.util.concurrent.*;
 @Configuration
 @Log4j2
 public class ChangeEventConfig {
-    private final ChangeEventHandler changeEventHandler;
+    private final RecordChangeEventHandler changeEventHandler;
 
 
     @Value("${timely.offset-file-name}")
@@ -76,7 +78,7 @@ public class ChangeEventConfig {
     private String historyPath;
 
     @Autowired
-    public ChangeEventConfig(ChangeEventHandler changeEventHandler) {
+    public ChangeEventConfig(RecordChangeEventHandler changeEventHandler) {
         this.changeEventHandler = changeEventHandler;
     }
 
@@ -102,9 +104,9 @@ public class ChangeEventConfig {
                 // 偏移量持久化，用来容错 默认值
                 .with("offset.storage", "org.apache.kafka.connect.storage.FileOffsetBackingStore")
                 // 偏移量持久化文件路径 默认/tmp/offsets.dat  如果路径配置不正确可能导致无法存储偏移量 可能会导致重复消费变更
-                //                如果连接器重新启动，它将使用最后记录的偏移量来知道它应该恢复读取源信息中的哪个位置。
+                // 如果连接器重新启动，它将使用最后记录的偏移量来知道它应该恢复读取源信息中的哪个位置。
                 .with("offset.storage.file.filename", offsetFileName)
-                //                捕获偏移量的周期
+                // 捕获偏移量的周期
                 .with("offset.flush.interval.ms", offsetTime)
                 //               连接器的唯一名称
                 .with("name", instanceName)
@@ -180,91 +182,15 @@ public class ChangeEventConfig {
         DebeziumEngine<RecordChangeEvent<SourceRecord>> debeziumEngine = DebeziumEngine
                 .create(ChangeEventFormat.of(Connect.class))
                 .using(configuration.asProperties())
-                .notifying(changeEventHandler::handlePayload)
+                .notifying((recordChangeEvents, recordCommitter) -> {
+                    changeEventHandler.handleEvent(recordChangeEvents, recordCommitter, configuration.asProperties());
+                })
+                .using()
                 .build();
         sqlServerTimelyExecutor.setDebeziumEngine(debeziumEngine);
         return sqlServerTimelyExecutor;
     }
 
-
-    /**
-     * @author lei
-     * @version 1.0
-     * @date 2021-06-22 15:39
-     * @desc 同步执行服务类
-     */
-    @Data
-    @Slf4j
-    public static class SqlServerTimelyExecutor implements InitializingBean, SmartLifecycle {
-        private final ExecutorService executor = ThreadPoolEnum.INSTANCE.getInstance();
-        private DebeziumEngine<?> debeziumEngine;
-
-
-        @Override
-        public void start() {
-            log.warn(ThreadPoolEnum.SQL_SERVER_LISTENER_POOL + "线程池开始执行 debeziumEngine 实时监听任务!");
-            executor.execute(debeziumEngine);
-        }
-
-
-        @SneakyThrows
-        @Override
-        public void stop() {
-            log.warn("debeziumEngine 监听实例关闭!");
-            debeziumEngine.close();
-            Thread.sleep(2000);
-            log.warn(ThreadPoolEnum.SQL_SERVER_LISTENER_POOL + "线程池关闭!");
-            executor.shutdown();
-        }
-
-
-        @Override
-        public boolean isRunning() {
-            return false;
-        }
-
-
-        @Override
-        public void afterPropertiesSet() {
-            Assert.notNull(debeziumEngine, "DebeZiumEngine 不能为空!");
-        }
-
-
-        public enum ThreadPoolEnum {
-            /**
-             * 实例
-             */
-            INSTANCE;
-
-
-            public static final String SQL_SERVER_LISTENER_POOL = "sql-server-listener-pool";
-            /**
-             * 线程池单例
-             */
-            private final ExecutorService es;
-
-
-            /**
-             * 枚举 (构造器默认为私有）
-             */
-            ThreadPoolEnum() {
-                final ThreadFactory threadFactory = new ThreadFactoryBuilder().setNameFormat(SQL_SERVER_LISTENER_POOL + "-%d").build();
-                es = new ThreadPoolExecutor(8, 16, 60,
-                        TimeUnit.SECONDS, new ArrayBlockingQueue<>(256),
-                        threadFactory, new ThreadPoolExecutor.DiscardPolicy());
-            }
-
-
-            /**
-             * 公有方法
-             *
-             * @return ExecutorService
-             */
-            public ExecutorService getInstance() {
-                return es;
-            }
-        }
-    }
 
 
 }

@@ -4,9 +4,9 @@ import io.debezium.embedded.model.DebeziumModel;
 import com.alibaba.ttl.TransmittableThreadLocal;
 
 /**
- * canal上下文
+ * debezium上下文
  */
-public class CanalContext {
+public class DebeziumContext {
 
     private static TransmittableThreadLocal<DebeziumModel> threadLocal = new TransmittableThreadLocal<>();
 
@@ -15,8 +15,8 @@ public class CanalContext {
     }
 
 
-    public static void setModel(DebeziumModel canalModel){
-        threadLocal.set(canalModel);
+    public static void setModel(DebeziumModel debeziumModel){
+        threadLocal.set(debeziumModel);
     }
 
 

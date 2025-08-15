@@ -1,8 +1,8 @@
 package io.debezium.embedded.protocol;
 
+import io.debezium.data.Envelope;
+import lombok.Data;
 import lombok.Getter;
-
-import java.util.List;
 
 public class DebeziumEntry {
 
@@ -94,103 +94,64 @@ public class DebeziumEntry {
         }
 
     }
+
+    /**
+     **/
+    public enum EventTypeEnum {
+        /**
+         * 增
+         */
+        CREATE(1),
+        /**
+         * 删
+         */
+        UPDATE(2),
+        /**
+         * 改
+         */
+        DELETE(3),
+        ;
+        @Getter
+        private final int type;
+
+
+        EventTypeEnum(int type) {
+            this.type = type;
+        }
+    }
+
     /**
      * <pre>
      ** 事件类型 *
      * </pre>
      */
-    public enum EventType{
+    public enum EventType {
+
         /**
-         * <code>INSERT = 1;</code>
+         * 创建了新的记录
          */
-        INSERT(0, 1),
+        CREATE(1, Envelope.Operation.CREATE),
         /**
-         * <code>UPDATE = 2;</code>
+         * 更新了现有记录
          */
-        UPDATE(1, 2),
+        UPDATE(2, Envelope.Operation.UPDATE),
         /**
-         * <code>DELETE = 3;</code>
+         * 将现有记录移除或删除
          */
-        DELETE(2, 3),
+        DELETE(3, Envelope.Operation.DELETE),
         /**
-         * <code>CREATE = 4;</code>
+         * 对现有表执行截断操作（清空表数据）的操作
          */
-        CREATE(3, 4),
-        /**
-         * <code>ALTER = 5;</code>
-         */
-        ALTER(4, 5),
-        /**
-         * <code>ERASE = 6;</code>
-         */
-        ERASE(5, 6),
-        /**
-         * <code>QUERY = 7;</code>
-         */
-        QUERY(6, 7),
-        /**
-         * <code>TRUNCATE = 8;</code>
-         */
-        TRUNCATE(7, 8),
-        /**
-         * <code>RENAME = 9;</code>
-         */
-        RENAME(8, 9),
-        /**
-         * <code>CINDEX = 10;</code>
-         *
-         * <pre>
-         **CREATE INDEX*
-         * </pre>
-         */
-        CINDEX(9, 10),
-        /**
-         * <code>DINDEX = 11;</code>
-         */
-        DINDEX(10, 11),
-        /**
-         * <code>GTID = 12;</code>
-         */
-        GTID(11, 12),
-        /**
-         * <code>XACOMMIT = 13;</code>
-         *
-         * <pre>
-         ** XA *
-         * </pre>
-         */
-        XACOMMIT(12, 13),
-        /**
-         * <code>XAROLLBACK = 14;</code>
-         */
-        XAROLLBACK(13, 14),
-        /**
-         * <code>MHEARTBEAT = 15;</code>
-         *
-         * <pre>
-         ** MASTER HEARTBEAT *
-         * </pre>
-         */
-        MHEARTBEAT(14, 15),
+        TRUNCATE(4, Envelope.Operation.TRUNCATE),
+
         ;
 
         public static EventType valueOf(int value) {
             return switch (value) {
-                case 1 -> INSERT;
+                case 1 -> CREATE;
                 case 2 -> UPDATE;
                 case 3 -> DELETE;
-                case 4 -> CREATE;
-                case 5 -> ALTER;
-                case 6 -> ERASE;
-                case 7 -> QUERY;
-                case 8 -> TRUNCATE;
-                case 9 -> RENAME;
-                case 10 -> CINDEX;
-                case 11 -> DINDEX;
-                case 12 -> GTID;
-                case 13 -> XACOMMIT;
-                case 14 -> XAROLLBACK;
-                case 15 -> MHEARTBEAT;
+                case 4 -> TRUNCATE;
                 default -> null;
             };
         }
@@ -200,13 +161,69 @@ public class DebeziumEntry {
         @Getter
         private final int index;
         @Getter
-        private final int value;
+        private final Envelope.Operation operation;
 
-        EventType(int index, int value) {
+        EventType(int index, Envelope.Operation operation) {
             this.index = index;
-            this.value = value;
+            this.operation = operation;
         }
 
+    }
+
+    @Data
+    public final class Column  {
+
+        /**
+         * 字段下标
+         */
+        int index;
+
+        /**
+         * 字段java中类型
+         */
+        int sqlType;
+
+        /**
+         * 字段名称(忽略大小写)，在mysql中是没有的
+         */
+        String name;
+
+        /**
+         * 是否是主键
+         */
+        boolean isKey;
+
+        /**
+         * 如果EventType=UPDATE,用于标识这个字段值是否有修改
+         */
+        Boolean updated;
+
+        /**
+         * 标识是否为空
+         */
+        boolean isNull;
+
+        /**
+         * 字段值,timestamp,Datetime是一个时间格式的文本
+         */
+        String value;
+
+        /**
+         * 对应数据对象原始长度
+         */
+        int length;
+
+        /**
+         * 字段mysql类型
+         */
+        String mysqlType;
+
+    }
+
+    @Data
+    public static class Pair{
+        String key;
+        Object value;
     }
 
 }

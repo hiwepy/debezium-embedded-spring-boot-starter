@@ -1,35 +1,45 @@
 package io.debezium.embedded.client;
 
-import io.debezium.handler.MessageHandler;
-import io.debezium.protocol.DebeziumEntry;
-import io.debezium.protocol.Message;
-import io.debezium.util.CanalUtils;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import io.debezium.config.Configuration;
+import io.debezium.embedded.Connect;
+import io.debezium.embedded.handler.ChangeEventHandler;
+import io.debezium.embedded.handler.RecordChangeEventHandler;
+import io.debezium.embedded.protocol.DebeziumEntry;
+import io.debezium.engine.ChangeEvent;
+import io.debezium.engine.DebeziumEngine;
+import io.debezium.engine.RecordChangeEvent;
+import io.debezium.engine.format.ChangeEventFormat;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.kafka.connect.source.SourceRecord;
 import org.slf4j.MDC;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.util.Assert;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
- * Canal Client 抽象类
- * @param <C> CanalConnector 实现类
+ * Debezium Client 抽象类
  */
 @Slf4j
-public abstract class AbstractDebeziumClient<C extends CanalConnector> implements CanalClient<C> {
+public abstract class AbstractDebeziumClient implements InitializingBean, DebeziumClient,
+        DebeziumEngine.CompletionCallback,
+        DebeziumEngine.ConnectorCallback {
 
-    protected Thread.UncaughtExceptionHandler handler            = (t, e) -> log.error("parse events has an error",
-            e);
     /**
      * 是否运行中
      */
     protected volatile boolean running;
+
     /**
-     * Canal 连接器集合
+     * Debezium Engine
      */
-    private List<C> connectors;
+    private List<Configuration> configurations;
+    private List<DebeziumEngine<?>> debeziumEngines;
     /**
      * 消息过滤
      */
@@ -53,117 +63,126 @@ public abstract class AbstractDebeziumClient<C extends CanalConnector> implement
     /**
      * 消息处理器
      */
-    private MessageHandler messageHandler;
+    private ChangeEventHandler changeEventHandler;
+    private RecordChangeEventHandler recordChangeEventHandler;
     /**
-     * 工作线程
+     * 线程工厂
      */
-    private Thread[] workThreads;
+    protected ThreadFactory threadFactory;
+    /**
+     * 线程池
+     */
+    protected ThreadPoolExecutor executor;
 
-    public AbstractDebeziumClient(List<C> connectors) {
-        this.connectors = connectors;
+    public AbstractDebeziumClient(List<Configuration> configurations) {
+        this.configurations = configurations;
+    }
+
+    @Override
+    public void afterPropertiesSet() {
+        Assert.notEmpty(configurations, "DebeziumEngine Configuration Empty!");
+        threadFactory = new ThreadFactoryBuilder().setNameFormat(SQL_SERVER_LISTENER_POOL + "-%d").build();
+        executor = new ThreadPoolExecutor(8, 16, 60,
+                TimeUnit.SECONDS, new ArrayBlockingQueue<>(256),
+                threadFactory, new ThreadPoolExecutor.DiscardPolicy());
+
+        for (Configuration configuration : configurations) {
+            DebeziumEngine.ConnectorCallback connectorCallback = this;
+            DebeziumEngine.CompletionCallback completionCallback = this;
+            DebeziumEngine<RecordChangeEvent<SourceRecord>> debeziumEngine = DebeziumEngine
+                    .create(ChangeEventFormat.of(Connect.class))
+                    .using(configuration.asProperties())
+                    .using(completionCallback)
+                    .using(connectorCallback)
+                    .notifying((recordChangeEvents, recordCommitter) -> process(recordChangeEvents, recordCommitter))
+                    .build();
+            debeziumEngines.add(debeziumEngine);
+        }
     }
 
     @Override
     public void start() {
-        log.info("start canal client");
-        workThreads = new Thread[connectors.size()];
-        for (int i = 0; i < connectors.size(); i++) {
-            C connector = connectors.get(i);
-            Thread workThread = new Thread(() -> process(connector));
-            workThread.setName("canal-client-thread-" + i);
-            workThread.setUncaughtExceptionHandler(handler);
-            workThreads[i] = workThread;
-            workThread.start();
+        log.info("Start Debezium Client Of Instance： {}", this.getClass().getSimpleName());
+        for (DebeziumEngine<R> debeziumEngine : debeziumEngines) {
+            log.warn(ThreadPoolEnum.SQL_SERVER_LISTENER_POOL + "线程池开始执行 debeziumEngine 实时监听任务!");
+            executor.execute(debeziumEngine);
         }
-        running = true;
+        this.running = true;
     }
 
+    @SneakyThrows
     @Override
     public void stop() {
-        log.info("stop canal client");
-        running = false;
-        for (Thread workThread : workThreads) {
-            if (Objects.nonNull(workThread) && workThread.isAlive()){
-                workThread.interrupt();
-            }
+        log.info("Stop Debezium Client Of Instance： {}", this.getClass().getSimpleName());
+        this.running = false;
+        for (DebeziumEngine<R> debeziumEngine : debeziumEngines) {
+            debeziumEngine.close();
         }
-    }
-
-    protected abstract String getDestination(C connector);
-
-    @Override
-    public void process(C connector) {
-        String destination = this.getDestination(connector);
-        while (running) {
-            try {
-                MDC.put("destination", destination);
-                connector.connect();
-                connector.subscribe(filter);
-                while (running) {
-                    Message message = connector.getWithoutAck(batchSize, timeout, unit);
-                    long batchId = message.getId();
-                    int size = message.getEntries().size();
-                    if (batchId == -1 || size == 0) {
-                         try {
-                            Thread.sleep(1000);
-                         } catch (InterruptedException e) {
-                         }
-                    } else {
-                        CanalUtils.printSummary(message, batchId, size);
-                        CanalUtils.printEntry(message.getEntries());
-                        messageHandler.handleMessage(destination, message);
-                    }
-
-                    if (batchId != -1) {
-                        connector.ack(batchId); // 提交确认
-                    }
-
-                }
-            } catch (Exception e) {
-                log.error("process error!", e);
-                try {
-                    Thread.sleep(2000L);
-                } catch (InterruptedException e1) {
-                    // ignore
-                }
-                connector.rollback(); // 处理失败, 回滚数据
-            } finally {
-                connector.disconnect();
-            }
-        }
+        Thread.sleep(2000);
+        log.warn(ThreadPoolEnum.SQL_SERVER_LISTENER_POOL + "线程池关闭!");
+        executor.shutdown();
     }
 
     @Override
-    public void destroy() throws Exception {
-        stop();
+    public boolean isRunning() {
+        return this.running;
     }
 
-    public void setBatchSize(Integer batchSize) {
-        this.batchSize = batchSize;
+    protected String getDestination(Configuration configuration, ChangeEvent<String, String> changeEvent){
+        return changeEvent.destination();
     }
 
-    public void setFilter(String filter) {
-        this.filter = filter;
+    protected String getDestination(Configuration configuration, RecordChangeEvent<SourceRecord> recordChangeEvent){
+        return configuration.getString("destination");
     }
 
-    public void setMessageHandler(MessageHandler messageHandler) {
-        this.messageHandler = messageHandler;
+
+    @Override
+    public void process(ChangeEvent<String, String> changeEvent) {
+
     }
 
-    public void setTimeout(Long timeout) {
-        this.timeout = timeout;
+    @Override
+    public void process(List<RecordChangeEvent<SourceRecord>> recordChangeEvents,
+                        DebeziumEngine.RecordCommitter<RecordChangeEvent<SourceRecord>> recordCommitter) {
+
     }
 
-    public void setUnit(TimeUnit unit) {
-        this.unit = unit;
-    }
 
-    public void setSubscribeTypes(List<DebeziumEntry.EntryType> subscribeTypes) {
-        this.subscribeTypes = subscribeTypes;
-    }
 
-    public MessageHandler getMessageHandler() {
-        return messageHandler;
+    public enum ThreadPoolEnum {
+
+        /**
+         * 实例
+         */
+        INSTANCE;
+
+        public static final String SQL_SERVER_LISTENER_POOL = "sql-server-listener-pool";
+        /**
+         * 线程池单例
+         */
+        private final ExecutorService es;
+
+
+        /**
+         * 枚举 (构造器默认为私有）
+         */
+        ThreadPoolEnum() {
+            final ThreadFactory threadFactory = new ThreadFactoryBuilder().setNameFormat(SQL_SERVER_LISTENER_POOL + "-%d").build();
+            es = new ThreadPoolExecutor(8, 16, 60,
+                    TimeUnit.SECONDS, new ArrayBlockingQueue<>(256),
+                    threadFactory, new ThreadPoolExecutor.DiscardPolicy());
+        }
+
+
+        /**
+         * 公有方法
+         *
+         * @return ExecutorService
+         */
+        public ExecutorService getInstance() {
+            return es;
+        }
     }
 
 }

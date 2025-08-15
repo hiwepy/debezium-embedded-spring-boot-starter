@@ -2,7 +2,6 @@ package io.debezium.embedded.factory;
 
 
 import io.debezium.embedded.handler.EntryHandler;
-import io.debezium.handler.EntryHandler;
 
 import java.util.Set;
 

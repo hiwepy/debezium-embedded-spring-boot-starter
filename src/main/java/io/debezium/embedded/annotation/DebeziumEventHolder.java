@@ -1,17 +1,17 @@
 package io.debezium.embedded.annotation;
 
 
-import io.debezium.protocol.DebeziumEntry;
+import io.debezium.embedded.protocol.DebeziumEntry;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
 /**
- * 监听 canal 操作
+ * 监听 debezium 操作
  *
  * @author lujun
  */
-public class CanalEventHolder {
+public class DebeziumEventHolder {
 
     /**
      * 目标 bean
@@ -24,15 +24,15 @@ public class CanalEventHolder {
     /**
      * 监听的事件
      */
-    private OnCanalEvent event;
+    private OnDebeziumEvent event;
 
     /**
      * 构造方法，设置目标，方法以及注解类型
      * @param target Object 目标
      * @param method Method 方法
-     * @param event OnCanalEvent 注解
+     * @param event OnDebeziumEvent 注解
      */
-    public CanalEventHolder(Object target, Method method, OnCanalEvent event) {
+    public DebeziumEventHolder(Object target, Method method, OnDebeziumEvent event) {
         this.target = target;
         this.method = method;
         this.event = event;
@@ -56,9 +56,9 @@ public class CanalEventHolder {
 
     /**
      * 返回注解类型
-     * @return OnCanalEvent
+     * @return OnDebeziumEvent
      */
-    public OnCanalEvent getEvent() {
+    public OnDebeziumEvent getEvent() {
         return event;
     }
 
