@@ -1,0 +1,8 @@
+# Auto Configure
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+io.debezium.spring.boot.DebeziumClusterClientAutoConfiguration,\
+io.debezium.spring.boot.DebeziumKafkaClientAutoConfiguration,\
+io.debezium.spring.boot.DebeziumPulsarClientAutoConfiguration,\
+io.debezium.spring.boot.DebeziumRabbitmqClientAutoConfiguration,\
+io.debezium.spring.boot.DebeziumRocketmqClientAutoConfiguration,\
+io.debezium.spring.boot.DebeziumSimpleClientAutoConfiguration

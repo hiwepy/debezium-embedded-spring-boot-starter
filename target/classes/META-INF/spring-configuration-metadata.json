@@ -1,0 +1,467 @@
+{
+  "groups": [
+    {
+      "name": "debezium",
+      "type": "io.debezium.embedded.spring.boot.DebeziumProperties",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumProperties"
+    },
+    {
+      "name": "debezium.embedded",
+      "type": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
+    },
+    {
+      "name": "debezium.offset-storage",
+      "type": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties"
+    },
+    {
+      "name": "debezium.offset-storage.custom",
+      "type": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Custom",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties",
+      "sourceMethod": "public io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties.Custom getCustom() "
+    },
+    {
+      "name": "debezium.offset-storage.file",
+      "type": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$File",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties",
+      "sourceMethod": "public io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties.File getFile() "
+    },
+    {
+      "name": "debezium.offset-storage.jdbc",
+      "type": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Jdbc",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties",
+      "sourceMethod": "public io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties.Jdbc getJdbc() "
+    },
+    {
+      "name": "debezium.offset-storage.kafka",
+      "type": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties",
+      "sourceMethod": "public io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties.Kafka getKafka() "
+    },
+    {
+      "name": "debezium.offset-storage.redis",
+      "type": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Redis",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties",
+      "sourceMethod": "public io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties.Redis getRedis() "
+    },
+    {
+      "name": "debezium.offset-storage.s3",
+      "type": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$S3",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties",
+      "sourceMethod": "public io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties.S3 getS3() "
+    },
+    {
+      "name": "debezium.simple",
+      "type": "io.debezium.embedded.spring.boot.DebeziumSimpleProperties",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumSimpleProperties"
+    },
+    {
+      "name": "debezium.thread-pool",
+      "type": "io.debezium.embedded.spring.boot.DebeziumThreadPoolProperties",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumThreadPoolProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "debezium.async",
+      "type": "java.lang.Boolean",
+      "description": "是否异步",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumProperties"
+    },
+    {
+      "name": "debezium.batch-size",
+      "type": "java.lang.Integer",
+      "description": "The number of messages read from the Debezium service in each time",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumProperties"
+    },
+    {
+      "name": "debezium.embedded.connector-class",
+      "type": "java.lang.String",
+      "description": "A required field for an embedded connector that specifies the name of the normal Debezium connector's Java class. 嵌入式连接器中的一个必填字段，用于指定Debezium连接器的Java类名称。如：io.debezium.connector.mysql.MySqlConnector",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
+    },
+    {
+      "name": "debezium.embedded.database-exclude-list",
+      "type": "java.lang.String",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
+    },
+    {
+      "name": "debezium.embedded.database-include-list",
+      "type": "java.lang.String",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
+    },
+    {
+      "name": "debezium.embedded.destination",
+      "type": "java.lang.String",
+      "description": "A required field for an embedded connector that specifies the unique name for the connector instance. 嵌入式连接器中的一个必填字段，用于指定该连接器实例的唯一名称。",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
+    },
+    {
+      "name": "debezium.embedded.errors-retry-delay-initial-ms",
+      "type": "java.lang.Integer",
+      "description": "Initial delay (in ms) for retries when encountering connection errors. This value will be doubled upon every retry but won't exceed 'errors.retry.delay.max.ms'",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
+    },
+    {
+      "name": "debezium.embedded.errors-retry-delay-max-ms",
+      "type": "java.lang.Integer",
+      "description": "Max delay (in ms) between retries when encountering connection errors.",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
+    },
+    {
+      "name": "debezium.embedded.host",
+      "type": "java.lang.String",
+      "description": "数据库 host",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
+    },
+    {
+      "name": "debezium.embedded.offset-commit-policy-class",
+      "type": "java.lang.Class<? extends io.debezium.engine.spi.OffsetCommitPolicy>",
+      "description": "The fully-qualified class name of the commit policy type. This class must implement the interface \"io.debezium.engine.spi.OffsetCommitPolicy\". The default is a periodic commit policy based upon time intervals. 这类必须实现接口 \"io.debezium.engine.spi.OffsetCommitPolicy\"",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
+    },
+    {
+      "name": "debezium.embedded.offset-flush-interval-ms",
+      "type": "java.lang.Integer",
+      "description": "An optional advanced field that specifies the maximum amount of time that the embedded connector should wait for an offset commit to complete. 这是一个可选高级字段，指定偏移提交完成所需的最大时间。",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
+    },
+    {
+      "name": "debezium.embedded.offset-flush-timeout-ms",
+      "type": "java.lang.Integer",
+      "description": "An optional advanced field that specifies the maximum amount of time that the embedded connector should wait for an offset commit to complete.",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
+    },
+    {
+      "name": "debezium.embedded.offset-storage-class",
+      "type": "java.lang.Class<? extends org.apache.kafka.connect.storage.OffsetBackingStore>",
+      "description": "An optional field that specifies the name of the class that implements the {@link OffsetBackingStore} interface, and that will be used to store offsets recorded by the connector. 这是一个可选字段，指定实现 {@link OffsetBackingStore} 接口的类的名称，该类将用于存储由连接器记录的偏移量。",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
+    },
+    {
+      "name": "debezium.embedded.offset-storage-file-name",
+      "type": "java.lang.String",
+      "description": "An optional field that specifies the file location for the {@link FileOffsetBackingStore}. 这是一个可选字段，指定 {@link FileOffsetBackingStore} 的文件位置，默认 \/tmp\/offsets.dat。 如果路径配置不正确可能导致无法存储偏移量 可能会导致重复消费变更 如果连接器重新启动，它将使用最后记录的偏移量来知道它应该恢复读取源信息中的哪个位置。",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
+    },
+    {
+      "name": "debezium.embedded.offset-storage-partitions",
+      "type": "java.lang.Integer",
+      "description": "An optional field that specifies the number of partitions for the {@link KafkaOffsetBackingStore}. 这个字段允许您指定一个自定义的偏移存储主题的分区数，而不是使用默认的偏移存储主题的分区数。",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
+    },
+    {
+      "name": "debezium.embedded.offset-storage-replication-factor",
+      "type": "java.lang.Integer",
+      "description": "An optional field that specifies the replication factor for the {@link KafkaOffsetBackingStore}. 这个字段允许您指定一个自定义的偏移存储主题的副本数，而不是使用默认的偏移存储主题的副本数。",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
+    },
+    {
+      "name": "debezium.embedded.offset-storage-topic",
+      "type": "java.lang.String",
+      "description": "An optional field that specifies the topic name for the {@link KafkaOffsetBackingStore}. 这个字段允许您指定一个自定义的偏移存储主题名称，而不是使用默认的偏移存储主题名称。",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
+    },
+    {
+      "name": "debezium.embedded.password",
+      "type": "java.lang.String",
+      "description": "数据库 Server 密码",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
+    },
+    {
+      "name": "debezium.embedded.port",
+      "type": "java.lang.Integer",
+      "description": "数据库 Server 端口",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
+    },
+    {
+      "name": "debezium.embedded.predicates",
+      "type": "java.lang.String",
+      "description": "Optional list of predicates that can be assigned to transformations. The predicates are defined using '<predicate.prefix>.type' config option and configured using options '<predicate.prefix>.<option>'",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
+    },
+    {
+      "name": "debezium.embedded.schema-exclude-list",
+      "type": "java.lang.String",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
+    },
+    {
+      "name": "debezium.embedded.schema-include-list",
+      "type": "java.lang.String",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
+    },
+    {
+      "name": "debezium.embedded.shutdown-pause-before-interrupt-ms",
+      "type": "java.lang.Integer",
+      "description": "How long we wait before forcefully stopping the connector thread when shutting down. Must be bigger than the time it takes two polling loops to finish (executor.shutdown.timeout.ms)",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
+    },
+    {
+      "name": "debezium.embedded.table-exclude-list",
+      "type": "java.lang.String",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
+    },
+    {
+      "name": "debezium.embedded.table-include-list",
+      "type": "java.lang.String",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
+    },
+    {
+      "name": "debezium.embedded.transforms",
+      "type": "java.lang.String",
+      "description": "Optional list of single message transformations applied on the messages. The transforms are defined using '<transform.prefix>.type' config option and configured using options '<transform.prefix>.<option>'",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
+    },
+    {
+      "name": "debezium.embedded.username",
+      "type": "java.lang.String",
+      "description": "数据库 Server 账号",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
+    },
+    {
+      "name": "debezium.filter",
+      "type": "java.lang.String",
+      "description": "The client subscribes to filter, and the corresponding filter information will be updated when the subscription is repeated <pre> 说明： a. 如果本次订阅中filter信息为空，则直接使用debezium server服务端配置的filter信息 b. 如果本次订阅中filter信息不为空，目前会直接替换debezium server服务端配置的filter信息，以本次提交的为准 <\/pre>",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumProperties"
+    },
+    {
+      "name": "debezium.mode",
+      "type": "io.debezium.embedded.spring.boot.DebeziumProperties$ClientMode",
+      "description": "The mode of the Debezium Client. simple,cluster,kafka,rocketMQ",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumProperties"
+    },
+    {
+      "name": "debezium.offset-storage.custom.class-name",
+      "type": "java.lang.String",
+      "description": "fully-qualified class that implements org.apache.kafka.connect.storage.OffsetBackingStore",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Custom"
+    },
+    {
+      "name": "debezium.offset-storage.custom.props",
+      "type": "java.util.Map<java.lang.String,java.lang.String>",
+      "description": "additional props passed through to the custom store",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Custom"
+    },
+    {
+      "name": "debezium.offset-storage.file.file-name",
+      "type": "java.lang.String",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$File"
+    },
+    {
+      "name": "debezium.offset-storage.file.flush-interval-ms",
+      "type": "java.lang.Integer",
+      "description": "An optional advanced field that specifies the maximum amount of time that the embedded connector should wait for an offset commit to complete. 这是一个可选高级字段，指定偏移提交完成所需的最大时间。",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$File"
+    },
+    {
+      "name": "debezium.offset-storage.file.flush-timeout-ms",
+      "type": "java.lang.Integer",
+      "description": "An optional advanced field that specifies the maximum amount of time that the embedded connector should wait for an offset commit to complete.",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$File"
+    },
+    {
+      "name": "debezium.offset-storage.jdbc.driver-class-name",
+      "type": "java.lang.String",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Jdbc"
+    },
+    {
+      "name": "debezium.offset-storage.jdbc.flush-interval-ms",
+      "type": "java.lang.Integer",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Jdbc"
+    },
+    {
+      "name": "debezium.offset-storage.jdbc.password",
+      "type": "java.lang.String",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Jdbc"
+    },
+    {
+      "name": "debezium.offset-storage.jdbc.table-name",
+      "type": "java.lang.String",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Jdbc"
+    },
+    {
+      "name": "debezium.offset-storage.jdbc.url",
+      "type": "java.lang.String",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Jdbc"
+    },
+    {
+      "name": "debezium.offset-storage.jdbc.username",
+      "type": "java.lang.String",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Jdbc"
+    },
+    {
+      "name": "debezium.offset-storage.kafka.bootstrap-servers",
+      "type": "java.lang.String",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka"
+    },
+    {
+      "name": "debezium.offset-storage.kafka.partitions",
+      "type": "java.lang.Integer",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka"
+    },
+    {
+      "name": "debezium.offset-storage.kafka.replication-factor",
+      "type": "java.lang.Integer",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka"
+    },
+    {
+      "name": "debezium.offset-storage.kafka.topic",
+      "type": "java.lang.String",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka"
+    },
+    {
+      "name": "debezium.offset-storage.redis.database",
+      "type": "java.lang.Integer",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Redis"
+    },
+    {
+      "name": "debezium.offset-storage.redis.flush-interval-ms",
+      "type": "java.lang.Integer",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Redis"
+    },
+    {
+      "name": "debezium.offset-storage.redis.host",
+      "type": "java.lang.String",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Redis"
+    },
+    {
+      "name": "debezium.offset-storage.redis.key-prefix",
+      "type": "java.lang.String",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Redis"
+    },
+    {
+      "name": "debezium.offset-storage.redis.password",
+      "type": "java.lang.String",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Redis"
+    },
+    {
+      "name": "debezium.offset-storage.redis.port",
+      "type": "java.lang.Integer",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Redis"
+    },
+    {
+      "name": "debezium.offset-storage.s3.access-key-id",
+      "type": "java.lang.String",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$S3"
+    },
+    {
+      "name": "debezium.offset-storage.s3.bucket-name",
+      "type": "java.lang.String",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$S3"
+    },
+    {
+      "name": "debezium.offset-storage.s3.endpoint",
+      "type": "java.lang.String",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$S3"
+    },
+    {
+      "name": "debezium.offset-storage.s3.flush-interval-ms",
+      "type": "java.lang.Integer",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$S3"
+    },
+    {
+      "name": "debezium.offset-storage.s3.key-prefix",
+      "type": "java.lang.String",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$S3"
+    },
+    {
+      "name": "debezium.offset-storage.s3.region",
+      "type": "java.lang.String",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$S3"
+    },
+    {
+      "name": "debezium.offset-storage.s3.secret-access-key",
+      "type": "java.lang.String",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$S3"
+    },
+    {
+      "name": "debezium.offset-storage.type",
+      "type": "io.debezium.embedded.spring.boot.storage.OffsetStorageType",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties"
+    },
+    {
+      "name": "debezium.simple.instances",
+      "type": "java.util.List<io.debezium.embedded.spring.boot.DebeziumSimpleProperties$Engine>",
+      "description": "配置信息",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumSimpleProperties"
+    },
+    {
+      "name": "debezium.subscribe-types",
+      "type": "java.util.List<io.debezium.embedded.protocol.DebeziumEntry$EntryType>",
+      "description": "指定订阅的事件类型，主要用于标识事务的开始，变更数据，结束",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumProperties"
+    },
+    {
+      "name": "debezium.thread-pool.allow-core-thread-time-out",
+      "type": "java.lang.Boolean",
+      "description": "Specify whether to allow core threads to time out. This enables dynamic growing and shrinking even in combination with a non-zero queue (since the max pool size will only grow once the queue is full). <p>Default is \"false\".",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumThreadPoolProperties"
+    },
+    {
+      "name": "debezium.thread-pool.await-termination-seconds",
+      "type": "java.lang.Integer",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumThreadPoolProperties"
+    },
+    {
+      "name": "debezium.thread-pool.core-pool-size",
+      "type": "java.lang.Integer",
+      "description": "Set the ThreadPoolExecutor's core pool size. Default is 1. positive.",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumThreadPoolProperties"
+    },
+    {
+      "name": "debezium.thread-pool.daemon",
+      "type": "java.lang.Boolean",
+      "description": "Set whether this factory is supposed to create daemon threads, just executing as long as the application itself is running. <p>Default is \"false\": Concrete factories usually support explicit cancelling. Hence, if the application shuts down, Runnables will by default finish their execution. <p>Specify \"true\" for eager shutdown of threads which still actively execute a {@link Runnable} at the time that the application itself shuts down.",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumThreadPoolProperties"
+    },
+    {
+      "name": "debezium.thread-pool.keep-alive",
+      "type": "java.time.Duration",
+      "description": "Set the ThreadPoolExecutor's keep-alive time. Default is 60 seconds.",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumThreadPoolProperties"
+    },
+    {
+      "name": "debezium.thread-pool.max-pool-size",
+      "type": "java.lang.Integer",
+      "description": "Set the ThreadPoolExecutor's maximum pool size. Default is the number of Processor.",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumThreadPoolProperties"
+    },
+    {
+      "name": "debezium.thread-pool.queue-capacity",
+      "type": "java.lang.Integer",
+      "description": "Set the capacity for the ThreadPoolExecutor's BlockingQueue. Default is Integer.MAX_VALUE. Any positive value will lead to a LinkedBlockingQueue instance; any other value will lead to a SynchronousQueue instance.",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumThreadPoolProperties"
+    },
+    {
+      "name": "debezium.thread-pool.rejected-policy",
+      "type": "io.debezium.embedded.spring.boot.DebeziumThreadPoolProperties$RejectedPolicy",
+      "description": "Set the Rejected Policy to use for the ExecutorService. Default is the ExecutorService's default abort policy. @see java.util.concurrent.ThreadPoolExecutor.AbortPolicy",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumThreadPoolProperties"
+    },
+    {
+      "name": "debezium.thread-pool.thread-name-prefix",
+      "type": "java.lang.String",
+      "description": "Specify the prefix to use for the names of newly created threads. Default is \"RedisAsyncTaskExecutor-\".",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumThreadPoolProperties"
+    },
+    {
+      "name": "debezium.thread-pool.wait-for-tasks-to-complete-on-shutdown",
+      "type": "java.lang.Boolean",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumThreadPoolProperties"
+    },
+    {
+      "name": "debezium.timeout",
+      "type": "java.lang.Long",
+      "description": "-1代表不做timeout控制",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumProperties"
+    },
+    {
+      "name": "debezium.unit",
+      "type": "java.util.concurrent.TimeUnit",
+      "description": "获取数据超时时间单位",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumProperties"
+    }
+  ],
+  "hints": []
+}
