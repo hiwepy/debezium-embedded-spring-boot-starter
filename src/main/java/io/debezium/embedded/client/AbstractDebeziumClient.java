@@ -26,7 +26,7 @@ import java.util.concurrent.*;
  * Debezium Client 抽象类
  */
 @Slf4j
-public abstract class AbstractDebeziumClient implements InitializingBean, DebeziumClient,
+public abstract class AbstractDebeziumClient<E> implements InitializingBean, DebeziumClient,
         DebeziumEngine.CompletionCallback,
         DebeziumEngine.ConnectorCallback {
 
@@ -39,23 +39,8 @@ public abstract class AbstractDebeziumClient implements InitializingBean, Debezi
      * Debezium Engine
      */
     private List<Configuration> configurations;
-    private List<DebeziumEngine<?>> debeziumEngines;
-    /**
-     * 消息过滤
-     */
-    protected String filter = StringUtils.EMPTY;
-    /**
-     * 批处理大小
-     */
-    protected Integer batchSize = 1;
-    /**
-     * 获取数据超时时间，-1代表不做timeout控制
-     */
-    protected Long timeout = -1L;
-    /**
-     * 获取数据超时时间单位
-     */
-    protected TimeUnit unit = TimeUnit.SECONDS;
+    private List<DebeziumEngine<E>> debeziumEngines;
+
     /**
      * 指定订阅的事件类型，主要用于标识事务的开始，变更数据，结束
      */
@@ -103,7 +88,7 @@ public abstract class AbstractDebeziumClient implements InitializingBean, Debezi
     @Override
     public void start() {
         log.info("Start Debezium Client Of Instance： {}", this.getClass().getSimpleName());
-        for (DebeziumEngine<R> debeziumEngine : debeziumEngines) {
+        for (DebeziumEngine<E> debeziumEngine : debeziumEngines) {
             log.warn(ThreadPoolEnum.SQL_SERVER_LISTENER_POOL + "线程池开始执行 debeziumEngine 实时监听任务!");
             executor.execute(debeziumEngine);
         }

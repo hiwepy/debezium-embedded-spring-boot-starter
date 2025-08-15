@@ -26,12 +26,7 @@ public class SimpleDebeziumClient extends AbstractDebeziumClient {
         @Override
         public SimpleDebeziumClient build(List<DebeziumEngine<RecordChangeEvent<SourceRecord>>> connectors) {
             SimpleDebeziumClient debeziumClient = new SimpleDebeziumClient(connectors);
-            debeziumClient.setBatchSize(batchSize);
-            debeziumClient.setFilter(filter);
-            debeziumClient.setMessageHandler(messageHandler);
-            debeziumClient.setTimeout(timeout);
-            debeziumClient.setUnit(unit);
-            debeziumClient.setSubscribeTypes(subscribeTypes);
+
             return debeziumClient;
         }
     }

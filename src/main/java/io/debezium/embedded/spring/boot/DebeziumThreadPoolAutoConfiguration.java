@@ -10,13 +10,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 @Configuration
-@ConditionalOnClass({ DebeziumEngine.class})
-@EnableConfigurationProperties({DebeziumProperties.class, DebeziumThreadPoolProperties.class})
+@ConditionalOnClass(DebeziumEngine.class)
+@EnableConfigurationProperties({DebeziumClientProperties.class, DebeziumThreadPoolProperties.class})
 public class DebeziumThreadPoolAutoConfiguration {
 
-    @Bean(destroyMethod = "shutdown", name = "debeziumTaskExecutor")
-    public ThreadPoolTaskExecutor debeziumTaskExecutor(DebeziumThreadPoolProperties poolProperties) {
-        BasicThreadFactory factory = BasicThreadFactory.builder().namingPattern("debezium-execute-thread-%d")
+    @Bean(destroyMethod = "shutdown", name = "debeziumEmbeddedExecutor")
+    public ThreadPoolTaskExecutor debeziumEmbeddedExecutor(DebeziumThreadPoolProperties poolProperties) {
+        BasicThreadFactory factory = BasicThreadFactory.builder().namingPattern("debezium-embedded-thread-%d")
                 .uncaughtExceptionHandler(new DebeziumThreadUncaughtExceptionHandler()).build();
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setThreadFactory(factory);
