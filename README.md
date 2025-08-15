@@ -1,15 +1,17 @@
 # debezium-embedded-spring-boot-starter
 
-基于 Debezium Embedded 的数据订阅组件，支持多种 Offset 存储类型。
+基于 Debezium Embedded 的数据订阅组件，支持多种数据库连接器和 Offset 存储类型。
 
 ## 功能特性
 
-- 支持多种 Offset 存储类型：File、Kafka、JDBC、Redis、S3、自定义
-- 提供同步/异步事件处理
-- 支持注解驱动的表级事件处理
-- 自动配置，开箱即用
-- 线程池管理
-- 优雅启动和关闭
+- **多数据库支持**：MySQL、MariaDB、MongoDB、PostgreSQL、Oracle、SQL Server、DB2、Cassandra、Vitess、Spanner、Informix
+- **多种 Offset 存储类型**：File、Kafka、JDBC、Redis、S3、自定义
+- **插件化架构**：连接器配置器和存储配置器可独立扩展
+- **提供同步/异步事件处理**
+- **支持注解驱动的表级事件处理**
+- **自动配置，开箱即用**
+- **线程池管理**
+- **优雅启动和关闭**
 - **新增：Embedded 模式** - 在现有 DebeziumClient 架构基础上封装 DebeziumEngine
 
 ## 架构模式
@@ -23,7 +25,7 @@
 - 直接使用 `DebeziumEngine` 连接数据库
 - 封装 `DebeziumEngine` 初始化细节
 - 使用现有的 `ChangeEventHandler`/`RecordChangeEventHandler` 和 `EntryHandler` 架构
-- 支持多种 Offset 存储类型
+- 支持多种数据库连接器和 Offset 存储类型
 
 ## 快速开始
 
@@ -37,24 +39,90 @@
 </dependency>
 ```
 
-### 2. Embedded 模式配置
+### 2. 配置数据库连接器
 
+#### MySQL 配置示例
 ```yaml
 debezium:
   embedded:
-    enabled: true  # 启用 Embedded 模式
-    destination: my-mysql-connector
-    connector-class: io.debezium.connector.mysql.MySqlConnector
+    enabled: true
+    type: MYSQL
+    destination: mysql-connector
     host: localhost
     port: 3306
     username: root
     password: password
+    server-id: 1
+    server-name: mysql-server
     database-include-list: test_db
     table-include-list: test_db.users,test_db.orders
-  thread-pool:
-    core-pool-size: 2
-    max-pool-size: 4
-    queue-capacity: 1000
+    mysql:
+      snapshot-mode: initial
+      snapshot-locking-mode: minimal
+      connect-timeout-ms: 30000
+```
+
+#### PostgreSQL 配置示例
+```yaml
+debezium:
+  embedded:
+    enabled: true
+    type: POSTGRESQL
+    destination: postgresql-connector
+    host: localhost
+    port: 5432
+    username: postgres
+    password: password
+    database-name: test_db
+    server-name: postgresql-server
+    database-include-list: test_db
+    table-include-list: test_db.users,test_db.orders
+    schema-include-list: public
+    postgre-sql:
+      plugin-name: pgoutput
+      slot-name: debezium_slot
+      publication-name: debezium_pub
+      snapshot-mode: initial
+```
+
+#### MongoDB 配置示例
+```yaml
+debezium:
+  embedded:
+    enabled: true
+    type: MONGODB
+    destination: mongodb-connector
+    host: localhost
+    port: 27017
+    username: admin
+    password: password
+    server-name: mongodb-server
+    mongo-db:
+      connection-string: mongodb://admin:password@localhost:27017
+      database-list: test_db
+      collection-list: test_db.users,test_db.orders
+      snapshot-mode: initial
+```
+
+#### Oracle 配置示例
+```yaml
+debezium:
+  embedded:
+    enabled: true
+    type: ORACLE
+    destination: oracle-connector
+    host: localhost
+    port: 1521
+    username: system
+    password: password
+    server-name: oracle-server
+    database-include-list: ORCL
+    table-include-list: ORCL.USERS,ORCL.ORDERS
+    oracle:
+      database: ORCL
+      pdb-name: ORCLPDB
+      snapshot-mode: initial
+      log-mining-strategy: online_catalog
 ```
 
 ### 3. 配置 Offset 存储
@@ -197,13 +265,13 @@ public class User {
 
 ### Embedded 模式数据流
 ```
-数据库 Binlog 
+数据库 Binlog/Change Stream
     ↓
-DebeziumEngine (自动配置)
+DebeziumEngine (自动配置封装)
     ↓
 RecordChangeEventHandler (同步/异步)
     ↓
-EntryHandler<T> (业务处理)
+EntryHandler<T> (对象转换处理)
     ↓
 业务逻辑
 ```
@@ -223,19 +291,79 @@ EntryHandler<T> (业务处理)
 
 ## 配置说明
 
-### Embedded 模式配置
+### 连接器配置
 
 | 配置项 | 说明 | 默认值 |
 |--------|------|--------|
 | `debezium.embedded.enabled` | 启用 Embedded 模式 | false |
+| `debezium.embedded.type` | 连接器类型 | MYSQL |
 | `debezium.embedded.destination` | 连接器名称 | - |
-| `debezium.embedded.connector-class` | 连接器类名 | - |
 | `debezium.embedded.host` | 数据库主机 | - |
 | `debezium.embedded.port` | 数据库端口 | - |
 | `debezium.embedded.username` | 数据库用户名 | - |
 | `debezium.embedded.password` | 数据库密码 | - |
+| `debezium.embedded.database-name` | 数据库名称 | - |
+| `debezium.embedded.server-id` | 服务器 ID（MySQL） | - |
+| `debezium.embedded.server-name` | 服务器名称 | - |
 | `debezium.embedded.database-include-list` | 包含的数据库 | - |
 | `debezium.embedded.table-include-list` | 包含的表 | - |
+| `debezium.embedded.schema-include-list` | 包含的 Schema | - |
+
+### 数据库特定配置
+
+#### MySQL/MariaDB
+```yaml
+debezium:
+  embedded:
+    mysql:
+      snapshot-mode: initial
+      snapshot-locking-mode: minimal
+      connect-timeout-ms: 30000
+      gtid-source-filter-dml-events: true
+```
+
+#### PostgreSQL
+```yaml
+debezium:
+  embedded:
+    postgre-sql:
+      plugin-name: pgoutput
+      slot-name: debezium_slot
+      publication-name: debezium_pub
+      snapshot-mode: initial
+```
+
+#### MongoDB
+```yaml
+debezium:
+  embedded:
+    mongo-db:
+      connection-string: mongodb://admin:password@localhost:27017
+      database-list: test_db
+      collection-list: test_db.users,test_db.orders
+      snapshot-mode: initial
+```
+
+#### Oracle
+```yaml
+debezium:
+  embedded:
+    oracle:
+      database: ORCL
+      pdb-name: ORCLPDB
+      snapshot-mode: initial
+      log-mining-strategy: online_catalog
+```
+
+#### SQL Server
+```yaml
+debezium:
+  embedded:
+    sql-server:
+      database: test_db
+      snapshot-mode: initial
+      snapshot-isolation-mode: snapshot
+```
 
 ### 线程池配置
 
@@ -292,6 +420,21 @@ EntryHandler<T> (业务处理)
 
 ## 扩展开发
 
+### 自定义连接器
+
+1. 实现 `ConnectorConfigurer` 接口
+2. 在 `ConnectorConfigurerFactory` 中注册
+
+```java
+public class CustomConnectorConfigurer implements ConnectorConfigurer {
+    @Override
+    public void apply(Configuration.Builder builder, DebeziumEmbeddedProperties properties) {
+        builder.with("connector.class", "com.example.CustomConnector");
+        // 添加自定义配置
+    }
+}
+```
+
 ### 自定义 Offset 存储
 
 1. 实现 `OffsetBackingStore` 接口
@@ -332,6 +475,7 @@ public class CustomRecordChangeEventHandler implements RecordChangeEventHandler 
 - 需要自定义 Offset 存储策略
 - 单机或小规模部署
 - 开发和测试环境
+- 多数据库环境下的统一数据订阅
 
 ### 现有模式适用场景
 - 大规模分布式部署
@@ -339,14 +483,33 @@ public class CustomRecordChangeEventHandler implements RecordChangeEventHandler 
 - 需要消息队列作为数据源
 - 生产环境
 
+## 支持的数据库
+
+| 数据库 | 连接器类型 | 状态 | 特殊配置 |
+|--------|------------|------|----------|
+| MySQL | MYSQL | ✅ 支持 | GTID、快照模式 |
+| MariaDB | MARIADB | ✅ 支持 | 与 MySQL 兼容 |
+| PostgreSQL | POSTGRESQL | ✅ 支持 | 逻辑复制、插件 |
+| MongoDB | MONGODB | ✅ 支持 | 变更流、连接字符串 |
+| Oracle | ORACLE | ✅ 支持 | 日志挖掘、PDB |
+| SQL Server | SQLSERVER | ✅ 支持 | CDC、快照隔离 |
+| DB2 | DB2 | ✅ 支持 | 标准配置 |
+| Cassandra | CASSANDRA | ✅ 支持 | Keyspace、集合 |
+| Vitess | VITESS | ✅ 支持 | 分布式 MySQL |
+| Spanner | SPANNER | ✅ 支持 | 云原生数据库 |
+| Informix | INFORMIX | ✅ 支持 | 标准配置 |
+| 自定义 | CUSTOM | ✅ 支持 | 完全自定义 |
+
 ## 注意事项
 
-1. 确保数据库开启了 binlog
+1. 确保数据库开启了相应的日志功能（binlog、WAL、CDC 等）
 2. 配置正确的数据库权限
 3. 选择合适的 Offset 存储类型
 4. 合理配置线程池参数
 5. 监控 Offset 存储的可用性
 6. Embedded 模式需要直接连接数据库，确保网络连通性
+7. 不同数据库的连接器可能需要特定的依赖包
+8. 生产环境建议使用可靠的 Offset 存储（如 Kafka、JDBC）
 
 ## 许可证
 

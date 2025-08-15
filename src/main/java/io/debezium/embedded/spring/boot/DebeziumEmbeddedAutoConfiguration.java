@@ -9,6 +9,8 @@ import io.debezium.embedded.handler.RowDataHandler;
 import io.debezium.embedded.handler.impl.AsyncRecordChangeEventHandlerImpl;
 import io.debezium.embedded.handler.impl.MapRowDataHandlerImpl;
 import io.debezium.embedded.handler.impl.SyncRecordChangeEventHandlerImpl;
+import io.debezium.embedded.spring.boot.connector.ConnectorConfigurer;
+import io.debezium.embedded.spring.boot.connector.ConnectorConfigurerFactory;
 import io.debezium.embedded.spring.boot.storage.OffsetStorageConfigurer;
 import io.debezium.embedded.spring.boot.storage.OffsetStorageConfigurerFactory;
 import io.debezium.engine.DebeziumEngine;
@@ -35,7 +37,7 @@ import java.util.stream.Collectors;
 
 /**
  * Debezium Embedded 自动配置
- * 在现有架构基础上集成 Embedded 模式
+ * 在现有架构基础上集成 Embedded 模式，支持多种数据库连接器
  */
 @org.springframework.context.annotation.Configuration
 @ConditionalOnClass({ DebeziumEngine.class })
@@ -110,49 +112,31 @@ public class DebeziumEmbeddedAutoConfiguration {
         }
 
         public void start() {
-            log.info("Starting Debezium Embedded with destination: {}", embeddedProperties.getDestination());
+            log.info("Starting Debezium Embedded with destination: {} and connector type: {}", 
+                    embeddedProperties.getDestination(), embeddedProperties.getType());
             
-            // 1. 创建配置
+            // 1. 创建基础配置
             Configuration.Builder builder = Configuration.create()
-                    .with("name", embeddedProperties.getDestination())
-                    .with("connector.class", embeddedProperties.getConnectorClass())
-                    .with("database.hostname", embeddedProperties.getHost())
-                    .with("database.port", embeddedProperties.getPort())
-                    .with("database.user", embeddedProperties.getUsername())
-                    .with("database.password", embeddedProperties.getPassword());
+                    .with("name", embeddedProperties.getDestination());
 
-            // 2. 数据库相关配置
-            if (embeddedProperties.getDatabaseIncludeList() != null) {
-                builder.with("database.include.list", embeddedProperties.getDatabaseIncludeList());
-            }
-            if (embeddedProperties.getTableIncludeList() != null) {
-                builder.with("table.include.list", embeddedProperties.getTableIncludeList());
-            }
-            if (embeddedProperties.getSchemaIncludeList() != null) {
-                builder.with("schema.include.list", embeddedProperties.getSchemaIncludeList());
-            }
+            // 2. 交由连接器配置器写入数据库相关配置
+            ConnectorConfigurer connectorConfigurer = ConnectorConfigurerFactory.from(embeddedProperties);
+            connectorConfigurer.apply(builder, embeddedProperties);
 
-            // 3. 数据库历史配置
-            builder.with("database.history", "io.debezium.relational.history.FileDatabaseHistory");
-            builder.with("database.history.file.filename", "/tmp/dbhistory.dat");
-
-            // 4. 其他配置
-            builder.with("include.schema.changes", "false");
-
-            // 5. 交由 storage 配置器写入 offset 相关参数
-            OffsetStorageConfigurer configurer = OffsetStorageConfigurerFactory.from(storageProperties);
-            configurer.apply(builder, storageProperties);
+            // 3. 交由存储配置器写入 offset 相关参数
+            OffsetStorageConfigurer storageConfigurer = OffsetStorageConfigurerFactory.from(storageProperties);
+            storageConfigurer.apply(builder, storageProperties);
 
             Configuration config = builder.build();
 
-            // 6. 创建 DebeziumEngine
+            // 4. 创建 DebeziumEngine
             engine = DebeziumEngine
                     .create(ChangeEventFormat.of(Connect.class))
                     .using(config.asProperties())
                     .notifying((events, committer) -> recordHandler.handleEvent(events, committer, config.asProperties()))
                     .build();
 
-            // 7. 启动引擎
+            // 5. 启动引擎
             executor.execute(engine);
         }
 

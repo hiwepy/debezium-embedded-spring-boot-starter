@@ -11,6 +11,42 @@
       "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
     },
     {
+      "name": "debezium.embedded.custom",
+      "type": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$Custom",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties",
+      "sourceMethod": "public io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties.Custom getCustom() "
+    },
+    {
+      "name": "debezium.embedded.mongo-db",
+      "type": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$MongoDb",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties",
+      "sourceMethod": "public io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties.MongoDb getMongoDb() "
+    },
+    {
+      "name": "debezium.embedded.my-sql",
+      "type": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$MySql",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties",
+      "sourceMethod": "public io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties.MySql getMySql() "
+    },
+    {
+      "name": "debezium.embedded.oracle",
+      "type": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$Oracle",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties",
+      "sourceMethod": "public io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties.Oracle getOracle() "
+    },
+    {
+      "name": "debezium.embedded.postgre-sql",
+      "type": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$PostgreSql",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties",
+      "sourceMethod": "public io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties.PostgreSql getPostgreSql() "
+    },
+    {
+      "name": "debezium.embedded.sql-server",
+      "type": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$SqlServer",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties",
+      "sourceMethod": "public io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties.SqlServer getSqlServer() "
+    },
+    {
       "name": "debezium.offset-storage",
       "type": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties",
       "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties"
@@ -76,147 +112,231 @@
       "sourceType": "io.debezium.embedded.spring.boot.DebeziumProperties"
     },
     {
-      "name": "debezium.embedded.connector-class",
+      "name": "debezium.embedded.custom.connector-class",
       "type": "java.lang.String",
-      "description": "A required field for an embedded connector that specifies the name of the normal Debezium connector's Java class. 嵌入式连接器中的一个必填字段，用于指定Debezium连接器的Java类名称。如：io.debezium.connector.mysql.MySqlConnector",
-      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
+      "description": "自定义连接器类名",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$Custom"
+    },
+    {
+      "name": "debezium.embedded.custom.props",
+      "type": "java.util.Map<java.lang.String,java.lang.String>",
+      "description": "自定义配置属性",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$Custom"
     },
     {
       "name": "debezium.embedded.database-exclude-list",
       "type": "java.lang.String",
+      "description": "排除的数据库列表",
       "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
     },
     {
       "name": "debezium.embedded.database-include-list",
       "type": "java.lang.String",
+      "description": "包含的数据库列表",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
+    },
+    {
+      "name": "debezium.embedded.database-name",
+      "type": "java.lang.String",
+      "description": "数据库名称（PostgreSQL 等使用）",
       "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
     },
     {
       "name": "debezium.embedded.destination",
       "type": "java.lang.String",
-      "description": "A required field for an embedded connector that specifies the unique name for the connector instance. 嵌入式连接器中的一个必填字段，用于指定该连接器实例的唯一名称。",
+      "description": "连接器名称",
       "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
     },
     {
-      "name": "debezium.embedded.errors-retry-delay-initial-ms",
-      "type": "java.lang.Integer",
-      "description": "Initial delay (in ms) for retries when encountering connection errors. This value will be doubled upon every retry but won't exceed 'errors.retry.delay.max.ms'",
+      "name": "debezium.embedded.enabled",
+      "type": "java.lang.Boolean",
+      "description": "是否启用 Embedded 模式",
       "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
     },
     {
-      "name": "debezium.embedded.errors-retry-delay-max-ms",
-      "type": "java.lang.Integer",
-      "description": "Max delay (in ms) between retries when encountering connection errors.",
+      "name": "debezium.embedded.history-file-name",
+      "type": "java.lang.String",
+      "description": "数据库历史文件名",
       "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
     },
     {
       "name": "debezium.embedded.host",
       "type": "java.lang.String",
-      "description": "数据库 host",
+      "description": "数据库主机",
       "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
     },
     {
-      "name": "debezium.embedded.offset-commit-policy-class",
-      "type": "java.lang.Class<? extends io.debezium.engine.spi.OffsetCommitPolicy>",
-      "description": "The fully-qualified class name of the commit policy type. This class must implement the interface \"io.debezium.engine.spi.OffsetCommitPolicy\". The default is a periodic commit policy based upon time intervals. 这类必须实现接口 \"io.debezium.engine.spi.OffsetCommitPolicy\"",
-      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
-    },
-    {
-      "name": "debezium.embedded.offset-flush-interval-ms",
-      "type": "java.lang.Integer",
-      "description": "An optional advanced field that specifies the maximum amount of time that the embedded connector should wait for an offset commit to complete. 这是一个可选高级字段，指定偏移提交完成所需的最大时间。",
-      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
-    },
-    {
-      "name": "debezium.embedded.offset-flush-timeout-ms",
-      "type": "java.lang.Integer",
-      "description": "An optional advanced field that specifies the maximum amount of time that the embedded connector should wait for an offset commit to complete.",
-      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
-    },
-    {
-      "name": "debezium.embedded.offset-storage-class",
-      "type": "java.lang.Class<? extends org.apache.kafka.connect.storage.OffsetBackingStore>",
-      "description": "An optional field that specifies the name of the class that implements the {@link OffsetBackingStore} interface, and that will be used to store offsets recorded by the connector. 这是一个可选字段，指定实现 {@link OffsetBackingStore} 接口的类的名称，该类将用于存储由连接器记录的偏移量。",
-      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
-    },
-    {
-      "name": "debezium.embedded.offset-storage-file-name",
+      "name": "debezium.embedded.mongo-db.collection-list",
       "type": "java.lang.String",
-      "description": "An optional field that specifies the file location for the {@link FileOffsetBackingStore}. 这是一个可选字段，指定 {@link FileOffsetBackingStore} 的文件位置，默认 \/tmp\/offsets.dat。 如果路径配置不正确可能导致无法存储偏移量 可能会导致重复消费变更 如果连接器重新启动，它将使用最后记录的偏移量来知道它应该恢复读取源信息中的哪个位置。",
-      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
+      "description": "集合列表",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$MongoDb"
     },
     {
-      "name": "debezium.embedded.offset-storage-partitions",
-      "type": "java.lang.Integer",
-      "description": "An optional field that specifies the number of partitions for the {@link KafkaOffsetBackingStore}. 这个字段允许您指定一个自定义的偏移存储主题的分区数，而不是使用默认的偏移存储主题的分区数。",
-      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
-    },
-    {
-      "name": "debezium.embedded.offset-storage-replication-factor",
-      "type": "java.lang.Integer",
-      "description": "An optional field that specifies the replication factor for the {@link KafkaOffsetBackingStore}. 这个字段允许您指定一个自定义的偏移存储主题的副本数，而不是使用默认的偏移存储主题的副本数。",
-      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
-    },
-    {
-      "name": "debezium.embedded.offset-storage-topic",
+      "name": "debezium.embedded.mongo-db.connection-string",
       "type": "java.lang.String",
-      "description": "An optional field that specifies the topic name for the {@link KafkaOffsetBackingStore}. 这个字段允许您指定一个自定义的偏移存储主题名称，而不是使用默认的偏移存储主题名称。",
-      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
+      "description": "连接字符串",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$MongoDb"
+    },
+    {
+      "name": "debezium.embedded.mongo-db.database-list",
+      "type": "java.lang.String",
+      "description": "数据库列表",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$MongoDb"
+    },
+    {
+      "name": "debezium.embedded.mongo-db.snapshot-mode",
+      "type": "java.lang.String",
+      "description": "快照模式",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$MongoDb"
+    },
+    {
+      "name": "debezium.embedded.my-sql.connect-timeout-ms",
+      "type": "java.lang.Integer",
+      "description": "连接超时时间（毫秒）",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$MySql"
+    },
+    {
+      "name": "debezium.embedded.my-sql.gtid-source-filter-dml-events",
+      "type": "java.lang.Boolean",
+      "description": "GTID 源过滤 DML 事件",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$MySql"
+    },
+    {
+      "name": "debezium.embedded.my-sql.snapshot-locking-mode",
+      "type": "java.lang.String",
+      "description": "快照锁定模式",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$MySql"
+    },
+    {
+      "name": "debezium.embedded.my-sql.snapshot-mode",
+      "type": "java.lang.String",
+      "description": "快照模式",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$MySql"
+    },
+    {
+      "name": "debezium.embedded.oracle.database",
+      "type": "java.lang.String",
+      "description": "数据库名称",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$Oracle"
+    },
+    {
+      "name": "debezium.embedded.oracle.log-mining-strategy",
+      "type": "java.lang.String",
+      "description": "日志挖掘策略",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$Oracle"
+    },
+    {
+      "name": "debezium.embedded.oracle.pdb-name",
+      "type": "java.lang.String",
+      "description": "PDB 名称",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$Oracle"
+    },
+    {
+      "name": "debezium.embedded.oracle.snapshot-mode",
+      "type": "java.lang.String",
+      "description": "快照模式",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$Oracle"
     },
     {
       "name": "debezium.embedded.password",
       "type": "java.lang.String",
-      "description": "数据库 Server 密码",
+      "description": "数据库密码",
       "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
     },
     {
       "name": "debezium.embedded.port",
       "type": "java.lang.Integer",
-      "description": "数据库 Server 端口",
+      "description": "数据库端口",
       "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
     },
     {
-      "name": "debezium.embedded.predicates",
+      "name": "debezium.embedded.postgre-sql.plugin-name",
       "type": "java.lang.String",
-      "description": "Optional list of predicates that can be assigned to transformations. The predicates are defined using '<predicate.prefix>.type' config option and configured using options '<predicate.prefix>.<option>'",
-      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
+      "description": "插件名称",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$PostgreSql"
+    },
+    {
+      "name": "debezium.embedded.postgre-sql.publication-name",
+      "type": "java.lang.String",
+      "description": "发布名称",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$PostgreSql"
+    },
+    {
+      "name": "debezium.embedded.postgre-sql.slot-name",
+      "type": "java.lang.String",
+      "description": "复制槽名称",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$PostgreSql"
+    },
+    {
+      "name": "debezium.embedded.postgre-sql.snapshot-mode",
+      "type": "java.lang.String",
+      "description": "快照模式",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$PostgreSql"
     },
     {
       "name": "debezium.embedded.schema-exclude-list",
       "type": "java.lang.String",
+      "description": "排除的 Schema 列表",
       "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
     },
     {
       "name": "debezium.embedded.schema-include-list",
       "type": "java.lang.String",
+      "description": "包含的 Schema 列表（PostgreSQL 等使用）",
       "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
     },
     {
-      "name": "debezium.embedded.shutdown-pause-before-interrupt-ms",
-      "type": "java.lang.Integer",
-      "description": "How long we wait before forcefully stopping the connector thread when shutting down. Must be bigger than the time it takes two polling loops to finish (executor.shutdown.timeout.ms)",
+      "name": "debezium.embedded.server-id",
+      "type": "java.lang.String",
+      "description": "服务器 ID（MySQL 使用）",
       "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
+    },
+    {
+      "name": "debezium.embedded.server-name",
+      "type": "java.lang.String",
+      "description": "服务器名称",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
+    },
+    {
+      "name": "debezium.embedded.sql-server.database",
+      "type": "java.lang.String",
+      "description": "数据库名称",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$SqlServer"
+    },
+    {
+      "name": "debezium.embedded.sql-server.snapshot-isolation-mode",
+      "type": "java.lang.String",
+      "description": "快照隔离级别",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$SqlServer"
+    },
+    {
+      "name": "debezium.embedded.sql-server.snapshot-mode",
+      "type": "java.lang.String",
+      "description": "快照模式",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$SqlServer"
     },
     {
       "name": "debezium.embedded.table-exclude-list",
       "type": "java.lang.String",
+      "description": "排除的表列表",
       "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
     },
     {
       "name": "debezium.embedded.table-include-list",
       "type": "java.lang.String",
+      "description": "包含的表列表",
       "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
     },
     {
-      "name": "debezium.embedded.transforms",
-      "type": "java.lang.String",
-      "description": "Optional list of single message transformations applied on the messages. The transforms are defined using '<transform.prefix>.type' config option and configured using options '<transform.prefix>.<option>'",
+      "name": "debezium.embedded.type",
+      "type": "io.debezium.embedded.spring.boot.connector.ConnectorType",
+      "description": "连接器类型",
       "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
     },
     {
       "name": "debezium.embedded.username",
       "type": "java.lang.String",
-      "description": "数据库 Server 账号",
+      "description": "数据库用户名",
       "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
     },
     {

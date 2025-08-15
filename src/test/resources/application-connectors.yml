@@ -1,0 +1,294 @@
+# Debezium Embedded 多数据库连接器配置示例
+
+# ========================================
+# MySQL 连接器配置
+# ========================================
+debezium:
+  embedded:
+    enabled: true
+    type: MYSQL
+    destination: mysql-connector
+    host: localhost
+    port: 3306
+    username: root
+    password: password
+    server-id: 1
+    server-name: mysql-server
+    database-include-list: test_db
+    table-include-list: test_db.users,test_db.orders
+    history-file-name: /tmp/mysql-dbhistory.dat
+    mysql:
+      snapshot-mode: initial
+      snapshot-locking-mode: minimal
+      connect-timeout-ms: 30000
+      gtid-source-filter-dml-events: true
+
+# ========================================
+# PostgreSQL 连接器配置
+# ========================================
+# debezium:
+#   embedded:
+#     enabled: true
+#     type: POSTGRESQL
+#     destination: postgresql-connector
+#     host: localhost
+#     port: 5432
+#     username: postgres
+#     password: password
+#     database-name: test_db
+#     server-name: postgresql-server
+#     database-include-list: test_db
+#     table-include-list: test_db.users,test_db.orders
+#     schema-include-list: public
+#     history-file-name: /tmp/postgresql-dbhistory.dat
+#     postgre-sql:
+#       plugin-name: pgoutput
+#       slot-name: debezium_slot
+#       publication-name: debezium_pub
+#       snapshot-mode: initial
+
+# ========================================
+# MongoDB 连接器配置
+# ========================================
+# debezium:
+#   embedded:
+#     enabled: true
+#     type: MONGODB
+#     destination: mongodb-connector
+#     host: localhost
+#     port: 27017
+#     username: admin
+#     password: password
+#     server-name: mongodb-server
+#     history-file-name: /tmp/mongodb-dbhistory.dat
+#     mongo-db:
+#       connection-string: mongodb://admin:password@localhost:27017
+#       database-list: test_db
+#       collection-list: test_db.users,test_db.orders
+#       snapshot-mode: initial
+
+# ========================================
+# Oracle 连接器配置
+# ========================================
+# debezium:
+#   embedded:
+#     enabled: true
+#     type: ORACLE
+#     destination: oracle-connector
+#     host: localhost
+#     port: 1521
+#     username: system
+#     password: password
+#     server-name: oracle-server
+#     database-include-list: ORCL
+#     table-include-list: ORCL.USERS,ORCL.ORDERS
+#     history-file-name: /tmp/oracle-dbhistory.dat
+#     oracle:
+#       database: ORCL
+#       pdb-name: ORCLPDB
+#       snapshot-mode: initial
+#       log-mining-strategy: online_catalog
+
+# ========================================
+# SQL Server 连接器配置
+# ========================================
+# debezium:
+#   embedded:
+#     enabled: true
+#     type: SQLSERVER
+#     destination: sqlserver-connector
+#     host: localhost
+#     port: 1433
+#     username: sa
+#     password: password
+#     server-name: sqlserver-server
+#     database-include-list: test_db
+#     table-include-list: test_db.users,test_db.orders
+#     history-file-name: /tmp/sqlserver-dbhistory.dat
+#     sql-server:
+#       database: test_db
+#       snapshot-mode: initial
+#       snapshot-isolation-mode: snapshot
+
+# ========================================
+# MariaDB 连接器配置
+# ========================================
+# debezium:
+#   embedded:
+#     enabled: true
+#     type: MARIADB
+#     destination: mariadb-connector
+#     host: localhost
+#     port: 3306
+#     username: root
+#     password: password
+#     server-id: 2
+#     server-name: mariadb-server
+#     database-include-list: test_db
+#     table-include-list: test_db.users,test_db.orders
+#     history-file-name: /tmp/mariadb-dbhistory.dat
+#     mysql:  # MariaDB 使用 MySQL 配置
+#       snapshot-mode: initial
+#       snapshot-locking-mode: minimal
+#       connect-timeout-ms: 30000
+#       gtid-source-filter-dml-events: true
+
+# ========================================
+# DB2 连接器配置
+# ========================================
+# debezium:
+#   embedded:
+#     enabled: true
+#     type: DB2
+#     destination: db2-connector
+#     host: localhost
+#     port: 50000
+#     username: db2inst1
+#     password: password
+#     server-name: db2-server
+#     database-include-list: TESTDB
+#     table-include-list: TESTDB.USERS,TESTDB.ORDERS
+#     history-file-name: /tmp/db2-dbhistory.dat
+
+# ========================================
+# Cassandra 连接器配置
+# ========================================
+# debezium:
+#   embedded:
+#     enabled: true
+#     type: CASSANDRA
+#     destination: cassandra-connector
+#     host: localhost
+#     port: 9042
+#     username: cassandra
+#     password: password
+#     server-name: cassandra-server
+#     database-include-list: test_keyspace
+#     table-include-list: test_keyspace.users,test_keyspace.orders
+#     history-file-name: /tmp/cassandra-dbhistory.dat
+
+# ========================================
+# Vitess 连接器配置
+# ========================================
+# debezium:
+#   embedded:
+#     enabled: true
+#     type: VITESS
+#     destination: vitess-connector
+#     host: localhost
+#     port: 15991
+#     username: vt_app
+#     password: password
+#     server-name: vitess-server
+#     database-include-list: test_keyspace
+#     table-include-list: test_keyspace.users,test_keyspace.orders
+#     history-file-name: /tmp/vitess-dbhistory.dat
+
+# ========================================
+# Spanner 连接器配置
+# ========================================
+# debezium:
+#   embedded:
+#     enabled: true
+#     type: SPANNER
+#     destination: spanner-connector
+#     host: my-project  # 项目ID
+#     port: 1  # 实例ID
+#     database-name: test-database
+#     server-name: spanner-server
+#     database-include-list: test-database
+#     table-include-list: test-database.users,test-database.orders
+#     history-file-name: /tmp/spanner-dbhistory.dat
+
+# ========================================
+# Informix 连接器配置
+# ========================================
+# debezium:
+#   embedded:
+#     enabled: true
+#     type: INFORMIX
+#     destination: informix-connector
+#     host: localhost
+#     port: 9088
+#     username: informix
+#     password: password
+#     server-name: informix-server
+#     database-include-list: test_db
+#     table-include-list: test_db.users,test_db.orders
+#     history-file-name: /tmp/informix-dbhistory.dat
+
+# ========================================
+# 自定义连接器配置
+# ========================================
+# debezium:
+#   embedded:
+#     enabled: true
+#     type: CUSTOM
+#     destination: custom-connector
+#     server-name: custom-server
+#     history-file-name: /tmp/custom-dbhistory.dat
+#     custom:
+#       connector-class: com.example.CustomConnector
+#       props:
+#         custom.host: localhost
+#         custom.port: 8080
+#         custom.database: test_db
+#         custom.username: user
+#         custom.password: pass
+
+# ========================================
+# Offset 存储配置
+# ========================================
+  offset-storage:
+    # 支持的类型: FILE, KAFKA, JDBC, REDIS, S3, CUSTOM
+    type: FILE
+    
+    # File 存储配置
+    file:
+      file-name: /var/lib/debezium/offsets.dat
+      flush-interval-ms: 60000
+    
+    # Kafka 存储配置（当 type: KAFKA 时使用）
+    # kafka:
+    #   bootstrap-servers: localhost:9092
+    #   topic: debezium-offsets
+    #   partitions: 3
+    #   replication-factor: 1
+    #   flush-interval-ms: 60000
+    
+    # JDBC 存储配置（当 type: JDBC 时使用）
+    # jdbc:
+    #   url: jdbc:mysql://localhost:3306/debezium
+    #   username: root
+    #   password: password
+    #   driver-class-name: com.mysql.cj.jdbc.Driver
+    #   table-name: debezium_offsets
+    #   flush-interval-ms: 60000
+    
+    # Redis 存储配置（当 type: REDIS 时使用）
+    # redis:
+    #   host: localhost
+    #   port: 6379
+    #   password: ""
+    #   database: 0
+    #   key-prefix: "debezium:offsets:"
+    #   flush-interval-ms: 60000
+    
+    # S3 存储配置（当 type: S3 时使用）
+    # s3:
+    #   bucket-name: my-debezium-bucket
+    #   region: us-west-2
+    #   access-key-id: your-access-key
+    #   secret-access-key: your-secret-key
+    #   endpoint: https://s3.us-west-2.amazonaws.com
+    #   key-prefix: debezium/offsets/
+    #   flush-interval-ms: 60000
+
+# ========================================
+# 线程池配置
+# ========================================
+  thread-pool:
+    core-pool-size: 2
+    max-pool-size: 4
+    queue-capacity: 1000
+    keep-alive: 60s
