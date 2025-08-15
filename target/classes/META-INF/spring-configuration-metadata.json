@@ -17,6 +17,65 @@
       "sourceMethod": "public io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties.Custom getCustom() "
     },
     {
+      "name": "debezium.embedded.history",
+      "type": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties"
+    },
+    {
+      "name": "debezium.embedded.history.custom",
+      "type": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Custom",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties",
+      "sourceMethod": "public io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties.Custom getCustom() "
+    },
+    {
+      "name": "debezium.embedded.history.file",
+      "type": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$File",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties",
+      "sourceMethod": "public io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties.File getFile() "
+    },
+    {
+      "name": "debezium.embedded.history.jdbc",
+      "type": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Jdbc",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties",
+      "sourceMethod": "public io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties.Jdbc getJdbc() "
+    },
+    {
+      "name": "debezium.embedded.history.kafka",
+      "type": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Kafka",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties",
+      "sourceMethod": "public io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties.Kafka getKafka() "
+    },
+    {
+      "name": "debezium.embedded.history.kafka.consumer",
+      "type": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Kafka$Consumer",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Kafka",
+      "sourceMethod": "public io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties.Kafka.Consumer getConsumer() "
+    },
+    {
+      "name": "debezium.embedded.history.kafka.producer",
+      "type": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Kafka$Producer",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Kafka",
+      "sourceMethod": "public io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties.Kafka.Producer getProducer() "
+    },
+    {
+      "name": "debezium.embedded.history.kafka.security",
+      "type": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Kafka$Security",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Kafka",
+      "sourceMethod": "public io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties.Kafka.Security getSecurity() "
+    },
+    {
+      "name": "debezium.embedded.history.redis",
+      "type": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Redis",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties",
+      "sourceMethod": "public io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties.Redis getRedis() "
+    },
+    {
+      "name": "debezium.embedded.history.s3",
+      "type": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$S3",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties",
+      "sourceMethod": "public io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties.S3 getS3() "
+    },
+    {
       "name": "debezium.embedded.mongo-db",
       "type": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$MongoDb",
       "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties",
@@ -76,16 +135,28 @@
       "sourceMethod": "public io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties.Kafka getKafka() "
     },
     {
+      "name": "debezium.offset-storage.kafka.consumer",
+      "type": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka$Consumer",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka",
+      "sourceMethod": "public io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties.Kafka.Consumer getConsumer() "
+    },
+    {
+      "name": "debezium.offset-storage.kafka.producer",
+      "type": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka$Producer",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka",
+      "sourceMethod": "public io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties.Kafka.Producer getProducer() "
+    },
+    {
+      "name": "debezium.offset-storage.kafka.security",
+      "type": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka$Security",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka",
+      "sourceMethod": "public io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties.Kafka.Security getSecurity() "
+    },
+    {
       "name": "debezium.offset-storage.redis",
       "type": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Redis",
       "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties",
       "sourceMethod": "public io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties.Redis getRedis() "
-    },
-    {
-      "name": "debezium.offset-storage.s3",
-      "type": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$S3",
-      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties",
-      "sourceMethod": "public io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties.S3 getS3() "
     },
     {
       "name": "debezium.simple",
@@ -160,15 +231,711 @@
       "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
     },
     {
+      "name": "debezium.embedded.history.custom.history-class",
+      "type": "java.lang.String",
+      "description": "自定义历史记录类名",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Custom"
+    },
+    {
+      "name": "debezium.embedded.history.custom.props",
+      "type": "java.util.Map<java.lang.String,java.lang.String>",
+      "description": "自定义配置属性",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Custom"
+    },
+    {
+      "name": "debezium.embedded.history.enabled",
+      "type": "java.lang.Boolean",
+      "description": "是否启用历史记录",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties"
+    },
+    {
+      "name": "debezium.embedded.history.file.backup",
+      "type": "java.lang.Boolean",
+      "description": "是否启用文件备份",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$File"
+    },
+    {
+      "name": "debezium.embedded.history.file.backup-suffix",
+      "type": "java.lang.String",
+      "description": "备份文件后缀",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$File"
+    },
+    {
+      "name": "debezium.embedded.history.file.buffer-size",
+      "type": "java.lang.Integer",
+      "description": "写入缓冲区大小",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$File"
+    },
+    {
+      "name": "debezium.embedded.history.file.compression",
+      "type": "java.lang.Boolean",
+      "description": "是否启用压缩",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$File"
+    },
+    {
+      "name": "debezium.embedded.history.file.compression-level",
+      "type": "java.lang.Integer",
+      "description": "压缩级别（1-9）",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$File"
+    },
+    {
+      "name": "debezium.embedded.history.file.encoding",
+      "type": "java.lang.String",
+      "description": "文件编码",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$File"
+    },
+    {
+      "name": "debezium.embedded.history.file.file-lock-timeout-ms",
+      "type": "java.lang.Integer",
+      "description": "文件锁定超时时间（毫秒）",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$File"
+    },
+    {
+      "name": "debezium.embedded.history.file.file-locking",
+      "type": "java.lang.Boolean",
+      "description": "是否启用文件锁定",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$File"
+    },
+    {
+      "name": "debezium.embedded.history.file.filename",
+      "type": "java.lang.String",
+      "description": "历史记录文件路径",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$File"
+    },
+    {
+      "name": "debezium.embedded.history.file.max-backup-files",
+      "type": "java.lang.Integer",
+      "description": "最大备份文件数量",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$File"
+    },
+    {
+      "name": "debezium.embedded.history.file.skip-unparseable-ddl",
+      "type": "java.lang.Boolean",
+      "description": "是否跳过无法解析的 DDL",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$File"
+    },
+    {
+      "name": "debezium.embedded.history.file.store-only-captured-tables-ddl",
+      "type": "java.lang.Boolean",
+      "description": "是否只存储捕获表的 DDL",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$File"
+    },
+    {
+      "name": "debezium.embedded.history.file.store-only-monitored-tables-ddl",
+      "type": "java.lang.Boolean",
+      "description": "是否只存储监控表的 DDL",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$File"
+    },
+    {
+      "name": "debezium.embedded.history.file.sync",
+      "type": "java.lang.Boolean",
+      "description": "是否启用文件同步",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$File"
+    },
+    {
+      "name": "debezium.embedded.history.jdbc.allow-public-key-retrieval",
+      "type": "java.lang.Boolean",
+      "description": "是否允许公钥检索",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Jdbc"
+    },
+    {
+      "name": "debezium.embedded.history.jdbc.auto-commit",
+      "type": "java.lang.Boolean",
+      "description": "是否启用自动提交",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Jdbc"
+    },
+    {
+      "name": "debezium.embedded.history.jdbc.character-encoding",
+      "type": "java.lang.String",
+      "description": "字符编码",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Jdbc"
+    },
+    {
+      "name": "debezium.embedded.history.jdbc.connection-timeout",
+      "type": "java.lang.Integer",
+      "description": "连接超时时间",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Jdbc"
+    },
+    {
+      "name": "debezium.embedded.history.jdbc.connection-validation-query",
+      "type": "java.lang.String",
+      "description": "连接验证查询",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Jdbc"
+    },
+    {
+      "name": "debezium.embedded.history.jdbc.connection-validation-timeout",
+      "type": "java.lang.Integer",
+      "description": "连接验证超时时间（毫秒）",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Jdbc"
+    },
+    {
+      "name": "debezium.embedded.history.jdbc.leak-detection-threshold",
+      "type": "java.lang.Boolean",
+      "description": "是否启用连接泄漏检测",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Jdbc"
+    },
+    {
+      "name": "debezium.embedded.history.jdbc.leak-detection-threshold-ms",
+      "type": "java.lang.Integer",
+      "description": "连接泄漏检测阈值（毫秒）",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Jdbc"
+    },
+    {
+      "name": "debezium.embedded.history.jdbc.max-connection-idle-time",
+      "type": "java.lang.Integer",
+      "description": "连接最大空闲时间（毫秒）",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Jdbc"
+    },
+    {
+      "name": "debezium.embedded.history.jdbc.max-connection-lifetime",
+      "type": "java.lang.Integer",
+      "description": "最大连接生命周期（毫秒）",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Jdbc"
+    },
+    {
+      "name": "debezium.embedded.history.jdbc.max-connections",
+      "type": "java.lang.Integer",
+      "description": "最大连接数",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Jdbc"
+    },
+    {
+      "name": "debezium.embedded.history.jdbc.max-retries",
+      "type": "java.lang.Integer",
+      "description": "最大重试次数",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Jdbc"
+    },
+    {
+      "name": "debezium.embedded.history.jdbc.min-connections",
+      "type": "java.lang.Integer",
+      "description": "最小连接数",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Jdbc"
+    },
+    {
+      "name": "debezium.embedded.history.jdbc.password",
+      "type": "java.lang.String",
+      "description": "密码",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Jdbc"
+    },
+    {
+      "name": "debezium.embedded.history.jdbc.pool-size",
+      "type": "java.lang.Integer",
+      "description": "连接池大小",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Jdbc"
+    },
+    {
+      "name": "debezium.embedded.history.jdbc.query-timeout",
+      "type": "java.lang.Integer",
+      "description": "查询超时时间",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Jdbc"
+    },
+    {
+      "name": "debezium.embedded.history.jdbc.retry-delay-ms",
+      "type": "java.lang.Integer",
+      "description": "重试延迟时间（毫秒）",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Jdbc"
+    },
+    {
+      "name": "debezium.embedded.history.jdbc.ssl-mode",
+      "type": "java.lang.String",
+      "description": "SSL 模式",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Jdbc"
+    },
+    {
+      "name": "debezium.embedded.history.jdbc.table-name",
+      "type": "java.lang.String",
+      "description": "表名",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Jdbc"
+    },
+    {
+      "name": "debezium.embedded.history.jdbc.timezone",
+      "type": "java.lang.String",
+      "description": "时区",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Jdbc"
+    },
+    {
+      "name": "debezium.embedded.history.jdbc.transaction-isolation",
+      "type": "java.lang.String",
+      "description": "事务隔离级别",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Jdbc"
+    },
+    {
+      "name": "debezium.embedded.history.jdbc.url",
+      "type": "java.lang.String",
+      "description": "JDBC URL",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Jdbc"
+    },
+    {
+      "name": "debezium.embedded.history.jdbc.use-s-s-l",
+      "type": "java.lang.Boolean",
+      "description": "是否启用 SSL",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Jdbc"
+    },
+    {
+      "name": "debezium.embedded.history.jdbc.username",
+      "type": "java.lang.String",
+      "description": "用户名",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Jdbc"
+    },
+    {
+      "name": "debezium.embedded.history.jdbc.verify-server-certificate",
+      "type": "java.lang.Boolean",
+      "description": "是否验证服务器证书",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Jdbc"
+    },
+    {
+      "name": "debezium.embedded.history.kafka.bootstrap-servers",
+      "type": "java.lang.String",
+      "description": "Kafka 服务器地址",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Kafka"
+    },
+    {
+      "name": "debezium.embedded.history.kafka.consumer.auto-offset-reset",
+      "type": "java.lang.String",
+      "description": "自动偏移量重置",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Kafka$Consumer"
+    },
+    {
+      "name": "debezium.embedded.history.kafka.consumer.connections-max-idle-ms",
+      "type": "java.lang.Integer",
+      "description": "连接最大空闲时间",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Kafka$Consumer"
+    },
+    {
+      "name": "debezium.embedded.history.kafka.consumer.enable-auto-commit",
+      "type": "java.lang.Boolean",
+      "description": "启用自动提交",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Kafka$Consumer"
+    },
+    {
+      "name": "debezium.embedded.history.kafka.consumer.fetch-max-wait-ms",
+      "type": "java.lang.Integer",
+      "description": "获取最大等待时间",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Kafka$Consumer"
+    },
+    {
+      "name": "debezium.embedded.history.kafka.consumer.fetch-min-bytes",
+      "type": "java.lang.Integer",
+      "description": "获取超时时间",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Kafka$Consumer"
+    },
+    {
+      "name": "debezium.embedded.history.kafka.consumer.heartbeat-interval-ms",
+      "type": "java.lang.Integer",
+      "description": "心跳间隔",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Kafka$Consumer"
+    },
+    {
+      "name": "debezium.embedded.history.kafka.consumer.max-poll-interval-ms",
+      "type": "java.lang.Integer",
+      "description": "最大轮询间隔",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Kafka$Consumer"
+    },
+    {
+      "name": "debezium.embedded.history.kafka.consumer.max-poll-records",
+      "type": "java.lang.Integer",
+      "description": "最大轮询记录数",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Kafka$Consumer"
+    },
+    {
+      "name": "debezium.embedded.history.kafka.consumer.reconnect-backoff-ms",
+      "type": "java.lang.Integer",
+      "description": "重连退避时间",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Kafka$Consumer"
+    },
+    {
+      "name": "debezium.embedded.history.kafka.consumer.request-timeout-ms",
+      "type": "java.lang.Integer",
+      "description": "请求超时时间",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Kafka$Consumer"
+    },
+    {
+      "name": "debezium.embedded.history.kafka.consumer.retry-backoff-ms",
+      "type": "java.lang.Integer",
+      "description": "重试退避时间",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Kafka$Consumer"
+    },
+    {
+      "name": "debezium.embedded.history.kafka.consumer.session-timeout-ms",
+      "type": "java.lang.Integer",
+      "description": "会话超时时间",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Kafka$Consumer"
+    },
+    {
+      "name": "debezium.embedded.history.kafka.producer.acks",
+      "type": "java.lang.String",
+      "description": "确认机制",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Kafka$Producer"
+    },
+    {
+      "name": "debezium.embedded.history.kafka.producer.batch-size",
+      "type": "java.lang.Integer",
+      "description": "批次大小",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Kafka$Producer"
+    },
+    {
+      "name": "debezium.embedded.history.kafka.producer.buffer-memory",
+      "type": "java.lang.Integer",
+      "description": "缓冲区大小",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Kafka$Producer"
+    },
+    {
+      "name": "debezium.embedded.history.kafka.producer.compression-type",
+      "type": "java.lang.String",
+      "description": "压缩类型",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Kafka$Producer"
+    },
+    {
+      "name": "debezium.embedded.history.kafka.producer.connections-max-idle-ms",
+      "type": "java.lang.Integer",
+      "description": "连接最大空闲时间",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Kafka$Producer"
+    },
+    {
+      "name": "debezium.embedded.history.kafka.producer.linger-ms",
+      "type": "java.lang.Integer",
+      "description": "延迟时间",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Kafka$Producer"
+    },
+    {
+      "name": "debezium.embedded.history.kafka.producer.max-request-size",
+      "type": "java.lang.Integer",
+      "description": "最大请求大小",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Kafka$Producer"
+    },
+    {
+      "name": "debezium.embedded.history.kafka.producer.metadata-max-age-ms",
+      "type": "java.lang.Integer",
+      "description": "元数据获取超时时间",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Kafka$Producer"
+    },
+    {
+      "name": "debezium.embedded.history.kafka.producer.reconnect-backoff-ms",
+      "type": "java.lang.Integer",
+      "description": "重连退避时间",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Kafka$Producer"
+    },
+    {
+      "name": "debezium.embedded.history.kafka.producer.request-timeout-ms",
+      "type": "java.lang.Integer",
+      "description": "请求超时时间",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Kafka$Producer"
+    },
+    {
+      "name": "debezium.embedded.history.kafka.producer.retries",
+      "type": "java.lang.Integer",
+      "description": "重试次数",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Kafka$Producer"
+    },
+    {
+      "name": "debezium.embedded.history.kafka.producer.retry-backoff-ms",
+      "type": "java.lang.Integer",
+      "description": "重试退避时间",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Kafka$Producer"
+    },
+    {
+      "name": "debezium.embedded.history.kafka.query-timeout-ms",
+      "type": "java.lang.Integer",
+      "description": "查询超时时间（毫秒）",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Kafka"
+    },
+    {
+      "name": "debezium.embedded.history.kafka.recovery-attempts",
+      "type": "java.lang.Integer",
+      "description": "恢复尝试次数",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Kafka"
+    },
+    {
+      "name": "debezium.embedded.history.kafka.recovery-poll-interval-ms",
+      "type": "java.lang.Integer",
+      "description": "恢复轮询间隔（毫秒）",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Kafka"
+    },
+    {
+      "name": "debezium.embedded.history.kafka.security.sasl-mechanism",
+      "type": "java.lang.String",
+      "description": "SASL 机制",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Kafka$Security"
+    },
+    {
+      "name": "debezium.embedded.history.kafka.security.sasl-password",
+      "type": "java.lang.String",
+      "description": "SASL 密码",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Kafka$Security"
+    },
+    {
+      "name": "debezium.embedded.history.kafka.security.sasl-username",
+      "type": "java.lang.String",
+      "description": "SASL 用户名",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Kafka$Security"
+    },
+    {
+      "name": "debezium.embedded.history.kafka.security.security-protocol",
+      "type": "java.lang.String",
+      "description": "安全协议",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Kafka$Security"
+    },
+    {
+      "name": "debezium.embedded.history.kafka.security.ssl-endpoint-identification-algorithm",
+      "type": "java.lang.String",
+      "description": "SSL 端点识别算法",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Kafka$Security"
+    },
+    {
+      "name": "debezium.embedded.history.kafka.security.ssl-key-password",
+      "type": "java.lang.String",
+      "description": "SSL 密钥密码",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Kafka$Security"
+    },
+    {
+      "name": "debezium.embedded.history.kafka.security.ssl-keystore-location",
+      "type": "java.lang.String",
+      "description": "SSL 密钥库位置",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Kafka$Security"
+    },
+    {
+      "name": "debezium.embedded.history.kafka.security.ssl-keystore-password",
+      "type": "java.lang.String",
+      "description": "SSL 密钥库密码",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Kafka$Security"
+    },
+    {
+      "name": "debezium.embedded.history.kafka.security.ssl-truststore-location",
+      "type": "java.lang.String",
+      "description": "SSL 信任库位置",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Kafka$Security"
+    },
+    {
+      "name": "debezium.embedded.history.kafka.security.ssl-truststore-password",
+      "type": "java.lang.String",
+      "description": "SSL 信任库密码",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Kafka$Security"
+    },
+    {
+      "name": "debezium.embedded.history.kafka.topic",
+      "type": "java.lang.String",
+      "description": "Kafka 主题名称",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Kafka"
+    },
+    {
+      "name": "debezium.embedded.history.redis.client-name",
+      "type": "java.lang.String",
+      "description": "客户端名称",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Redis"
+    },
+    {
+      "name": "debezium.embedded.history.redis.connection-timeout",
+      "type": "java.lang.Integer",
+      "description": "连接超时时间",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Redis"
+    },
+    {
+      "name": "debezium.embedded.history.redis.database",
+      "type": "java.lang.Integer",
+      "description": "数据库索引",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Redis"
+    },
+    {
+      "name": "debezium.embedded.history.redis.host",
+      "type": "java.lang.String",
+      "description": "Redis 服务器地址",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Redis"
+    },
+    {
+      "name": "debezium.embedded.history.redis.key-prefix",
+      "type": "java.lang.String",
+      "description": "键前缀",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Redis"
+    },
+    {
+      "name": "debezium.embedded.history.redis.max-retries",
+      "type": "java.lang.Integer",
+      "description": "最大重试次数",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Redis"
+    },
+    {
+      "name": "debezium.embedded.history.redis.password",
+      "type": "java.lang.String",
+      "description": "密码",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Redis"
+    },
+    {
+      "name": "debezium.embedded.history.redis.pool-size",
+      "type": "java.lang.Integer",
+      "description": "连接池大小",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Redis"
+    },
+    {
+      "name": "debezium.embedded.history.redis.port",
+      "type": "java.lang.Integer",
+      "description": "Redis 端口",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Redis"
+    },
+    {
+      "name": "debezium.embedded.history.redis.read-timeout",
+      "type": "java.lang.Integer",
+      "description": "读取超时时间",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Redis"
+    },
+    {
+      "name": "debezium.embedded.history.redis.retry-delay-ms",
+      "type": "java.lang.Integer",
+      "description": "重试延迟时间（毫秒）",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Redis"
+    },
+    {
+      "name": "debezium.embedded.history.redis.ssl",
+      "type": "java.lang.Boolean",
+      "description": "是否启用 SSL\/TLS",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Redis"
+    },
+    {
+      "name": "debezium.embedded.history.redis.ssl-ca-path",
+      "type": "java.lang.String",
+      "description": "SSL CA 证书路径",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Redis"
+    },
+    {
+      "name": "debezium.embedded.history.redis.ssl-cert-path",
+      "type": "java.lang.String",
+      "description": "SSL 证书路径",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Redis"
+    },
+    {
+      "name": "debezium.embedded.history.redis.ssl-key-path",
+      "type": "java.lang.String",
+      "description": "SSL 密钥路径",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Redis"
+    },
+    {
+      "name": "debezium.embedded.history.redis.username",
+      "type": "java.lang.String",
+      "description": "用户名（Redis 6.0+ ACL 支持）",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$Redis"
+    },
+    {
+      "name": "debezium.embedded.history.s3.access-key-id",
+      "type": "java.lang.String",
+      "description": "访问密钥 ID",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$S3"
+    },
+    {
+      "name": "debezium.embedded.history.s3.bucket-name",
+      "type": "java.lang.String",
+      "description": "S3 存储桶名称",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$S3"
+    },
+    {
+      "name": "debezium.embedded.history.s3.connection-timeout",
+      "type": "java.lang.Integer",
+      "description": "连接超时时间",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$S3"
+    },
+    {
+      "name": "debezium.embedded.history.s3.endpoint-url",
+      "type": "java.lang.String",
+      "description": "端点 URL",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$S3"
+    },
+    {
+      "name": "debezium.embedded.history.s3.key-prefix",
+      "type": "java.lang.String",
+      "description": "对象键前缀",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$S3"
+    },
+    {
+      "name": "debezium.embedded.history.s3.max-retries",
+      "type": "java.lang.Integer",
+      "description": "最大重试次数",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$S3"
+    },
+    {
+      "name": "debezium.embedded.history.s3.path-style-access-enabled",
+      "type": "java.lang.Boolean",
+      "description": "是否启用路径样式访问",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$S3"
+    },
+    {
+      "name": "debezium.embedded.history.s3.proxy-host",
+      "type": "java.lang.String",
+      "description": "代理主机",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$S3"
+    },
+    {
+      "name": "debezium.embedded.history.s3.proxy-password",
+      "type": "java.lang.String",
+      "description": "代理密码",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$S3"
+    },
+    {
+      "name": "debezium.embedded.history.s3.proxy-port",
+      "type": "java.lang.Integer",
+      "description": "代理端口",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$S3"
+    },
+    {
+      "name": "debezium.embedded.history.s3.proxy-username",
+      "type": "java.lang.String",
+      "description": "代理用户名",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$S3"
+    },
+    {
+      "name": "debezium.embedded.history.s3.read-timeout",
+      "type": "java.lang.Integer",
+      "description": "读取超时时间",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$S3"
+    },
+    {
+      "name": "debezium.embedded.history.s3.region",
+      "type": "java.lang.String",
+      "description": "区域",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$S3"
+    },
+    {
+      "name": "debezium.embedded.history.s3.retry-delay-ms",
+      "type": "java.lang.Integer",
+      "description": "重试延迟时间（毫秒）",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$S3"
+    },
+    {
+      "name": "debezium.embedded.history.s3.secret-access-key",
+      "type": "java.lang.String",
+      "description": "秘密访问密钥",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$S3"
+    },
+    {
+      "name": "debezium.embedded.history.s3.signing-region",
+      "type": "java.lang.String",
+      "description": "签名区域",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties$S3"
+    },
+    {
+      "name": "debezium.embedded.history.type",
+      "type": "io.debezium.embedded.spring.boot.history.DatabaseHistoryType",
+      "description": "历史记录类型",
+      "sourceType": "io.debezium.embedded.spring.boot.history.DebeziumDatabaseHistoryProperties"
+    },
+    {
       "name": "debezium.embedded.host",
       "type": "java.lang.String",
       "description": "数据库主机",
       "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
     },
     {
+      "name": "debezium.embedded.mongo-db.auth-source",
+      "type": "java.lang.String",
+      "description": "认证源",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$MongoDb"
+    },
+    {
       "name": "debezium.embedded.mongo-db.collection-list",
       "type": "java.lang.String",
       "description": "集合列表",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$MongoDb"
+    },
+    {
+      "name": "debezium.embedded.mongo-db.connect-timeout-ms",
+      "type": "java.lang.Integer",
+      "description": "连接超时时间（毫秒）",
       "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$MongoDb"
     },
     {
@@ -184,10 +951,118 @@
       "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$MongoDb"
     },
     {
+      "name": "debezium.embedded.mongo-db.field-exclude-list",
+      "type": "java.lang.String",
+      "description": "字段排除列表",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$MongoDb"
+    },
+    {
+      "name": "debezium.embedded.mongo-db.field-renames",
+      "type": "java.lang.String",
+      "description": "字段重命名",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$MongoDb"
+    },
+    {
+      "name": "debezium.embedded.mongo-db.include-query",
+      "type": "java.lang.Boolean",
+      "description": "包含查询",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$MongoDb"
+    },
+    {
+      "name": "debezium.embedded.mongo-db.max-batch-size",
+      "type": "java.lang.Integer",
+      "description": "最大批次大小",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$MongoDb"
+    },
+    {
+      "name": "debezium.embedded.mongo-db.max-connection-idle-time-ms",
+      "type": "java.lang.Integer",
+      "description": "最大连接空闲时间（毫秒）",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$MongoDb"
+    },
+    {
+      "name": "debezium.embedded.mongo-db.max-connection-life-time-ms",
+      "type": "java.lang.Integer",
+      "description": "最大连接生命周期（毫秒）",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$MongoDb"
+    },
+    {
+      "name": "debezium.embedded.mongo-db.max-connection-pool-size",
+      "type": "java.lang.Integer",
+      "description": "最大连接池大小",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$MongoDb"
+    },
+    {
+      "name": "debezium.embedded.mongo-db.max-queue-size",
+      "type": "java.lang.Integer",
+      "description": "最大队列大小",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$MongoDb"
+    },
+    {
+      "name": "debezium.embedded.mongo-db.max-queue-size-in-bytes",
+      "type": "java.lang.Long",
+      "description": "最大队列大小（字节）",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$MongoDb"
+    },
+    {
+      "name": "debezium.embedded.mongo-db.min-connection-pool-size",
+      "type": "java.lang.Integer",
+      "description": "最小连接池大小",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$MongoDb"
+    },
+    {
+      "name": "debezium.embedded.mongo-db.poll-interval-ms",
+      "type": "java.lang.Integer",
+      "description": "轮询间隔（毫秒）",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$MongoDb"
+    },
+    {
+      "name": "debezium.embedded.mongo-db.server-selection-timeout-ms",
+      "type": "java.lang.Integer",
+      "description": "服务器选择超时时间（毫秒）",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$MongoDb"
+    },
+    {
       "name": "debezium.embedded.mongo-db.snapshot-mode",
       "type": "java.lang.String",
       "description": "快照模式",
       "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$MongoDb"
+    },
+    {
+      "name": "debezium.embedded.mongo-db.socket-timeout-ms",
+      "type": "java.lang.Integer",
+      "description": "Socket 超时时间（毫秒）",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$MongoDb"
+    },
+    {
+      "name": "debezium.embedded.mongo-db.tombstones-on-delete",
+      "type": "java.lang.Boolean",
+      "description": "删除时生成墓碑",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$MongoDb"
+    },
+    {
+      "name": "debezium.embedded.my-sql.allow-multi-queries",
+      "type": "java.lang.Boolean",
+      "description": "允许多查询",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$MySql"
+    },
+    {
+      "name": "debezium.embedded.my-sql.allow-public-key-retrieval",
+      "type": "java.lang.Boolean",
+      "description": "允许公钥检索",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$MySql"
+    },
+    {
+      "name": "debezium.embedded.my-sql.auto-reconnect",
+      "type": "java.lang.Boolean",
+      "description": "自动重连",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$MySql"
+    },
+    {
+      "name": "debezium.embedded.my-sql.character-encoding",
+      "type": "java.lang.String",
+      "description": "字符编码",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$MySql"
     },
     {
       "name": "debezium.embedded.my-sql.connect-timeout-ms",
@@ -202,6 +1077,36 @@
       "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$MySql"
     },
     {
+      "name": "debezium.embedded.my-sql.include-query",
+      "type": "java.lang.Boolean",
+      "description": "包含查询",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$MySql"
+    },
+    {
+      "name": "debezium.embedded.my-sql.max-batch-size",
+      "type": "java.lang.Integer",
+      "description": "最大批次大小",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$MySql"
+    },
+    {
+      "name": "debezium.embedded.my-sql.max-queue-size",
+      "type": "java.lang.Integer",
+      "description": "最大队列大小",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$MySql"
+    },
+    {
+      "name": "debezium.embedded.my-sql.min-row-count-to-stream-results",
+      "type": "java.lang.Integer",
+      "description": "最小行数流结果",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$MySql"
+    },
+    {
+      "name": "debezium.embedded.my-sql.poll-interval-ms",
+      "type": "java.lang.Integer",
+      "description": "轮询间隔（毫秒）",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$MySql"
+    },
+    {
       "name": "debezium.embedded.my-sql.snapshot-locking-mode",
       "type": "java.lang.String",
       "description": "快照锁定模式",
@@ -211,6 +1116,30 @@
       "name": "debezium.embedded.my-sql.snapshot-mode",
       "type": "java.lang.String",
       "description": "快照模式",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$MySql"
+    },
+    {
+      "name": "debezium.embedded.my-sql.tombstones-on-delete",
+      "type": "java.lang.Boolean",
+      "description": "删除时生成墓碑",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$MySql"
+    },
+    {
+      "name": "debezium.embedded.my-sql.use-s-s-l",
+      "type": "java.lang.Boolean",
+      "description": "使用 SSL",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$MySql"
+    },
+    {
+      "name": "debezium.embedded.my-sql.use-unicode",
+      "type": "java.lang.Boolean",
+      "description": "使用 Unicode",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$MySql"
+    },
+    {
+      "name": "debezium.embedded.my-sql.zero-date-time-behavior",
+      "type": "java.lang.String",
+      "description": "零日期时间行为",
       "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$MySql"
     },
     {
@@ -250,9 +1179,33 @@
       "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties"
     },
     {
+      "name": "debezium.embedded.postgre-sql.include-query",
+      "type": "java.lang.Boolean",
+      "description": "包含查询",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$PostgreSql"
+    },
+    {
+      "name": "debezium.embedded.postgre-sql.max-batch-size",
+      "type": "java.lang.Integer",
+      "description": "最大批次大小",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$PostgreSql"
+    },
+    {
+      "name": "debezium.embedded.postgre-sql.max-queue-size",
+      "type": "java.lang.Integer",
+      "description": "最大队列大小",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$PostgreSql"
+    },
+    {
       "name": "debezium.embedded.postgre-sql.plugin-name",
       "type": "java.lang.String",
       "description": "插件名称",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$PostgreSql"
+    },
+    {
+      "name": "debezium.embedded.postgre-sql.poll-interval-ms",
+      "type": "java.lang.Integer",
+      "description": "轮询间隔（毫秒）",
       "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$PostgreSql"
     },
     {
@@ -271,6 +1224,42 @@
       "name": "debezium.embedded.postgre-sql.snapshot-mode",
       "type": "java.lang.String",
       "description": "快照模式",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$PostgreSql"
+    },
+    {
+      "name": "debezium.embedded.postgre-sql.ssl-cert",
+      "type": "java.lang.String",
+      "description": "SSL 证书",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$PostgreSql"
+    },
+    {
+      "name": "debezium.embedded.postgre-sql.ssl-key",
+      "type": "java.lang.String",
+      "description": "SSL 密钥",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$PostgreSql"
+    },
+    {
+      "name": "debezium.embedded.postgre-sql.ssl-mode",
+      "type": "java.lang.String",
+      "description": "SSL 模式",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$PostgreSql"
+    },
+    {
+      "name": "debezium.embedded.postgre-sql.ssl-password",
+      "type": "java.lang.String",
+      "description": "SSL 密码",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$PostgreSql"
+    },
+    {
+      "name": "debezium.embedded.postgre-sql.ssl-root-cert",
+      "type": "java.lang.String",
+      "description": "SSL 根证书",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$PostgreSql"
+    },
+    {
+      "name": "debezium.embedded.postgre-sql.tombstones-on-delete",
+      "type": "java.lang.Boolean",
+      "description": "删除时生成墓碑",
       "sourceType": "io.debezium.embedded.spring.boot.DebeziumEmbeddedProperties$PostgreSql"
     },
     {
@@ -381,6 +1370,42 @@
       "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$File"
     },
     {
+      "name": "debezium.offset-storage.jdbc.allow-public-key-retrieval",
+      "type": "java.lang.Boolean",
+      "description": "是否允许公钥检索",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Jdbc"
+    },
+    {
+      "name": "debezium.offset-storage.jdbc.auto-commit",
+      "type": "java.lang.Boolean",
+      "description": "是否启用自动提交",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Jdbc"
+    },
+    {
+      "name": "debezium.offset-storage.jdbc.character-encoding",
+      "type": "java.lang.String",
+      "description": "字符编码",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Jdbc"
+    },
+    {
+      "name": "debezium.offset-storage.jdbc.connection-timeout",
+      "type": "java.lang.Integer",
+      "description": "连接超时时间（毫秒）",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Jdbc"
+    },
+    {
+      "name": "debezium.offset-storage.jdbc.connection-validation-query",
+      "type": "java.lang.String",
+      "description": "连接验证查询",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Jdbc"
+    },
+    {
+      "name": "debezium.offset-storage.jdbc.connection-validation-timeout",
+      "type": "java.lang.Integer",
+      "description": "连接验证超时时间（毫秒）",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Jdbc"
+    },
+    {
       "name": "debezium.offset-storage.jdbc.driver-class-name",
       "type": "java.lang.String",
       "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Jdbc"
@@ -391,8 +1416,74 @@
       "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Jdbc"
     },
     {
+      "name": "debezium.offset-storage.jdbc.leak-detection-threshold",
+      "type": "java.lang.Boolean",
+      "description": "是否启用连接泄漏检测",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Jdbc"
+    },
+    {
+      "name": "debezium.offset-storage.jdbc.leak-detection-threshold-ms",
+      "type": "java.lang.Integer",
+      "description": "连接泄漏检测阈值（毫秒）",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Jdbc"
+    },
+    {
+      "name": "debezium.offset-storage.jdbc.max-connection-idle-time",
+      "type": "java.lang.Integer",
+      "description": "连接最大空闲时间（毫秒）",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Jdbc"
+    },
+    {
+      "name": "debezium.offset-storage.jdbc.max-connection-lifetime",
+      "type": "java.lang.Integer",
+      "description": "最大连接生命周期（毫秒）",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Jdbc"
+    },
+    {
+      "name": "debezium.offset-storage.jdbc.max-connections",
+      "type": "java.lang.Integer",
+      "description": "最大连接数",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Jdbc"
+    },
+    {
+      "name": "debezium.offset-storage.jdbc.max-retries",
+      "type": "java.lang.Integer",
+      "description": "最大重试次数",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Jdbc"
+    },
+    {
+      "name": "debezium.offset-storage.jdbc.min-connections",
+      "type": "java.lang.Integer",
+      "description": "最小连接数",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Jdbc"
+    },
+    {
       "name": "debezium.offset-storage.jdbc.password",
       "type": "java.lang.String",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Jdbc"
+    },
+    {
+      "name": "debezium.offset-storage.jdbc.pool-size",
+      "type": "java.lang.Integer",
+      "description": "连接池大小",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Jdbc"
+    },
+    {
+      "name": "debezium.offset-storage.jdbc.query-timeout",
+      "type": "java.lang.Integer",
+      "description": "查询超时时间（毫秒）",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Jdbc"
+    },
+    {
+      "name": "debezium.offset-storage.jdbc.retry-delay-ms",
+      "type": "java.lang.Integer",
+      "description": "重试延迟时间（毫秒）",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Jdbc"
+    },
+    {
+      "name": "debezium.offset-storage.jdbc.ssl-mode",
+      "type": "java.lang.String",
+      "description": "SSL 模式",
       "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Jdbc"
     },
     {
@@ -401,8 +1492,26 @@
       "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Jdbc"
     },
     {
+      "name": "debezium.offset-storage.jdbc.timezone",
+      "type": "java.lang.String",
+      "description": "时区",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Jdbc"
+    },
+    {
+      "name": "debezium.offset-storage.jdbc.transaction-isolation",
+      "type": "java.lang.String",
+      "description": "事务隔离级别",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Jdbc"
+    },
+    {
       "name": "debezium.offset-storage.jdbc.url",
       "type": "java.lang.String",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Jdbc"
+    },
+    {
+      "name": "debezium.offset-storage.jdbc.use-s-s-l",
+      "type": "java.lang.Boolean",
+      "description": "是否启用 SSL",
       "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Jdbc"
     },
     {
@@ -411,9 +1520,87 @@
       "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Jdbc"
     },
     {
+      "name": "debezium.offset-storage.jdbc.verify-server-certificate",
+      "type": "java.lang.Boolean",
+      "description": "是否验证服务器证书",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Jdbc"
+    },
+    {
       "name": "debezium.offset-storage.kafka.bootstrap-servers",
       "type": "java.lang.String",
       "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka"
+    },
+    {
+      "name": "debezium.offset-storage.kafka.consumer.auto-offset-reset",
+      "type": "java.lang.String",
+      "description": "自动偏移量重置",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka$Consumer"
+    },
+    {
+      "name": "debezium.offset-storage.kafka.consumer.connections-max-idle-ms",
+      "type": "java.lang.Integer",
+      "description": "连接最大空闲时间",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka$Consumer"
+    },
+    {
+      "name": "debezium.offset-storage.kafka.consumer.enable-auto-commit",
+      "type": "java.lang.Boolean",
+      "description": "启用自动提交",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka$Consumer"
+    },
+    {
+      "name": "debezium.offset-storage.kafka.consumer.fetch-max-wait-ms",
+      "type": "java.lang.Integer",
+      "description": "获取最大等待时间",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka$Consumer"
+    },
+    {
+      "name": "debezium.offset-storage.kafka.consumer.fetch-min-bytes",
+      "type": "java.lang.Integer",
+      "description": "获取超时时间",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka$Consumer"
+    },
+    {
+      "name": "debezium.offset-storage.kafka.consumer.heartbeat-interval-ms",
+      "type": "java.lang.Integer",
+      "description": "心跳间隔",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka$Consumer"
+    },
+    {
+      "name": "debezium.offset-storage.kafka.consumer.max-poll-interval-ms",
+      "type": "java.lang.Integer",
+      "description": "最大轮询间隔",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka$Consumer"
+    },
+    {
+      "name": "debezium.offset-storage.kafka.consumer.max-poll-records",
+      "type": "java.lang.Integer",
+      "description": "最大轮询记录数",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka$Consumer"
+    },
+    {
+      "name": "debezium.offset-storage.kafka.consumer.reconnect-backoff-ms",
+      "type": "java.lang.Integer",
+      "description": "重连退避时间",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka$Consumer"
+    },
+    {
+      "name": "debezium.offset-storage.kafka.consumer.request-timeout-ms",
+      "type": "java.lang.Integer",
+      "description": "请求超时时间",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka$Consumer"
+    },
+    {
+      "name": "debezium.offset-storage.kafka.consumer.retry-backoff-ms",
+      "type": "java.lang.Integer",
+      "description": "重试退避时间",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka$Consumer"
+    },
+    {
+      "name": "debezium.offset-storage.kafka.consumer.session-timeout-ms",
+      "type": "java.lang.Integer",
+      "description": "会话超时时间",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka$Consumer"
     },
     {
       "name": "debezium.offset-storage.kafka.partitions",
@@ -421,14 +1608,158 @@
       "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka"
     },
     {
+      "name": "debezium.offset-storage.kafka.producer.acks",
+      "type": "java.lang.String",
+      "description": "确认机制",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka$Producer"
+    },
+    {
+      "name": "debezium.offset-storage.kafka.producer.batch-size",
+      "type": "java.lang.Integer",
+      "description": "批次大小",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka$Producer"
+    },
+    {
+      "name": "debezium.offset-storage.kafka.producer.buffer-memory",
+      "type": "java.lang.Integer",
+      "description": "缓冲区大小",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka$Producer"
+    },
+    {
+      "name": "debezium.offset-storage.kafka.producer.compression-type",
+      "type": "java.lang.String",
+      "description": "压缩类型",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka$Producer"
+    },
+    {
+      "name": "debezium.offset-storage.kafka.producer.connections-max-idle-ms",
+      "type": "java.lang.Integer",
+      "description": "连接最大空闲时间",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka$Producer"
+    },
+    {
+      "name": "debezium.offset-storage.kafka.producer.linger-ms",
+      "type": "java.lang.Integer",
+      "description": "延迟时间",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka$Producer"
+    },
+    {
+      "name": "debezium.offset-storage.kafka.producer.max-request-size",
+      "type": "java.lang.Integer",
+      "description": "最大请求大小",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka$Producer"
+    },
+    {
+      "name": "debezium.offset-storage.kafka.producer.metadata-max-age-ms",
+      "type": "java.lang.Integer",
+      "description": "元数据获取超时时间",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka$Producer"
+    },
+    {
+      "name": "debezium.offset-storage.kafka.producer.reconnect-backoff-ms",
+      "type": "java.lang.Integer",
+      "description": "重连退避时间",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka$Producer"
+    },
+    {
+      "name": "debezium.offset-storage.kafka.producer.request-timeout-ms",
+      "type": "java.lang.Integer",
+      "description": "请求超时时间",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka$Producer"
+    },
+    {
+      "name": "debezium.offset-storage.kafka.producer.retries",
+      "type": "java.lang.Integer",
+      "description": "重试次数",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka$Producer"
+    },
+    {
+      "name": "debezium.offset-storage.kafka.producer.retry-backoff-ms",
+      "type": "java.lang.Integer",
+      "description": "重试退避时间",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka$Producer"
+    },
+    {
       "name": "debezium.offset-storage.kafka.replication-factor",
       "type": "java.lang.Integer",
       "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka"
     },
     {
+      "name": "debezium.offset-storage.kafka.security.sasl-mechanism",
+      "type": "java.lang.String",
+      "description": "SASL 机制",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka$Security"
+    },
+    {
+      "name": "debezium.offset-storage.kafka.security.sasl-password",
+      "type": "java.lang.String",
+      "description": "SASL 密码",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka$Security"
+    },
+    {
+      "name": "debezium.offset-storage.kafka.security.sasl-username",
+      "type": "java.lang.String",
+      "description": "SASL 用户名",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka$Security"
+    },
+    {
+      "name": "debezium.offset-storage.kafka.security.security-protocol",
+      "type": "java.lang.String",
+      "description": "安全协议",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka$Security"
+    },
+    {
+      "name": "debezium.offset-storage.kafka.security.ssl-endpoint-identification-algorithm",
+      "type": "java.lang.String",
+      "description": "SSL 端点识别算法",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka$Security"
+    },
+    {
+      "name": "debezium.offset-storage.kafka.security.ssl-key-password",
+      "type": "java.lang.String",
+      "description": "SSL 密钥密码",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka$Security"
+    },
+    {
+      "name": "debezium.offset-storage.kafka.security.ssl-keystore-location",
+      "type": "java.lang.String",
+      "description": "SSL 密钥库位置",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka$Security"
+    },
+    {
+      "name": "debezium.offset-storage.kafka.security.ssl-keystore-password",
+      "type": "java.lang.String",
+      "description": "SSL 密钥库密码",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka$Security"
+    },
+    {
+      "name": "debezium.offset-storage.kafka.security.ssl-truststore-location",
+      "type": "java.lang.String",
+      "description": "SSL 信任库位置",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka$Security"
+    },
+    {
+      "name": "debezium.offset-storage.kafka.security.ssl-truststore-password",
+      "type": "java.lang.String",
+      "description": "SSL 信任库密码",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka$Security"
+    },
+    {
       "name": "debezium.offset-storage.kafka.topic",
       "type": "java.lang.String",
       "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Kafka"
+    },
+    {
+      "name": "debezium.offset-storage.redis.client-name",
+      "type": "java.lang.String",
+      "description": "客户端名称",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Redis"
+    },
+    {
+      "name": "debezium.offset-storage.redis.connection-timeout",
+      "type": "java.lang.Integer",
+      "description": "连接超时时间（毫秒）",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Redis"
     },
     {
       "name": "debezium.offset-storage.redis.database",
@@ -451,8 +1782,20 @@
       "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Redis"
     },
     {
+      "name": "debezium.offset-storage.redis.max-retries",
+      "type": "java.lang.Integer",
+      "description": "最大重试次数",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Redis"
+    },
+    {
       "name": "debezium.offset-storage.redis.password",
       "type": "java.lang.String",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Redis"
+    },
+    {
+      "name": "debezium.offset-storage.redis.pool-size",
+      "type": "java.lang.Integer",
+      "description": "连接池大小",
       "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Redis"
     },
     {
@@ -461,39 +1804,46 @@
       "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Redis"
     },
     {
-      "name": "debezium.offset-storage.s3.access-key-id",
-      "type": "java.lang.String",
-      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$S3"
-    },
-    {
-      "name": "debezium.offset-storage.s3.bucket-name",
-      "type": "java.lang.String",
-      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$S3"
-    },
-    {
-      "name": "debezium.offset-storage.s3.endpoint",
-      "type": "java.lang.String",
-      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$S3"
-    },
-    {
-      "name": "debezium.offset-storage.s3.flush-interval-ms",
+      "name": "debezium.offset-storage.redis.read-timeout",
       "type": "java.lang.Integer",
-      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$S3"
+      "description": "读取超时时间（毫秒）",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Redis"
     },
     {
-      "name": "debezium.offset-storage.s3.key-prefix",
-      "type": "java.lang.String",
-      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$S3"
+      "name": "debezium.offset-storage.redis.retry-delay-ms",
+      "type": "java.lang.Integer",
+      "description": "重试延迟时间（毫秒）",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Redis"
     },
     {
-      "name": "debezium.offset-storage.s3.region",
-      "type": "java.lang.String",
-      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$S3"
+      "name": "debezium.offset-storage.redis.ssl",
+      "type": "java.lang.Boolean",
+      "description": "是否启用 SSL\/TLS",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Redis"
     },
     {
-      "name": "debezium.offset-storage.s3.secret-access-key",
+      "name": "debezium.offset-storage.redis.ssl-ca-path",
       "type": "java.lang.String",
-      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$S3"
+      "description": "SSL CA 证书路径",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Redis"
+    },
+    {
+      "name": "debezium.offset-storage.redis.ssl-cert-path",
+      "type": "java.lang.String",
+      "description": "SSL 证书路径",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Redis"
+    },
+    {
+      "name": "debezium.offset-storage.redis.ssl-key-path",
+      "type": "java.lang.String",
+      "description": "SSL 密钥路径",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Redis"
+    },
+    {
+      "name": "debezium.offset-storage.redis.username",
+      "type": "java.lang.String",
+      "description": "用户名（Redis 6.0+ ACL 支持）",
+      "sourceType": "io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties$Redis"
     },
     {
       "name": "debezium.offset-storage.type",

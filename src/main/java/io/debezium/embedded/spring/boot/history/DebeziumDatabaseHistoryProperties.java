@@ -1,46 +1,154 @@
-package io.debezium.embedded.spring.boot;
+package io.debezium.embedded.spring.boot.history;
 
-import io.debezium.embedded.spring.boot.storage.OffsetStorageType;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import java.util.HashMap;
-import java.util.Map;
-
-@ConfigurationProperties(prefix = "debezium.offset-storage")
+/**
+ * Debezium 数据库历史记录配置属性。
+ */
 @Data
-public class DebeziumOffsetStorageProperties {
-
-    private OffsetStorageType type = OffsetStorageType.FILE;
-
+@ConfigurationProperties(prefix = "debezium.embedded.history")
+public class DebeziumDatabaseHistoryProperties {
+    
+    /**
+     * 是否启用历史记录
+     */
+    private boolean enabled = true;
+    
+    /**
+     * 历史记录类型
+     */
+    private DatabaseHistoryType type = DatabaseHistoryType.FILE;
+    
+    /**
+     * 文件历史记录配置
+     */
     private File file = new File();
+    
+    /**
+     * Kafka 历史记录配置
+     */
     private Kafka kafka = new Kafka();
+    
+    /**
+     * JDBC 历史记录配置
+     */
     private Jdbc jdbc = new Jdbc();
+    
+    /**
+     * Redis 历史记录配置
+     */
     private Redis redis = new Redis();
+    
+    /**
+     * S3 历史记录配置
+     */
+    private S3 s3 = new S3();
+    
+    /**
+     * 自定义历史记录配置
+     */
     private Custom custom = new Custom();
-
+    
     @Data
     public static class File {
-        private String fileName = "/tmp/offsets.dat";
         /**
-         * An optional advanced field that specifies the maximum amount of time that the embedded connector should wait
-         * for an offset commit to complete.
-         * 这是一个可选高级字段，指定偏移提交完成所需的最大时间。
+         * 历史记录文件路径
          */
-        private Integer flushIntervalMs = 60_000;
+        private String filename = "dbhistory.dat";
+        
         /**
-         * An optional advanced field that specifies the maximum amount of time that the embedded connector should wait
-         * for an offset commit to complete.
+         * 是否跳过无法解析的 DDL
          */
-        private Integer flushTimeoutMs;
+        private boolean skipUnparseableDdl = true;
+        
+        /**
+         * 是否只存储监控表的 DDL
+         */
+        private boolean storeOnlyMonitoredTablesDdl = true;
+        
+        /**
+         * 是否只存储捕获表的 DDL
+         */
+        private boolean storeOnlyCapturedTablesDdl = true;
+        
+        /**
+         * 文件编码
+         */
+        private String encoding = "UTF-8";
+        
+        /**
+         * 是否启用文件同步
+         */
+        private boolean sync = true;
+        
+        /**
+         * 写入缓冲区大小
+         */
+        private Integer bufferSize = 8192;
+        
+        /**
+         * 是否启用文件锁定
+         */
+        private boolean fileLocking = true;
+        
+        /**
+         * 文件锁定超时时间（毫秒）
+         */
+        private Integer fileLockTimeoutMs = 30000;
+        
+        /**
+         * 是否启用文件备份
+         */
+        private boolean backup = true;
+        
+        /**
+         * 备份文件后缀
+         */
+        private String backupSuffix = ".bak";
+        
+        /**
+         * 最大备份文件数量
+         */
+        private Integer maxBackupFiles = 5;
+        
+        /**
+         * 是否启用压缩
+         */
+        private boolean compression = false;
+        
+        /**
+         * 压缩级别（1-9）
+         */
+        private Integer compressionLevel = 6;
     }
-
+    
     @Data
     public static class Kafka {
-        private String bootstrapServers;
-        private String topic = "debezium-offsets";
-        private Integer partitions = 1;
-        private Integer replicationFactor = 1;
+        /**
+         * Kafka 主题名称
+         */
+        private String topic = "dbhistory";
+        
+        /**
+         * Kafka 服务器地址
+         */
+        private String bootstrapServers = "localhost:9092";
+        
+        /**
+         * 恢复尝试次数
+         */
+        private Integer recoveryAttempts = 4;
+        
+        /**
+         * 恢复轮询间隔（毫秒）
+         */
+        private Integer recoveryPollIntervalMs = 100;
+        
+        /**
+         * 查询超时时间（毫秒）
+         */
+        private Integer queryTimeoutMs = 3000;
         
         /**
          * 生产者配置
@@ -51,11 +159,6 @@ public class DebeziumOffsetStorageProperties {
          * 消费者配置
          */
         private Consumer consumer = new Consumer();
-        
-        /**
-         * 安全配置
-         */
-        private Security security = new Security();
         
         @Data
         public static class Producer {
@@ -183,6 +286,11 @@ public class DebeziumOffsetStorageProperties {
             private Integer retryBackoffMs = 100;
         }
         
+        /**
+         * 安全配置
+         */
+        private Security security = new Security();
+        
         @Data
         public static class Security {
             /**
@@ -236,15 +344,28 @@ public class DebeziumOffsetStorageProperties {
             private String sslEndpointIdentificationAlgorithm = "https";
         }
     }
-
+    
     @Data
     public static class Jdbc {
+        /**
+         * JDBC URL
+         */
         private String url;
+        
+        /**
+         * 用户名
+         */
         private String username;
+        
+        /**
+         * 密码
+         */
         private String password;
-        private String driverClassName = "com.mysql.cj.jdbc.Driver";
-        private String tableName = "debezium_offsets";
-        private Integer flushIntervalMs = 60_000;
+        
+        /**
+         * 表名
+         */
+        private String tableName = "database_history";
         
         /**
          * 连接池大小
@@ -252,12 +373,12 @@ public class DebeziumOffsetStorageProperties {
         private Integer poolSize = 10;
         
         /**
-         * 连接超时时间（毫秒）
+         * 连接超时时间
          */
         private Integer connectionTimeout = 30000;
         
         /**
-         * 查询超时时间（毫秒）
+         * 查询超时时间
          */
         private Integer queryTimeout = 30000;
         
@@ -351,23 +472,41 @@ public class DebeziumOffsetStorageProperties {
          */
         private Integer retryDelayMs = 1000;
     }
-
+    
     @Data
     public static class Redis {
+        /**
+         * Redis 服务器地址
+         */
         private String host = "localhost";
-        private Integer port = 6379;
-        private String password;
-        private Integer database = 0;
-        private String keyPrefix = "debezium:offsets:";
-        private Integer flushIntervalMs = 60_000;
         
         /**
-         * 连接超时时间（毫秒）
+         * Redis 端口
+         */
+        private Integer port = 6379;
+        
+        /**
+         * 密码
+         */
+        private String password;
+        
+        /**
+         * 数据库索引
+         */
+        private Integer database = 0;
+        
+        /**
+         * 键前缀
+         */
+        private String keyPrefix = "debezium:history:";
+        
+        /**
+         * 连接超时时间
          */
         private Integer connectionTimeout = 30000;
         
         /**
-         * 读取超时时间（毫秒）
+         * 读取超时时间
          */
         private Integer readTimeout = 30000;
         
@@ -416,14 +555,100 @@ public class DebeziumOffsetStorageProperties {
          */
         private Integer retryDelayMs = 1000;
     }
-
+    
+    @Data
+    public static class S3 {
+        /**
+         * S3 存储桶名称
+         */
+        private String bucketName;
+        
+        /**
+         * 区域
+         */
+        private String region = "us-east-1";
+        
+        /**
+         * 访问密钥 ID
+         */
+        private String accessKeyId;
+        
+        /**
+         * 秘密访问密钥
+         */
+        private String secretAccessKey;
+        
+        /**
+         * 端点 URL
+         */
+        private String endpointUrl;
+        
+        /**
+         * 对象键前缀
+         */
+        private String keyPrefix = "debezium/history/";
+        
+        /**
+         * 连接超时时间
+         */
+        private Integer connectionTimeout = 30000;
+        
+        /**
+         * 读取超时时间
+         */
+        private Integer readTimeout = 30000;
+        
+        /**
+         * 最大重试次数
+         */
+        private Integer maxRetries = 3;
+        
+        /**
+         * 重试延迟时间（毫秒）
+         */
+        private Integer retryDelayMs = 1000;
+        
+        /**
+         * 是否启用路径样式访问
+         */
+        private Boolean pathStyleAccessEnabled = false;
+        
+        /**
+         * 签名区域
+         */
+        private String signingRegion;
+        
+        /**
+         * 代理主机
+         */
+        private String proxyHost;
+        
+        /**
+         * 代理端口
+         */
+        private Integer proxyPort;
+        
+        /**
+         * 代理用户名
+         */
+        private String proxyUsername;
+        
+        /**
+         * 代理密码
+         */
+        private String proxyPassword;
+    }
+    
     @Data
     public static class Custom {
-        /** fully-qualified class that implements org.apache.kafka.connect.storage.OffsetBackingStore */
-        private String className;
-        /** additional props passed through to the custom store */
-        private Map<String, String> props = new HashMap<>();
+        /**
+         * 自定义历史记录类名
+         */
+        private String historyClass;
+        
+        /**
+         * 自定义配置属性
+         */
+        private java.util.Map<String, String> props = new java.util.HashMap<>();
     }
 }
-
-

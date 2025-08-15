@@ -3,23 +3,22 @@ package io.debezium.embedded.spring.boot.storage;
 import io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties;
 
 /**
- * 根据配置选择合适的 OffsetStorageConfigurer。
+ * Offset 存储配置器工厂。
  */
-public final class OffsetStorageConfigurerFactory {
-
-    private OffsetStorageConfigurerFactory() {}
-
+public class OffsetStorageConfigurerFactory {
+    
+    /**
+     * 根据存储类型创建对应的配置器。
+     *
+     * @param properties 存储配置属性
+     * @return 存储配置器
+     */
     public static OffsetStorageConfigurer from(DebeziumOffsetStorageProperties properties) {
-        OffsetStorageType type = properties.getType();
-        if (type == null) {
-            type = OffsetStorageType.FILE;
-        }
-        return switch (type) {
+        return switch (properties.getType()) {
             case FILE -> new FileOffsetStorageConfigurer();
             case KAFKA -> new KafkaOffsetStorageConfigurer();
             case JDBC -> new JdbcOffsetStorageConfigurer();
             case REDIS -> new RedisOffsetStorageConfigurer();
-            case S3 -> new S3OffsetStorageConfigurer();
             case CUSTOM -> new CustomOffsetStorageConfigurer();
         };
     }

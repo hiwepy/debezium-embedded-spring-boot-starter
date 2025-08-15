@@ -1,15 +1,32 @@
 package io.debezium.embedded.spring.boot.storage;
 
 /**
- * Offset 存储类型。
- * 支持 File、Kafka、JDBC、Redis、S3 内置实现，以及自定义类型。
+ * Offset 存储类型枚举。
  */
 public enum OffsetStorageType {
+    /**
+     * 文件存储
+     */
     FILE,
+    
+    /**
+     * Kafka 存储
+     */
     KAFKA,
+    
+    /**
+     * JDBC 存储
+     */
     JDBC,
+    
+    /**
+     * Redis 存储
+     */
     REDIS,
-    S3,
+    
+    /**
+     * 自定义存储
+     */
     CUSTOM
 }
 

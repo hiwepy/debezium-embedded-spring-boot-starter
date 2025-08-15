@@ -11,17 +11,20 @@ public class VitessConnectorConfigurer implements ConnectorConfigurer {
     public void apply(Configuration.Builder builder, DebeziumEmbeddedProperties properties) {
         builder
                 .with("connector.class", "io.debezium.connector.vitess.VitessConnector")
-                .with("database.hostname", properties.getHost())
-                .with("database.port", properties.getPort())
-                .with("database.user", properties.getUsername())
-                .with("database.password", properties.getPassword())
-                .with("database.server.name", properties.getServerName())
-                .with("database.history", "io.debezium.connector.vitess.VitessDatabaseHistory")
-                .with("database.history.file.filename", properties.getHistoryFileName());
+                .with("database.server.name", properties.getServerName());
+
+        // Vitess 特定配置
+        builder.with("vitess.hosts", properties.getHost() + ":" + properties.getPort());
+        if (properties.getUsername() != null) {
+            builder.with("vitess.user", properties.getUsername());
+        }
+        if (properties.getPassword() != null) {
+            builder.with("vitess.password", properties.getPassword());
+        }
 
         // 数据库和表过滤
         if (properties.getDatabaseIncludeList() != null) {
-            builder.with("database.include.list", properties.getDatabaseIncludeList());
+            builder.with("keyspace.include.list", properties.getDatabaseIncludeList());
         }
         if (properties.getTableIncludeList() != null) {
             builder.with("table.include.list", properties.getTableIncludeList());

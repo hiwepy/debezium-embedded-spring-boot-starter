@@ -146,6 +146,58 @@ public class DebeziumEmbeddedProperties {
          * GTID 源过滤 DML 事件
          */
         private Boolean gtidSourceFilterDmlEvents = true;
+        /**
+         * 允许公钥检索
+         */
+        private Boolean allowPublicKeyRetrieval = true;
+        /**
+         * 使用 SSL
+         */
+        private Boolean useSSL = false;
+        /**
+         * 自动重连
+         */
+        private Boolean autoReconnect = true;
+        /**
+         * 允许多查询
+         */
+        private Boolean allowMultiQueries = true;
+        /**
+         * 零日期时间行为
+         */
+        private String zeroDateTimeBehavior = "convertToNull";
+        /**
+         * 字符编码
+         */
+        private String characterEncoding = "utf8";
+        /**
+         * 使用 Unicode
+         */
+        private Boolean useUnicode = true;
+        /**
+         * 删除时生成墓碑
+         */
+        private Boolean tombstonesOnDelete = false;
+        /**
+         * 包含查询
+         */
+        private Boolean includeQuery = false;
+        /**
+         * 最小行数流结果
+         */
+        private Integer minRowCountToStreamResults = 1000;
+        /**
+         * 轮询间隔（毫秒）
+         */
+        private Integer pollIntervalMs = 1000;
+        /**
+         * 最大队列大小
+         */
+        private Integer maxQueueSize = 8192;
+        /**
+         * 最大批次大小
+         */
+        private Integer maxBatchSize = 2048;
     }
 
     @Data
@@ -166,6 +218,46 @@ public class DebeziumEmbeddedProperties {
          * 快照模式
          */
         private String snapshotMode = "initial";
+        /**
+         * SSL 模式
+         */
+        private String sslMode = "prefer";
+        /**
+         * SSL 证书
+         */
+        private String sslCert = "";
+        /**
+         * SSL 密钥
+         */
+        private String sslKey = "";
+        /**
+         * SSL 根证书
+         */
+        private String sslRootCert = "";
+        /**
+         * SSL 密码
+         */
+        private String sslPassword = "";
+        /**
+         * 删除时生成墓碑
+         */
+        private Boolean tombstonesOnDelete = false;
+        /**
+         * 包含查询
+         */
+        private Boolean includeQuery = false;
+        /**
+         * 轮询间隔（毫秒）
+         */
+        private Integer pollIntervalMs = 1000;
+        /**
+         * 最大队列大小
+         */
+        private Integer maxQueueSize = 8192;
+        /**
+         * 最大批次大小
+         */
+        private Integer maxBatchSize = 2048;
     }
 
     @Data
@@ -186,6 +278,70 @@ public class DebeziumEmbeddedProperties {
          * 快照模式
          */
         private String snapshotMode = "initial";
+        /**
+         * 认证源
+         */
+        private String authSource = "admin";
+        /**
+         * 连接超时时间（毫秒）
+         */
+        private Integer connectTimeoutMs = 30000;
+        /**
+         * Socket 超时时间（毫秒）
+         */
+        private Integer socketTimeoutMs = 30000;
+        /**
+         * 服务器选择超时时间（毫秒）
+         */
+        private Integer serverSelectionTimeoutMs = 30000;
+        /**
+         * 最大连接池大小
+         */
+        private Integer maxConnectionPoolSize = 100;
+        /**
+         * 最小连接池大小
+         */
+        private Integer minConnectionPoolSize = 5;
+        /**
+         * 最大连接空闲时间（毫秒）
+         */
+        private Integer maxConnectionIdleTimeMs = 30000;
+        /**
+         * 最大连接生命周期（毫秒）
+         */
+        private Integer maxConnectionLifeTimeMs = 300000;
+        /**
+         * 删除时生成墓碑
+         */
+        private Boolean tombstonesOnDelete = false;
+        /**
+         * 包含查询
+         */
+        private Boolean includeQuery = false;
+        /**
+         * 字段重命名
+         */
+        private String fieldRenames = "";
+        /**
+         * 字段排除列表
+         */
+        private String fieldExcludeList = "";
+        /**
+         * 轮询间隔（毫秒）
+         */
+        private Integer pollIntervalMs = 1000;
+        /**
+         * 最大队列大小
+         */
+        private Integer maxQueueSize = 8192;
+        /**
+         * 最大批次大小
+         */
+        private Integer maxBatchSize = 2048;
+        /**
+         * 最大队列大小（字节）
+         */
+        private Long maxQueueSizeInBytes = 1073741824L;
     }
 
     @Data

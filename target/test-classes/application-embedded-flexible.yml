@@ -1,0 +1,143 @@
+debezium:
+  embedded:
+    enabled: true
+    destination: "mysql-embedded"
+    type: MYSQL
+    host: "localhost"
+    port: 3306
+    username: "debezium"
+    password: "dbz"
+    server-id: 5400
+    server-name: "mysql-server-1"
+    database-name: "inventory"
+    
+    # 数据库和表过滤
+    database-include-list: "inventory"
+    table-include-list: "inventory.customers,inventory.orders"
+    
+    # MySQL 特定配置
+    mysql:
+      snapshot-mode: "initial"
+      snapshot-locking-mode: "minimal"
+      connect-timeout-ms: 30000
+      gtid-source-filter-dml-events: true
+
+  # 存储配置 - 使用 File 存储
+  offset-storage:
+    type: FILE
+    file:
+      file-name: "/tmp/debezium-offsets.dat"
+      flush-interval-ms: 60000
+      flush-timeout-ms: 5000
+
+  # 历史记录配置 - 使用 Redis 存储
+  history:
+    enabled: true
+    type: REDIS
+    redis:
+      host: "localhost"
+      port: 6379
+      password: ""
+      database: 0
+      key-prefix: "debezium:history:"
+      connection-timeout: 30000
+      read-timeout: 30000
+      pool-size: 10
+
+# 另一个示例：PostgreSQL + Kafka 存储 + JDBC 历史记录
+---
+spring:
+  config:
+    activate:
+      on-profile: postgresql-kafka-jdbc
+
+debezium:
+  embedded:
+    enabled: true
+    destination: "postgresql-embedded"
+    type: POSTGRESQL
+    host: "localhost"
+    port: 5432
+    username: "postgres"
+    password: "postgres"
+    database-name: "postgres"
+    server-name: "postgresql-server-1"
+    
+    # 数据库和表过滤
+    database-include-list: "postgres"
+    table-include-list: "public.users,public.products"
+    
+    # PostgreSQL 特定配置
+    postgresql:
+      plugin-name: "pgoutput"
+      slot-name: "debezium_slot"
+      publication-name: "debezium_pub"
+      snapshot-mode: "initial"
+
+  # 存储配置 - 使用 Kafka 存储
+  offset-storage:
+    type: KAFKA
+    kafka:
+      bootstrap-servers: "localhost:9092"
+      topic: "debezium-offsets"
+      partitions: 1
+      replication-factor: 1
+
+  # 历史记录配置 - 使用 JDBC 存储
+  history:
+    enabled: true
+    type: JDBC
+    jdbc:
+      url: "jdbc:postgresql://localhost:5432/debezium_history"
+      username: "postgres"
+      password: "postgres"
+      table-name: "database_history"
+      pool-size: 10
+      connection-timeout: 30000
+      query-timeout: 30000
+
+# 第三个示例：MongoDB + Redis 存储 + File 历史记录
+---
+spring:
+  config:
+    activate:
+      on-profile: mongodb-redis-file
+
+debezium:
+  embedded:
+    enabled: true
+    destination: "mongodb-embedded"
+    type: MONGODB
+    host: "localhost"
+    port: 27017
+    username: "debezium"
+    password: "dbz"
+    server-name: "mongodb-server-1"
+    
+    # MongoDB 特定配置
+    mongodb:
+      connection-string: "mongodb://localhost:27017"
+      database-list: "inventory"
+      collection-list: "customers,orders"
+      snapshot-mode: "initial"
+
+  # 存储配置 - 使用 Redis 存储
+  offset-storage:
+    type: REDIS
+    redis:
+      host: "localhost"
+      port: 6379
+      password: ""
+      database: 0
+      key-prefix: "debezium:offsets:"
+      flush-interval-ms: 60000
+
+  # 历史记录配置 - 使用 File 存储
+  history:
+    enabled: true
+    type: FILE
+    file:
+      filename: "/tmp/mongodb-history.dat"
+      skip-unparseable-ddl: true
+      store-only-monitored-tables-ddl: true
+      store-only-captured-tables-ddl: true

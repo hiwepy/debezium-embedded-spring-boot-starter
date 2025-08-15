@@ -9,10 +9,21 @@ import io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties;
 public class CustomOffsetStorageConfigurer implements OffsetStorageConfigurer {
     @Override
     public void apply(Configuration.Builder builder, DebeziumOffsetStorageProperties properties) {
-        DebeziumOffsetStorageProperties.Custom c = properties.getCustom();
-        builder.with("offset.storage", c.getClassName());
-        if (c.getProps() != null) {
-            c.getProps().forEach(builder::with);
+        DebeziumOffsetStorageProperties.Custom custom = properties.getCustom();
+        
+        if (custom.getClassName() != null) {
+            builder.with("offset.storage", custom.getClassName());
+            
+            // 添加自定义配置属性
+            if (custom.getProps() != null) {
+                custom.getProps().forEach((key, value) -> {
+                    if (key.startsWith("offset.storage.")) {
+                        builder.with(key, value);
+                    } else {
+                        builder.with("offset.storage." + key, value);
+                    }
+                });
+            }
         }
     }
 }

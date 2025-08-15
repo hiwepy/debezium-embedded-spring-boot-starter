@@ -17,8 +17,6 @@ public class MariaDbConnectorConfigurer implements ConnectorConfigurer {
                 .with("database.password", properties.getPassword())
                 .with("database.server.id", properties.getServerId())
                 .with("database.server.name", properties.getServerName())
-                .with("database.history", "io.debezium.relational.history.FileDatabaseHistory")
-                .with("database.history.file.filename", properties.getHistoryFileName())
                 .with("include.schema.changes", "false");
 
         // 数据库和表过滤
@@ -35,7 +33,7 @@ public class MariaDbConnectorConfigurer implements ConnectorConfigurer {
             builder.with("table.exclude.list", properties.getTableExcludeList());
         }
 
-        // MariaDB 特定配置（与 MySQL 类似）
+        // MariaDB 特定配置
         if (properties.getMySql() != null) {
             DebeziumEmbeddedProperties.MySql mySql = properties.getMySql();
             if (mySql.getSnapshotMode() != null) {
