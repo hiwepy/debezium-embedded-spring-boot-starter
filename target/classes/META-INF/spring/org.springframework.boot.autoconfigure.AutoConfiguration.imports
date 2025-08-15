@@ -6,4 +6,4 @@ io.debezium.spring.boot.DebeziumRocketmqClientAutoConfiguration
 io.debezium.spring.boot.DebeziumSimpleClientAutoConfiguration
 io.debezium.spring.boot.DebeziumEmbeddedEngineAutoConfiguration
 io.debezium.embedded.spring.boot.DebeziumEmbeddedEngineAutoConfiguration
-io.debezium.embedded.spring.boot.DebeziumEmbeddedAutoConfiguration
+io.debezium.embedded.spring.boot.DebeziumClientAutoConfiguration
