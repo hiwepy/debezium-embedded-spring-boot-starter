@@ -18,17 +18,12 @@ public class KafkaOffsetStorageConfigurer implements OffsetStorageConfigurer {
     @Override
     public void apply(Configuration.Builder builder, DebeziumOffsetStorageProperties properties) {
         DebeziumOffsetStorageProperties.Kafka kafka = properties.getKafka();
-        
-        builder.with("offset.storage", "org.apache.kafka.connect.storage.KafkaOffsetBackingStore");
-        
-        /*
-         * 批量设置参数
-         */
         PropertyMapper map = PropertyMapper.get().alwaysApplyingWhenNonNull();
-        map.from(kafka::getBootstrapServers).whenHasText().to(value -> builder.with("offset.storage.kafka.bootstrap.servers", value));
-        map.from(kafka::getTopic).whenHasText().to(value -> builder.with("offset.storage.kafka.topic", value));
-        map.from(kafka::getPartitions).to(value -> builder.with("offset.storage.kafka.partitions", value));
-        map.from(kafka::getReplicationFactor).to(value -> builder.with("offset.storage.kafka.replication.factor", value));
+        // Offset Store
+        builder.with("offset.storage", "org.apache.kafka.connect.storage.KafkaOffsetBackingStore");
+        map.from(kafka::getOffsetStorageTopic).whenHasText().to(value -> builder.with("offset.storage.topic", value));
+        map.from(kafka::getOffsetStoragePartitions).to(value -> builder.with("offset.storage.partitions", value));
+        map.from(kafka::getOffsetStorageReplicationFactor).to(value -> builder.with("offset.storage.replication.factor", value));
     }
 }
 

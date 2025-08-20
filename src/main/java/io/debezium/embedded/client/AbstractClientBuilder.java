@@ -3,41 +3,58 @@ package io.debezium.embedded.client;
 import io.debezium.embedded.handler.ChangeEventHandler;
 import io.debezium.embedded.handler.RecordChangeEventHandler;
 import io.debezium.embedded.protocol.DebeziumEntry;
+import io.debezium.engine.ChangeEvent;
 import io.debezium.engine.DebeziumEngine;
+import io.debezium.engine.RecordChangeEvent;
 import lombok.experimental.Accessors;
+import org.apache.kafka.connect.source.SourceRecord;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
 @Accessors(chain = true)
-public abstract class AbstractClientBuilder<D extends DebeziumClient, E> {
+public abstract class AbstractClientBuilder<D extends DebeziumClient> {
 
     /**
-     * 指定订阅的事件类型，主要用于标识事务的开始，变更数据，结束
-     */
-    protected Set<DebeziumEntry.EntryType> subscribeTypes = Collections.singleton(DebeziumEntry.EntryType.ROWDATA);
-    /**
-     * 消息处理器
+     * Change Event Handler
      */
     protected ChangeEventHandler changeEventHandler;
+    /**
+     * Record Change Event Handler
+     */
     protected RecordChangeEventHandler recordChangeEventHandler;
 
-    public AbstractClientBuilder<D, E> setSubscribeTypes(Set<DebeziumEntry.EntryType> subscribeTypes) {
-        this.subscribeTypes = subscribeTypes;
-        return this;
-    }
+    protected List<DebeziumEngine<ChangeEvent<String, String>>> changeEventEngines;
+    protected List<DebeziumEngine<RecordChangeEvent<SourceRecord>>> recordChangeEventEngines;
+    protected ThreadPoolTaskExecutor debeziumTaskExecutor;
 
-    public AbstractClientBuilder<D, E> changeEventHandler(ChangeEventHandler changeEventHandler) {
+    public AbstractClientBuilder<D> changeEventHandler(ChangeEventHandler changeEventHandler) {
         this.changeEventHandler = changeEventHandler;
         return this;
     }
 
-    public AbstractClientBuilder<D, E> recordChangeEventHandler(RecordChangeEventHandler recordChangeEventHandler) {
+    public AbstractClientBuilder<D> recordChangeEventHandler(RecordChangeEventHandler recordChangeEventHandler) {
         this.recordChangeEventHandler = recordChangeEventHandler;
         return this;
     }
 
-    public abstract D build(List<DebeziumEngine<E>> debeziumEngines);
+    public AbstractClientBuilder<D> changeEventEngines(List<DebeziumEngine<ChangeEvent<String, String>>> changeEventEngines) {
+        this.changeEventEngines = changeEventEngines;
+        return this;
+    }
+
+    public AbstractClientBuilder<D> recordChangeEventEngines(List<DebeziumEngine<RecordChangeEvent<SourceRecord>>> recordChangeEventEngines) {
+        this.recordChangeEventEngines = recordChangeEventEngines;
+        return this;
+    }
+
+    public AbstractClientBuilder<D> debeziumTaskExecutor(ThreadPoolTaskExecutor debeziumTaskExecutor) {
+        this.debeziumTaskExecutor = debeziumTaskExecutor;
+        return this;
+    }
+
+    public abstract D build();
 
 }

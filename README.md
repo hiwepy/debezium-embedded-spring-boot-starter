@@ -169,12 +169,33 @@ debezium:
   offset-storage:
     type: REDIS
     redis:
-      host: localhost
-      port: 6379
-      password: ""
+      # ==================== Offset Store 配置 ====================
+      # 基本连接配置
+      address: "localhost:6379"
       database: 0
-      key-prefix: "debezium:offsets:"
+      password: ""
+      username: ""  # Redis 6.0+ ACL 支持
+      client-name: "debezium-client"
+      
+      # 超时和连接池配置
+      connection-timeout: 30000
+      read-timeout: 30000
+      pool-size: 10
+      
+      # 重试配置
+      max-retries: 3
+      retry-delay-ms: 1000
+      
+      # 刷新配置
       flush-interval-ms: 60000
+      
+      # SSL/TLS 配置
+      ssl: false
+      ssl-cert-path: ""
+      ssl-key-path: ""
+      ssl-ca-path: ""
+      
+
 ```
 
 #### S3 存储
@@ -402,11 +423,22 @@ debezium:
 #### Redis 存储
 | 配置项 | 说明 | 默认值 |
 |--------|------|--------|
-| `debezium.offset-storage.redis.host` | Redis 主机 | localhost |
-| `debezium.offset-storage.redis.port` | Redis 端口 | 6379 |
-| `debezium.offset-storage.redis.password` | Redis 密码 | - |
+| **Offset Store 配置** | | |
+| `debezium.offset-storage.redis.address` | Redis 服务器地址 | localhost:6379 |
 | `debezium.offset-storage.redis.database` | 数据库索引 | 0 |
-| `debezium.offset-storage.redis.key-prefix` | 键前缀 | debezium:offsets: |
+| `debezium.offset-storage.redis.password` | Redis 密码 | - |
+| `debezium.offset-storage.redis.username` | Redis 用户名 | - |
+| `debezium.offset-storage.redis.client.name` | 客户端名称 | - |
+| `debezium.offset-storage.redis.connection.timeout.ms` | 连接超时时间 | 30000ms |
+| `debezium.offset-storage.redis.read.timeout.ms` | 读取超时时间 | 30000ms |
+| `debezium.offset-storage.redis.pool.size` | 连接池大小 | 10 |
+| `debezium.offset-storage.redis.ssl.enabled` | 是否启用 SSL | false |
+| `debezium.offset-storage.redis.ssl.cert.path` | SSL 证书路径 | - |
+| `debezium.offset-storage.redis.ssl.key.path` | SSL 密钥路径 | - |
+| `debezium.offset-storage.redis.ssl.ca.path` | SSL CA 证书路径 | - |
+| `debezium.offset-storage.redis.max.retries` | 最大重试次数 | 3 |
+| `debezium.offset-storage.redis.retry.delay.ms` | 重试延迟时间 | 1000ms |
+| `offset.flush.interval.ms` | 刷新间隔 | 60000ms |
 
 #### S3 存储
 | 配置项 | 说明 | 默认值 |

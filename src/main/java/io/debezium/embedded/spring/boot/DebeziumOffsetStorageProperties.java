@@ -85,7 +85,7 @@ public class DebeziumOffsetStorageProperties {
          * <p>默认值：/tmp/offsets.dat</p>
          * <p>建议使用绝对路径，确保应用有读写权限。</p>
          */
-        private String fileName = "/tmp/offsets.dat";
+        private String offsetStorageFileName = "/tmp/offsets.dat";
         
         /**
          * 刷新间隔时间（毫秒）
@@ -95,7 +95,7 @@ public class DebeziumOffsetStorageProperties {
          * <p>默认值：60000（60秒）</p>
          * <p>建议根据数据重要性和性能要求进行调整。</p>
          */
-        private Integer flushIntervalMs = 60_000;
+        private Integer offsetStorageFlushIntervalMs = 60_000;
         
         /**
          * 刷新超时时间（毫秒）
@@ -105,7 +105,11 @@ public class DebeziumOffsetStorageProperties {
          * <p>默认值：null（无限制）</p>
          * <p>建议在生产环境中设置合理的超时时间，避免长时间阻塞。</p>
          */
-        private Integer flushTimeoutMs;
+        private Integer offsetStorageFlushTimeoutMs = 5000;
+
+
+
+
     }
 
     /**
@@ -116,42 +120,36 @@ public class DebeziumOffsetStorageProperties {
      */
     @Data
     public static class Kafka {
-        /**
-         * Kafka 服务器地址
-         * 
-         * <p>指定 Kafka 集群的服务器地址列表，多个地址用逗号分隔。</p>
-         * <p>示例：localhost:9092,localhost:9093</p>
-         * <p>必填字段，用于连接 Kafka 集群。</p>
-         */
-        private String bootstrapServers;
-        
+
         /**
          * 偏移量主题名称
-         * 
+         *
          * <p>指定用于存储偏移量信息的 Kafka 主题名称。</p>
          * <p>默认值：debezium-offsets</p>
          * <p>如果主题不存在，将自动创建。</p>
          */
-        private String topic = "debezium-offsets";
-        
+        private String offsetStorageTopic = "debezium-offsets";
+
         /**
          * 主题分区数
-         * 
+         *
          * <p>指定偏移量主题的分区数量。仅在主题不存在时生效。</p>
-         * <p>默认值：1</p>
+         * <p>默认值：25</p>
          * <p>建议根据并发需求设置合适的分区数。</p>
          */
-        private Integer partitions = 1;
-        
+        private Integer offsetStoragePartitions = 25;
+
         /**
          * 副本因子
-         * 
+         *
          * <p>指定偏移量主题的副本数量。仅在主题不存在时生效。</p>
          * <p>默认值：1</p>
          * <p>建议在生产环境中设置为 3 或更高，确保高可用性。</p>
          */
-        private Integer replicationFactor = 1;
-        
+        private Integer offsetStorageReplicationFactor = 1;
+
+
+
         /**
          * 生产者配置
          * 
@@ -526,14 +524,15 @@ public class DebeziumOffsetStorageProperties {
      */
     @Data
     public static class Jdbc {
+
         /**
-         * 数据库连接 URL
+         * JDBC 驱动连接字符串，用于连接数据库。
          * 
          * <p>指定数据库的连接 URL。</p>
          * <p>示例：jdbc:mysql://localhost:3306/debezium</p>
          * <p>必填字段，用于连接数据库。</p>
          */
-        private String url;
+        private String offsetStorageUrl;
         
         /**
          * 数据库用户名
@@ -541,7 +540,7 @@ public class DebeziumOffsetStorageProperties {
          * <p>指定连接数据库的用户名。</p>
          * <p>必填字段，用于数据库认证。</p>
          */
-        private String username;
+        private String offsetStorageUsername;
         
         /**
          * 数据库密码
@@ -549,231 +548,42 @@ public class DebeziumOffsetStorageProperties {
          * <p>指定连接数据库的密码。</p>
          * <p>必填字段，用于数据库认证。</p>
          */
-        private String password;
+        private String offsetStoragePassword;
         
         /**
-         * 数据库驱动类名
-         * 
-         * <p>指定数据库驱动的完整类名。</p>
-         * <p>默认值：com.mysql.cj.jdbc.Driver</p>
-         * <p>根据使用的数据库类型选择相应的驱动。</p>
-         */
-        private String driverClassName = "com.mysql.cj.jdbc.Driver";
-        
-        /**
-         * 偏移量表名
+         * 存储偏移量的表的名称
          * 
          * <p>指定存储偏移量信息的数据库表名。</p>
-         * <p>默认值：debezium_offsets</p>
+         * <p>默认值：debezium_offset_storage</p>
          * <p>如果表不存在，将自动创建。</p>
          */
-        private String tableName = "debezium_offsets";
-        
-        /**
-         * 刷新间隔时间（毫秒）
-         * 
-         * <p>指定将偏移量信息刷新到数据库的最大时间间隔。</p>
-         * <p>默认值：60000（60秒）</p>
-         * <p>建议根据数据重要性和性能要求进行调整。</p>
-         */
-        private Integer flushIntervalMs = 60_000;
-        
-        /**
-         * 连接池大小
-         * 
-         * <p>指定数据库连接池的大小。</p>
-         * <p>默认值：10</p>
-         * <p>建议根据并发需求调整。</p>
-         */
-        private Integer poolSize = 10;
-        
-        /**
-         * 连接超时时间（毫秒）
-         * 
-         * <p>指定建立数据库连接的超时时间。</p>
-         * <p>默认值：30000（30秒）</p>
-         * <p>建议根据网络延迟调整。</p>
-         */
-        private Integer connectionTimeout = 30000;
-        
-        /**
-         * 查询超时时间（毫秒）
-         * 
-         * <p>指定执行数据库查询的超时时间。</p>
-         * <p>默认值：30000（30秒）</p>
-         * <p>建议根据查询复杂度调整。</p>
-         */
-        private Integer queryTimeout = 30000;
-        
-        /**
-         * 最大连接生命周期（毫秒）
-         * 
-         * <p>指定连接的最大生命周期。</p>
-         * <p>默认值：1800000（30分钟）</p>
-         * <p>超过此时间的连接将被关闭并重新创建。</p>
-         */
-        private Integer maxConnectionLifetime = 1800000;
-        
-        /**
-         * 连接最大空闲时间（毫秒）
-         * 
-         * <p>指定连接的最大空闲时间。</p>
-         * <p>默认值：600000（10分钟）</p>
-         * <p>超过此时间的空闲连接将被关闭。</p>
-         */
-        private Integer maxConnectionIdleTime = 600000;
-        
-        /**
-         * 最小连接数
-         * 
-         * <p>指定连接池维护的最小连接数。</p>
-         * <p>默认值：1</p>
-         * <p>确保始终有可用的连接。</p>
-         */
-        private Integer minConnections = 1;
-        
-        /**
-         * 最大连接数
-         * 
-         * <p>指定连接池允许的最大连接数。</p>
-         * <p>默认值：20</p>
-         * <p>建议根据数据库性能和并发需求调整。</p>
-         */
-        private Integer maxConnections = 20;
-        
-        /**
-         * 连接验证查询
-         * 
-         * <p>指定用于验证连接有效性的 SQL 查询。</p>
-         * <p>默认值：SELECT 1</p>
-         * <p>用于检测连接是否仍然有效。</p>
-         */
-        private String connectionValidationQuery = "SELECT 1";
-        
-        /**
-         * 连接验证超时时间（毫秒）
-         * 
-         * <p>指定连接验证的超时时间。</p>
-         * <p>默认值：5000（5秒）</p>
-         * <p>建议设置合理的超时时间。</p>
-         */
-        private Integer connectionValidationTimeout = 5000;
-        
-        /**
-         * 是否启用连接泄漏检测
-         * 
-         * <p>指定是否启用连接泄漏检测功能。</p>
-         * <p>默认值：false</p>
-         * <p>启用后可以检测未正确关闭的连接。</p>
-         */
-        private Boolean leakDetectionThreshold = false;
-        
-        /**
-         * 连接泄漏检测阈值（毫秒）
-         * 
-         * <p>指定连接泄漏检测的阈值时间。</p>
-         * <p>默认值：60000（60秒）</p>
-         * <p>超过此时间的连接将被标记为泄漏。</p>
-         */
-        private Integer leakDetectionThresholdMs = 60000;
-        
-        /**
-         * 是否启用自动提交
-         * 
-         * <p>指定是否启用自动提交事务。</p>
-         * <p>默认值：true</p>
-         * <p>建议启用以确保数据一致性。</p>
-         */
-        private Boolean autoCommit = true;
-        
-        /**
-         * 事务隔离级别
-         * 
-         * <p>指定数据库事务的隔离级别。</p>
-         * <p>可选值：</p>
-         * <ul>
-         *   <li>TRANSACTION_READ_UNCOMMITTED</li>
-         *   <li>TRANSACTION_READ_COMMITTED</li>
-         *   <li>TRANSACTION_REPEATABLE_READ</li>
-         *   <li>TRANSACTION_SERIALIZABLE</li>
-         * </ul>
-         * <p>默认值：TRANSACTION_READ_COMMITTED</p>
-         * <p>建议使用 READ_COMMITTED 平衡性能和一致性。</p>
-         */
-        private String transactionIsolation = "TRANSACTION_READ_COMMITTED";
-        
-        /**
-         * 是否启用 SSL
-         * 
-         * <p>指定是否启用 SSL 连接。</p>
-         * <p>默认值：false</p>
-         * <p>生产环境建议启用 SSL。</p>
-         */
-        private Boolean useSSL = false;
-        
-        /**
-         * SSL 模式
-         * 
-         * <p>指定 SSL 连接的模式。</p>
-         * <p>可选值：DISABLED, PREFERRED, REQUIRED, VERIFY_CA, VERIFY_IDENTITY</p>
-         * <p>默认值：PREFERRED</p>
-         * <p>根据安全要求选择合适的模式。</p>
-         */
-        private String sslMode = "PREFERRED";
-        
-        /**
-         * 是否验证服务器证书
-         * 
-         * <p>指定是否验证服务器的 SSL 证书。</p>
-         * <p>默认值：true</p>
-         * <p>建议在生产环境中启用验证。</p>
-         */
-        private Boolean verifyServerCertificate = true;
-        
-        /**
-         * 是否允许公钥检索
-         * 
-         * <p>指定是否允许从服务器检索公钥。</p>
-         * <p>默认值：false</p>
-         * <p>仅在特定认证场景下需要。</p>
-         */
-        private Boolean allowPublicKeyRetrieval = false;
-        
-        /**
-         * 字符编码
-         * 
-         * <p>指定数据库连接的字符编码。</p>
-         * <p>默认值：UTF-8</p>
-         * <p>确保与数据库字符集一致。</p>
-         */
-        private String characterEncoding = "UTF-8";
-        
-        /**
-         * 时区
-         * 
-         * <p>指定数据库连接的时区。</p>
-         * <p>默认值：UTC</p>
-         * <p>建议使用 UTC 时区避免时区问题。</p>
-         */
-        private String timezone = "UTC";
-        
+        private String offsetStorageTableName = "debezium_offset_storage";
+        private String offsetStorageTableDdl;
+        private String offsetStorageTableSelect = "SELECT id, offset_key, offset_val FROM %s ORDER BY record_insert_ts, record_insert_seq";
+        private String offsetStorageTableInsert = "INSERT INTO %s(id, offset_key, offset_val, record_insert_ts, record_insert_seq) VALUES ( ?, ?, ?, ?, ? )";
+        private String offsetStorageTableDelete = "DELETE FROM %s";
+
         /**
          * 最大重试次数
-         * 
+         *
          * <p>指定数据库操作失败时的最大重试次数。</p>
-         * <p>默认值：3</p>
+         * <p>默认值：5</p>
          * <p>建议根据网络稳定性调整。</p>
          */
-        private Integer maxRetries = 3;
-        
+        private Integer offsetStorageMaxRetries = 5;
+
         /**
          * 重试延迟时间（毫秒）
-         * 
+         *
          * <p>指定重试之间的延迟时间。</p>
-         * <p>默认值：1000（1秒）</p>
+         * <p>默认值：3000（3秒）</p>
          * <p>用于避免频繁重试对数据库造成压力。</p>
          */
-        private Integer retryDelayMs = 1000;
+        private Integer offsetStorageRetryDelayMs = 3000;
+
+
+
+
     }
 
     /**
@@ -784,23 +594,16 @@ public class DebeziumOffsetStorageProperties {
      */
     @Data
     public static class Redis {
+        // ==================== Offset Store 配置 ====================
+        
         /**
          * Redis 服务器地址
          * 
-         * <p>指定 Redis 服务器的地址。</p>
-         * <p>默认值：localhost</p>
+         * <p>指定 Redis 服务器的地址，格式为 host:port。</p>
+         * <p>默认值：localhost:6379</p>
          * <p>支持单机、主从、集群等部署模式。</p>
          */
-        private String host = "localhost";
-        
-        /**
-         * Redis 服务器端口
-         * 
-         * <p>指定 Redis 服务器的端口号。</p>
-         * <p>默认值：6379</p>
-         * <p>根据 Redis 配置调整。</p>
-         */
-        private Integer port = 6379;
+        private String address = "localhost:6379";
         
         /**
          * Redis 密码
@@ -819,14 +622,7 @@ public class DebeziumOffsetStorageProperties {
          */
         private Integer database = 0;
         
-        /**
-         * 键前缀
-         * 
-         * <p>指定存储偏移量时使用的键前缀。</p>
-         * <p>默认值：debezium:offsets:</p>
-         * <p>用于区分不同应用的偏移量数据。</p>
-         */
-        private String keyPrefix = "debezium:offsets:";
+
         
         /**
          * 刷新间隔时间（毫秒）
@@ -930,6 +726,8 @@ public class DebeziumOffsetStorageProperties {
          * <p>用于避免频繁重试对 Redis 造成压力。</p>
          */
         private Integer retryDelayMs = 1000;
+
+
     }
 
     /**

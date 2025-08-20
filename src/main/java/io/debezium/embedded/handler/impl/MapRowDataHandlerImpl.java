@@ -24,7 +24,7 @@ public class MapRowDataHandlerImpl implements RowDataHandler<List<Map<String, St
             return;
         }
         switch (eventType) {
-            case INSERT:
+            case CREATE:
                 R entry  = modelFactory.newInstance(entryHandler, list.get(0));
                 entryHandler.insert(entry);
                 break;

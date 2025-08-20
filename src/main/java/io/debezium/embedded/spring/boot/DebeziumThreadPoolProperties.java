@@ -24,7 +24,6 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.function.Function;
 
 /**
- *
  * @author ： <a href="https://github.com/hiwepy">hiwepy</a>
  */
 @ConfigurationProperties(DebeziumThreadPoolProperties.PREFIX)

@@ -11,12 +11,13 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 @Configuration
 @ConditionalOnClass(DebeziumEngine.class)
-@EnableConfigurationProperties({DebeziumClientProperties.class, DebeziumThreadPoolProperties.class})
+@EnableConfigurationProperties(DebeziumThreadPoolProperties.class)
 public class DebeziumThreadPoolAutoConfiguration {
 
     @Bean(destroyMethod = "shutdown", name = "debeziumEmbeddedExecutor")
     public ThreadPoolTaskExecutor debeziumEmbeddedExecutor(DebeziumThreadPoolProperties poolProperties) {
-        BasicThreadFactory factory = BasicThreadFactory.builder().namingPattern("debezium-embedded-thread-%d")
+        BasicThreadFactory factory = BasicThreadFactory.builder()
+                .namingPattern("debezium-embedded-thread-%d")
                 .uncaughtExceptionHandler(new DebeziumThreadUncaughtExceptionHandler()).build();
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setThreadFactory(factory);
@@ -36,8 +37,6 @@ public class DebeziumThreadPoolAutoConfiguration {
          * DiscardOldestPolicy()：丢弃队列中最老的任务。
          */
         executor.setRejectedExecutionHandler(poolProperties.getRejectedPolicy().getRejectedExecutionHandler());
-        // 线程初始化
-        executor.initialize();
         return executor;
     }
 

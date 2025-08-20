@@ -4,11 +4,15 @@ package io.debezium.embedded.storage;
  * Offset 存储类型枚举。
  */
 public enum OffsetStorageType {
+
+    /**
+     * 文件存储
+     */
+    MEMORY,
     /**
      * 文件存储
      */
     FILE,
-    
     /**
      * Kafka 存储
      */

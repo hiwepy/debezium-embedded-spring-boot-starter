@@ -13,11 +13,6 @@ import java.util.Properties;
 @FunctionalInterface
 public interface RecordChangeEventHandler {
 
-    String DATA = "data";
-    String BEFORE_DATA = "beforeData";
-    String EVENT_TYPE = "eventType";
-    String SOURCE = "source";
-    String TABLE = "table";
 
     /**
      * 处理消息

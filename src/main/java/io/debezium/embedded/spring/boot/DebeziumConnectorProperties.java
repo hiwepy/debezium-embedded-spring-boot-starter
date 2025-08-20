@@ -9,13 +9,6 @@ import lombok.Data;
 @Data
 public class DebeziumConnectorProperties {
 
-    public static final String PREFIX = "debezium.connector";
-
-    /**
-     * 是否启用 Embedded 模式
-     */
-    private Boolean enabled = false;
-
     /**
      * 连接器类型
      */

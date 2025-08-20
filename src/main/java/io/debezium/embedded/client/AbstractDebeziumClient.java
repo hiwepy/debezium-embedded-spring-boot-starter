@@ -2,21 +2,18 @@ package io.debezium.embedded.client;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import io.debezium.config.Configuration;
-import io.debezium.embedded.Connect;
+import io.debezium.embedded.async.AsyncEmbeddedEngine;
 import io.debezium.embedded.handler.ChangeEventHandler;
 import io.debezium.embedded.handler.RecordChangeEventHandler;
 import io.debezium.embedded.protocol.DebeziumEntry;
 import io.debezium.engine.ChangeEvent;
 import io.debezium.engine.DebeziumEngine;
 import io.debezium.engine.RecordChangeEvent;
-import io.debezium.engine.format.ChangeEventFormat;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.kafka.connect.source.SourceRecord;
-import org.slf4j.MDC;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.util.Assert;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,21 +23,17 @@ import java.util.concurrent.*;
  * Debezium Client 抽象类
  */
 @Slf4j
-public abstract class AbstractDebeziumClient<E> implements InitializingBean, DebeziumClient,
-        DebeziumEngine.CompletionCallback,
-        DebeziumEngine.ConnectorCallback {
+public abstract class AbstractDebeziumClient<R> implements InitializingBean, DebeziumClient {
 
     /**
      * 是否运行中
      */
     protected volatile boolean running;
-
     /**
      * Debezium Engine
      */
-    private List<Configuration> configurations;
-    private List<DebeziumEngine<E>> debeziumEngines;
-
+    private List<DebeziumEngine<ChangeEvent<String, String>>> changeEventEngines;
+    private List<DebeziumEngine<RecordChangeEvent<SourceRecord>>> recordChangeEventEngines;
     /**
      * 指定订阅的事件类型，主要用于标识事务的开始，变更数据，结束
      */
@@ -57,39 +50,25 @@ public abstract class AbstractDebeziumClient<E> implements InitializingBean, Deb
     /**
      * 线程池
      */
-    protected ThreadPoolExecutor executor;
+    protected ThreadPoolTaskExecutor executor;
 
-    public AbstractDebeziumClient(List<Configuration> configurations) {
-        this.configurations = configurations;
+    public AbstractDebeziumClient(List<DebeziumEngine<ChangeEvent<String, String>>> changeEventEngines,
+                                  List<DebeziumEngine<RecordChangeEvent<SourceRecord>>> recordChangeEventEngines,
+                                  ThreadPoolTaskExecutor executor) {
+        this.changeEventEngines = changeEventEngines;
+        this.recordChangeEventEngines = recordChangeEventEngines;
+        this.executor = executor;
     }
 
     @Override
     public void afterPropertiesSet() {
-        Assert.notEmpty(configurations, "DebeziumEngine Configuration Empty!");
-        threadFactory = new ThreadFactoryBuilder().setNameFormat(SQL_SERVER_LISTENER_POOL + "-%d").build();
-        executor = new ThreadPoolExecutor(8, 16, 60,
-                TimeUnit.SECONDS, new ArrayBlockingQueue<>(256),
-                threadFactory, new ThreadPoolExecutor.DiscardPolicy());
 
-        for (Configuration configuration : configurations) {
-            DebeziumEngine.ConnectorCallback connectorCallback = this;
-            DebeziumEngine.CompletionCallback completionCallback = this;
-            DebeziumEngine<RecordChangeEvent<SourceRecord>> debeziumEngine = DebeziumEngine
-                    .create(ChangeEventFormat.of(Connect.class))
-                    .using(configuration.asProperties())
-                    .using(completionCallback)
-                    .using(connectorCallback)
-                    .notifying((recordChangeEvents, recordCommitter) -> process(recordChangeEvents, recordCommitter))
-                    .build();
-            debeziumEngines.add(debeziumEngine);
-        }
     }
 
     @Override
     public void start() {
         log.info("Start Debezium Client Of Instance： {}", this.getClass().getSimpleName());
-        for (DebeziumEngine<E> debeziumEngine : debeziumEngines) {
-            log.warn(ThreadPoolEnum.SQL_SERVER_LISTENER_POOL + "线程池开始执行 debeziumEngine 实时监听任务!");
+        for (DebeziumEngine<ChangeEvent<String, String>> debeziumEngine : changeEventEngines) {
             executor.execute(debeziumEngine);
         }
         this.running = true;

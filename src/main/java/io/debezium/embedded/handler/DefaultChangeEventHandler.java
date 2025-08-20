@@ -2,10 +2,12 @@ package io.debezium.embedded.handler;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import io.debezium.data.Envelope;
 import io.debezium.embedded.annotation.DebeziumEventHolder;
 import io.debezium.embedded.context.DebeziumContext;
 import io.debezium.embedded.model.DebeziumModel;
 import io.debezium.embedded.protocol.DebeziumEntry;
+import io.debezium.embedded.util.DebeziumUtil;
 import io.debezium.engine.ChangeEvent;
 import io.debezium.embedded.util.GenericUtil;
 import io.debezium.embedded.util.HandlerUtil;
@@ -22,7 +24,7 @@ import java.util.*;
 
 
 @Slf4j
-public abstract class AbstractChangeEventHandler implements ChangeEventHandler, ApplicationContextAware {
+public class DefaultChangeEventHandler implements ChangeEventHandler, ApplicationContextAware {
 
     /**
      * 指定订阅的事件类型，主要用于标识事务的开始，变更数据，结束
@@ -41,9 +43,9 @@ public abstract class AbstractChangeEventHandler implements ChangeEventHandler, 
      */
     private RowDataHandler<ChangeEvent<String, String>> rowDataHandler;
 
-    public AbstractChangeEventHandler(List<DebeziumEntry.EntryType> subscribeTypes,
-                                      List<? extends EntryHandler> entryHandlers,
-                                      RowDataHandler<ChangeEvent<String, String>> rowDataHandler) {
+    public DefaultChangeEventHandler(List<DebeziumEntry.EntryType> subscribeTypes,
+                                     List<? extends EntryHandler> entryHandlers,
+                                     RowDataHandler<ChangeEvent<String, String>> rowDataHandler) {
         if(Objects.nonNull(subscribeTypes)){
             this.subscribeTypes = subscribeTypes;
         }
@@ -57,12 +59,13 @@ public abstract class AbstractChangeEventHandler implements ChangeEventHandler, 
 
     @Override
     public void handleEvent(ChangeEvent<String, String> event, Properties props) {
-
         if (Objects.nonNull(event.value())) {
             try {
+                log.info("解析变更事件, event:{}, headers: {}", event, event.headers());
                 // 解析JSON字符串
-                JSONObject jsonValue = JSON.parseObject(value);
-                JSONObject payload = jsonValue.getJSONObject("payload");
+                JSONObject jsonValue = JSON.parseObject(event.value());
+
+                JSONObject payload = jsonValue.getJSONObject(DebeziumUtil.PAYLOAD);
                 if (payload != null) {
                     ChangeDataMessage message = new ChangeDataMessage();
                     // 设置操作类型

@@ -1,12 +1,12 @@
 package io.debezium.embedded.history;
 
 import io.debezium.config.Configuration;
-import io.debezium.embedded.spring.boot.DebeziumDatabaseHistoryProperties;
+import io.debezium.embedded.spring.boot.DebeziumSchemaHistoryProperties;
 
 /**
  * 数据库历史记录配置器接口。
  */
-public interface DatabaseHistoryConfigurer {
+public interface SchemaHistoryConfigurer {
     
     /**
      * 应用历史记录配置到 Debezium 配置构建器。
@@ -14,5 +14,5 @@ public interface DatabaseHistoryConfigurer {
      * @param builder Debezium 配置构建器
      * @param properties 历史记录配置属性
      */
-    void apply(Configuration.Builder builder, DebeziumDatabaseHistoryProperties properties);
+    void apply(Configuration.Builder builder, DebeziumSchemaHistoryProperties properties);
 }

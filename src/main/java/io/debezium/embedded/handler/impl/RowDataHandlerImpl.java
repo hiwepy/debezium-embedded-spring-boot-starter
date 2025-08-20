@@ -19,7 +19,6 @@ public class RowDataHandlerImpl implements RowDataHandler<DebeziumEntry.RowData>
 
     private IModelFactory<List<DebeziumEntry.Column>> modelFactory;
 
-
     public RowDataHandlerImpl(IModelFactory modelFactory) {
         this.modelFactory = modelFactory;
     }

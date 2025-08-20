@@ -2,16 +2,6 @@
 ###Debezium (DebeziumProperties、DebeziumKafkaProperties、DebeziumRabbitMQProperties、DebeziumRocketMQProperties、DebeziumPulsarProperties、DebeziumTcpProperties) 基本配置：
 #########################################################################################################################################################
 debezium:
-  # Debezium Server 模式。默认为 simple
-  mode: simple
-  batch-size: 1000
-  subscribe-types:
-    - ROWDATA
-    - TRANSACTIONEND
-    - HEARTBEAT
-  timeout: 60
-  unit: SECONDS
-  # 是否开启消息队列。默认为 false
   # Debezium 异步消费线程池配置
   thread-pool:
     # 线程池核心线程数。默认为 1
@@ -22,123 +12,35 @@ debezium:
     queue-capacity: 1000
     # 线程池线程存活时间。默认为 60s
     keep-alive: 60s
-  # Simple 客户端模式配置
-  simple:
-    instances:
-      - # Debezium Server 主机地址。如果设置了address属性，则忽略。
+  # Debezium Embedded 实例配置
+  instances:
+    # ========================================
+    # MySQL 连接器配置
+    # ========================================
+    - connector:
+        destination: mysql-connector
+        type: MYSQL
+        # Debezium Server 主机地址。如果设置了address属性，则忽略。
+        host: 127.0.0.1
+    # ========================================
+    # MongoDB 连接器配置
+    # ========================================
+    - connector:
+        destination: mongodb-connector
+        # Debezium Server 主机地址。如果设置了address属性，则忽略。
         host: 127.0.0.1
         # Debezium Server 端口。如果设置了address属性，则忽略。默认为 5672
-        port: 11111
+        port: 3306
         # Debezium Server 用户名
         username: xxx
         # Debezium Server 密码
-        password: xxx
-        # Socket 连接超时时间，单位：毫秒。默认为 60000
-        so-timeout: 60000
-        # Socket 空闲超时时间，单位：毫秒。默认为 3600000
-        idle-timeout: 3600000
-        # 重试次数;设置-1时可以subscribe阻塞等待时优雅停机
-        retry-times: 3
-        # 重试间隔时间，单位：毫秒。默认为 1000
-        retry-interval: 1000
-  # Cluster 客户端模式配置
-  cluster:
-    instances:
-      - # Debezium Server 地址。如果设置了该属性，则忽略host和port属性。
-        addresses: xxx
-        #  Debezium Zookeeper 地址
-        zk-servers: : xxx
-        # Debezium Server 用户名
-        username: xxx
-        # Debezium Server 密码
-        password: xxx
-        # Socket 连接超时时间，单位：毫秒。默认为 60000
-        so-timeout: 60000
-        # Socket 空闲超时时间，单位：毫秒。默认为 3600000
-        idle-timeout: 3600000
-        # 重试次数;设置-1时可以subscribe阻塞等待时优雅停机
-        retry-times: 3
-        # 重试间隔时间，单位：毫秒。默认为 1000
-        retry-interval: 1000
-  # Debezium Kafka 消息队列配置
-  kafka:
-    instances:
-      - # 启动时从未消费的消息位置开始
-        earliest: true
-        # 消息分区索引
-        partition: 0
-        # Kafka服务器地址
-        servers: xxx,xxx,xxx
-        # 订阅的消息主题
-        topic: xxx
-        # 消费者组ID
-        group-id: xxx
-        # 批量获取数据的大小
-        batch-size: 64
-  # Debezium RabbitMQ 消息队列配置
-  rabbitmq:
-    instances:
-      - # RabbitMQ服务器地址
-        addresses: xxx,xxx,xxx
-        # 虚拟主机
-        vhost: xxx
-        # 队列名称
-        queue-name: xxx
-        # 访问key
-        access-key: xxx
-        # 访问秘钥
-        secret-key: xxx
-        # 用户名
-        username: xxx
-        # 密码
-        password: xxx
-        #资源所有者的ID
-        resource-owner-id: 000000
-  # Debezium RocketMQ 消息队列配置
-  rocketmq:
-    instances:
-      - # RocketMQ NameServer 服务地址
-        name-server: xxx
-        # 订阅的消息主题
-        topic: xxx
-        # 消费者组名称
-        group-name: xxx
-        # 访问key
-        access-key: xxx
-        # 访问秘钥
-        secret-key: xxx
-        # 访问的通道
-        access-channel: LOCAL
-        # 是否开启消息轨迹
-        enable-message-trace: false
-        # 命名空间
-        namespace: xxx
-        # 自定义轨迹主题
-        customized-trace-topic: xxx
-        # 批量获取数据的大小
-        batch-size: 64
-  # Debezium Pulsar 消息队列配置
-  pulsar:
-    instances:
-      - # PulsarMQ 服务地址
-        service-url: xxx
-        # 角色认证 token
-        role-token: xxx
-        # 订阅的消息主题
-        topic: xxx
-        # 订阅客户端名称
-        subscript-name: xxx
-        # 每次批量获取数据的最大条目数，默认30
-        batch-size: 30
-        batch-timeout-seconds: 30
-        batch-process-timeout-seconds: 60
-        # 消费失败后的重试秒数，默认60秒
-        redelivery-delay-seconds: 60
-        # 当客户端接收到消息，30秒还没有返回ack给服务端时，ack超时，会重新消费该消息
-        ack-timeout-seconds: 30
-        # 是否开启消息失败重试功能，默认开启
-        retry: true
-        #  true重试(-RETRY)和死信队列(-DLQ)后缀为大写，有些地方创建的为小写，需确保正确
-        retry-d-l-q-upper-case: true
-        # 最大重试次数
-        max-redelivery-count: 10
+        password: 222
+      history:
+        file:
+          backup: true
+      offset-storage:
+        type: FILE
+        file:
+          file-name: /tmp/debezium-offsets.dat
+          flush-interval-ms: 60000
+          flush-timeout-ms: 5000
