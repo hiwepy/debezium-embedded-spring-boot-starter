@@ -1,7 +1,9 @@
 package io.debezium.spring.boot;
 
 import io.debezium.embedded.annotation.DebeziumEventHandler;
-import io.debezium.embedded.annotation.event.*;
+import io.debezium.embedded.annotation.event.OnDeleteEvent;
+import io.debezium.embedded.annotation.event.OnInsertEvent;
+import io.debezium.embedded.annotation.event.OnUpdateEvent;
 import io.debezium.embedded.model.DebeziumModel;
 import io.debezium.embedded.protocol.DebeziumEntry;
 import lombok.extern.slf4j.Slf4j;

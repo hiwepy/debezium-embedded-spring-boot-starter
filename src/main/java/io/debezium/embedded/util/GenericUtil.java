@@ -1,11 +1,11 @@
 package io.debezium.embedded.util;
 
 
+import com.baomidou.mybatisplus.core.metadata.TableInfo;
+import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 import io.debezium.embedded.handler.RecordChangeEventEntryHandler;
 import io.debezium.embedded.model.DebeziumModel;
 import io.debezium.embedded.protocol.DebeziumEntry;
-import com.baomidou.mybatisplus.core.metadata.TableInfo;
-import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;

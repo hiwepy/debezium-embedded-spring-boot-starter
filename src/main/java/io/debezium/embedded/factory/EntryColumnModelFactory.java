@@ -1,12 +1,12 @@
 package io.debezium.embedded.factory;
 
 
-import io.debezium.embedded.enums.TableNameEnum;
-import io.debezium.embedded.handler.RecordChangeEventEntryHandler;
-import io.debezium.embedded.protocol.DebeziumEntry;
 import com.baomidou.mybatisplus.core.metadata.TableFieldInfo;
 import com.baomidou.mybatisplus.core.metadata.TableInfo;
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
+import io.debezium.embedded.enums.TableNameEnum;
+import io.debezium.embedded.handler.RecordChangeEventEntryHandler;
+import io.debezium.embedded.protocol.DebeziumEntry;
 import io.debezium.embedded.util.GenericUtil;
 import io.debezium.embedded.util.HandlerUtil;
 import org.apache.commons.beanutils.PropertyUtils;

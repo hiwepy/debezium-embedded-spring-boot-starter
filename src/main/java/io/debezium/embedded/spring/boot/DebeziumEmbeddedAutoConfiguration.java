@@ -10,7 +10,9 @@ import io.debezium.embedded.configurer.history.SchemaHistoryConfigurerFactory;
 import io.debezium.embedded.configurer.storage.OffsetStorageConfigurer;
 import io.debezium.embedded.configurer.storage.OffsetStorageConfigurerFactory;
 import io.debezium.embedded.factory.MapColumnModelFactory;
-import io.debezium.embedded.handler.*;
+import io.debezium.embedded.handler.ChangeEventHandler;
+import io.debezium.embedded.handler.RecordChangeEventHandler;
+import io.debezium.embedded.handler.RowDataHandler;
 import io.debezium.embedded.handler.impl.MapRowDataHandlerImpl;
 import io.debezium.engine.ChangeEvent;
 import io.debezium.engine.DebeziumEngine;
@@ -25,7 +27,6 @@ import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
@@ -43,7 +44,6 @@ import java.util.Objects;
  */
 @org.springframework.context.annotation.Configuration
 @ConditionalOnClass({ DebeziumEngine.class })
-@ConditionalOnProperty(prefix = "debezium.embedded", name = "enabled", havingValue = "true")
 @EnableConfigurationProperties({DebeziumEmbeddedProperties.class, DebeziumThreadPoolProperties.class})
 @Import(DebeziumThreadPoolAutoConfiguration.class)
 @Slf4j

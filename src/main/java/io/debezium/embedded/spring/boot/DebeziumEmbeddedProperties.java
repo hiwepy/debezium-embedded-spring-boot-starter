@@ -15,13 +15,10 @@
  */
 package io.debezium.embedded.spring.boot;
 
-import io.debezium.embedded.protocol.DebeziumEntry;
-import io.debezium.engine.spi.OffsetCommitPolicy;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**

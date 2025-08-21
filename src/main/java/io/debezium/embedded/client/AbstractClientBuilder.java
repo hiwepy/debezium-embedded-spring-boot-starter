@@ -2,7 +2,6 @@ package io.debezium.embedded.client;
 
 import io.debezium.embedded.handler.ChangeEventHandler;
 import io.debezium.embedded.handler.RecordChangeEventHandler;
-import io.debezium.embedded.protocol.DebeziumEntry;
 import io.debezium.engine.ChangeEvent;
 import io.debezium.engine.DebeziumEngine;
 import io.debezium.engine.RecordChangeEvent;
@@ -10,9 +9,7 @@ import lombok.experimental.Accessors;
 import org.apache.kafka.connect.source.SourceRecord;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 @Accessors(chain = true)
 public abstract class AbstractClientBuilder<D extends DebeziumClient> {
