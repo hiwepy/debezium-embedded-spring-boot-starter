@@ -128,7 +128,6 @@ public class DebeziumEmbeddedAutoConfiguration {
             DebeziumAsyncEngineProperties asyncEngineProperties = instance.getAsync();
             DebeziumConnectorProperties connectorProperties = instance.getConnector();
             DebeziumOffsetStorageProperties storageProperties = instance.getOffsetStorage();
-            DebeziumSchemaHistoryProperties historyProperties = instance.getSchemaHistory();
 
             // 1. 创建基础配置
             Configuration.Builder builder = Configuration.create()
