@@ -60,11 +60,6 @@ public class DebeziumEmbeddedProperties {
         DebeziumConnectorProperties connector = new DebeziumConnectorProperties();
 
         /**
-         * 数据库历史记录配置
-         */
-        DebeziumSchemaHistoryProperties schemaHistory = new DebeziumSchemaHistoryProperties();
-
-        /**
          * 偏移量存储配置
          */
         DebeziumOffsetStorageProperties offsetStorage = new DebeziumOffsetStorageProperties();

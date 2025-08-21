@@ -2,7 +2,6 @@ package io.debezium.embedded.spring.boot.example;
 
 import io.debezium.embedded.configurer.history.RedisSchemaHistoryConfigurer;
 import io.debezium.embedded.configurer.history.SchemaHistoryType;
-import io.debezium.embedded.spring.boot.DebeziumSchemaHistoryProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;

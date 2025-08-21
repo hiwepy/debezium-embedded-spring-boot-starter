@@ -22,10 +22,6 @@ public class OffsetStorageConfigurerFactory {
                 return new FileOffsetStorageConfigurer();
             case KAFKA:
                 return new KafkaOffsetStorageConfigurer();
-            case JDBC:
-                return new JdbcOffsetStorageConfigurer();
-            case REDIS:
-                return new RedisOffsetStorageConfigurer();
             case CUSTOM:
                 return new CustomOffsetStorageConfigurer();
             default:

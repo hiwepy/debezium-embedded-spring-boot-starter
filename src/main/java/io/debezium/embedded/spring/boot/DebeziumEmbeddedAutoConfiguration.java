@@ -5,8 +5,6 @@ import io.debezium.embedded.Connect;
 import io.debezium.embedded.client.DebeziumEmbeddedClient;
 import io.debezium.embedded.configurer.connector.ConnectorConfigurer;
 import io.debezium.embedded.configurer.connector.ConnectorConfigurerFactory;
-import io.debezium.embedded.configurer.history.SchemaHistoryConfigurer;
-import io.debezium.embedded.configurer.history.SchemaHistoryConfigurerFactory;
 import io.debezium.embedded.configurer.storage.OffsetStorageConfigurer;
 import io.debezium.embedded.configurer.storage.OffsetStorageConfigurerFactory;
 import io.debezium.embedded.factory.MapColumnModelFactory;
@@ -151,10 +149,6 @@ public class DebeziumEmbeddedAutoConfiguration {
             // 3. 交由存储配置器写入 offset 相关参数
             OffsetStorageConfigurer storageConfigurer = OffsetStorageConfigurerFactory.from(storageProperties);
             storageConfigurer.apply(builder, storageProperties);
-
-            // 4. 交由历史配置器写入数据库历史配置
-            SchemaHistoryConfigurer historyConfigurer = SchemaHistoryConfigurerFactory.from(historyProperties);
-            historyConfigurer.apply(builder, historyProperties);
 
             Configuration config = builder.build();
 

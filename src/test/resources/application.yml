@@ -41,10 +41,7 @@ debezium:
           password: hpkRzkC7pcDnYp3e
       # 偏移量存储配置
       offset-storage:
-        type: redis
-        redis:
-          address: 121.41.2.18:16379
-          password: hpkRzkC7pcDnYp3e
+        type: memory
     # ========================================
     # MongoDB 连接器配置
     # ========================================

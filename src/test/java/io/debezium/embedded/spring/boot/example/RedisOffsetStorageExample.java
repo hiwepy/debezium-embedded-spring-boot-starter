@@ -1,7 +1,6 @@
 package io.debezium.embedded.spring.boot.example;
 
 import io.debezium.embedded.configurer.storage.OffsetStorageType;
-import io.debezium.embedded.configurer.storage.RedisOffsetStorageConfigurer;
 import io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
