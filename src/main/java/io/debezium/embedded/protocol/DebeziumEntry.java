@@ -4,6 +4,8 @@ import io.debezium.data.Envelope;
 import lombok.Data;
 import lombok.Getter;
 
+import java.util.List;
+
 public class DebeziumEntry {
 
     @Data
@@ -22,11 +24,19 @@ public class DebeziumEntry {
     }
 
 
+    @Data
     public static class RowData {
         public String key;
+        public List<Column> beforeColumnsList;
+        public List<Column> afterColumnsList;
+
     }
 
+    @Data
     public static class Column {
+        public String name;
+        public String value;
+        public Boolean updated;
     }
 
     /**
@@ -56,13 +66,18 @@ public class DebeziumEntry {
         ;
 
         public static EventType valueOf(int value) {
-            return switch (value) {
-                case 1 -> CREATE;
-                case 2 -> UPDATE;
-                case 3 -> DELETE;
-                case 4 -> TRUNCATE;
-                default -> null;
-            };
+            switch (value) {
+                case 1:
+                    return CREATE;
+                case 2:
+                    return UPDATE;
+                case 3:
+                    return DELETE;
+                case 4:
+                    return TRUNCATE;
+                default:
+                    return null;
+            }
         }
 
         private static final EventType[] VALUES = values();

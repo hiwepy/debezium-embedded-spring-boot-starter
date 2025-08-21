@@ -15,7 +15,7 @@ import java.lang.annotation.*;
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@OnDebeziumEvent(eventType = DebeziumEntry.EventType.INSERT)
+@OnDebeziumEvent(eventType = DebeziumEntry.EventType.CREATE)
 public @interface OnInsertEvent {
 
     /**

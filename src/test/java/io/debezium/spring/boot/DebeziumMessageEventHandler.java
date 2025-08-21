@@ -10,19 +10,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class DebeziumMessageEventHandler {
 
-    @OnCreateTableEvent(schema = "my_auth")
-    public void onCreateTableEvent(DebeziumModel model, DebeziumEntry.RowChange rowChange) {
-        log.info("onCreateTableEvent");
-    }
-
-    @OnCreateTableEvent(schema = "my_auth")
-    public void onCreateTableEvent2(DebeziumModel model, DebeziumEntry.RowChange rowChange) {
-        log.info("onCreateTableEvent2");
-    }
-
-    @OnCreateIndexEvent(schema = "my_auth", table = "user_info")
-    public void onCreateIndexEvent(DebeziumModel model, DebeziumEntry.RowChange rowChange) {
-        log.info("OnCreateIndexEvent");
+    @OnInsertEvent(schema = "my_auth", table = "user_info")
+    public void onTruncateTableEvent(DebeziumModel model, DebeziumEntry.RowChange rowChange) {
+        log.info("onTruncateTableEvent");
     }
 
     @OnInsertEvent(schema = "my_auth", table = "user_info")

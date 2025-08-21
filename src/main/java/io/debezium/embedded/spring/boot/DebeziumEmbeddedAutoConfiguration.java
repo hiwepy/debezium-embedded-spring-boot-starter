@@ -36,7 +36,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * Debezium Embedded 自动配置
@@ -75,7 +74,7 @@ public class DebeziumEmbeddedAutoConfiguration {
         return new MapRowDataHandlerImpl(new MapColumnModelFactory());
     }
 
-    @Bean
+    /*@Bean
     @ConditionalOnMissingBean
     public ChangeEventHandler asyncRecordChangeEventHandler(RowDataHandler<List<Map<String, String>>> rowDataHandler,
                                                                  ObjectProvider<RecordChangeEventEntryHandler> entryHandlerProvider) {
@@ -87,7 +86,7 @@ public class DebeziumEmbeddedAutoConfiguration {
     public RecordChangeEventHandler syncRecordChangeEventHandler(RowDataHandler<List<Map<String, String>>> rowDataHandler,
                                                                 ObjectProvider<RecordChangeEventEntryHandler> entryHandlerProvider) {
         return new DefaultRecordChangeEventHandler(entryHandlerProvider.stream().collect(Collectors.toList()), rowDataHandler);
-    }
+    }*/
 
     /**
      * 初始化 DebeziumEmbeddedClient

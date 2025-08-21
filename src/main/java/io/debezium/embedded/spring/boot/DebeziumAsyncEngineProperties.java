@@ -1,6 +1,5 @@
 package io.debezium.embedded.spring.boot;
 
-import io.debezium.embedded.async.AsyncEngineConfig;
 import lombok.Data;
 
 /**
@@ -16,7 +15,7 @@ public class DebeziumAsyncEngineProperties {
      * 如果指定了值，引擎将使用 Java 固定线程池 方法创建具有指定线程数量的线程池。
      * 要使用给定机器上所有可用的核心，请设置占位符值 AVAILABLE_CORES。
      */
-    private int threads = AsyncEngineConfig.AVAILABLE_CORES;
+    private int threads = Runtime.getRuntime().availableProcessors();
 
     /**
      * 任务关闭后等待处理已提交记录的最大时间（以毫秒为单位）。

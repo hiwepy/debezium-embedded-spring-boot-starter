@@ -1,11 +1,10 @@
 package io.debezium.embedded.handler;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
 import io.debezium.embedded.annotation.DebeziumEventHandler;
 import io.debezium.embedded.annotation.DebeziumEventHolder;
 import io.debezium.embedded.annotation.OnDebeziumEvent;
-import io.debezium.embedded.protocol.DebeziumEntry;
 import io.debezium.embedded.util.DebeziumUtil;
 import io.debezium.embedded.util.HandlerUtil;
 import io.debezium.engine.ChangeEvent;
@@ -26,8 +25,8 @@ public class DefaultChangeEventHandler implements ChangeEventHandler, Applicatio
 
     /**
      * 指定订阅的事件类型，主要用于标识事务的开始，变更数据，结束
-     */
     private List<DebeziumEntry.EntryType> subscribeTypes = Arrays.asList(DebeziumEntry.EntryType.ROWDATA);
+     */
     /**
      * 通过注解方式的表数据变更处理器
      */
@@ -47,18 +46,14 @@ public class DefaultChangeEventHandler implements ChangeEventHandler, Applicatio
         this.rowDataHandler = rowDataHandler;
     }
 
-    protected boolean isSubscribed(DebeziumEntry.EntryType entryType) {
-        return subscribeTypes.contains(entryType);
-    }
 
     @Override
     public void handleEvent(ChangeEvent<String, String> event, Properties props) {
         if (Objects.nonNull(event.value())) {
             try {
-                log.info("解析变更事件, event:{}, headers: {}", event, event.headers());
+                log.info("解析变更事件, event:{}}", event);
                 // 解析JSON字符串
                 JSONObject jsonValue = JSON.parseObject(event.value());
-
                 JSONObject payload = jsonValue.getJSONObject(DebeziumUtil.PAYLOAD);
                 if (payload != null) {
                     // 设置操作类型

@@ -15,19 +15,33 @@ public class ConnectorConfigurerFactory {
      * @return 连接器配置器
      */
     public static ConnectorConfigurer from(DebeziumConnectorProperties properties) {
-        return switch (properties.getType()) {
-            case MYSQL -> new MySqlConnectorConfigurer();
-            case MARIADB -> new MariaDbConnectorConfigurer();
-            case POSTGRESQL -> new PostgreSqlConnectorConfigurer();
-            case MONGODB -> new MongoDbConnectorConfigurer();
-            case ORACLE -> new OracleConnectorConfigurer();
-            case SQLSERVER -> new SqlServerConnectorConfigurer();
-            case DB2 -> new Db2ConnectorConfigurer();
-            case CASSANDRA -> new CassandraConnectorConfigurer();
-            case VITESS -> new VitessConnectorConfigurer();
-            case SPANNER -> new SpannerConnectorConfigurer();
-            case INFORMIX -> new InformixConnectorConfigurer();
-            case CUSTOM -> new CustomConnectorConfigurer();
-        };
+        switch (properties.getType()) {
+            case MYSQL:
+                return new MySqlConnectorConfigurer();
+            case MARIADB:
+                return new MariaDbConnectorConfigurer();
+            case POSTGRESQL:
+                return new PostgreSqlConnectorConfigurer();
+            case MONGODB:
+                return new MongoDbConnectorConfigurer();
+            case ORACLE:
+                return new OracleConnectorConfigurer();
+            case SQLSERVER:
+                return new SqlServerConnectorConfigurer();
+            case DB2:
+                return new Db2ConnectorConfigurer();
+            case CASSANDRA:
+                return new CassandraConnectorConfigurer();
+            case VITESS:
+                return new VitessConnectorConfigurer();
+            case SPANNER:
+                return new SpannerConnectorConfigurer();
+            case INFORMIX:
+                return new InformixConnectorConfigurer();
+            case CUSTOM:
+                return new CustomConnectorConfigurer();
+            default:
+                throw new IllegalArgumentException("Unsupported connector type: " + properties.getType());
+        }
     }
 }

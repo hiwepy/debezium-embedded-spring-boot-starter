@@ -2,10 +2,8 @@ package io.debezium.embedded.client;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import io.debezium.config.Configuration;
-import io.debezium.embedded.async.AsyncEmbeddedEngine;
 import io.debezium.embedded.handler.ChangeEventHandler;
 import io.debezium.embedded.handler.RecordChangeEventHandler;
-import io.debezium.embedded.protocol.DebeziumEntry;
 import io.debezium.engine.ChangeEvent;
 import io.debezium.engine.DebeziumEngine;
 import io.debezium.engine.RecordChangeEvent;
@@ -15,7 +13,6 @@ import org.apache.kafka.connect.source.SourceRecord;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.*;
 
@@ -34,10 +31,7 @@ public abstract class AbstractDebeziumClient<R> implements InitializingBean, Deb
      */
     private List<DebeziumEngine<ChangeEvent<String, String>>> changeEventEngines;
     private List<DebeziumEngine<RecordChangeEvent<SourceRecord>>> recordChangeEventEngines;
-    /**
-     * 指定订阅的事件类型，主要用于标识事务的开始，变更数据，结束
-     */
-    protected List<DebeziumEntry.EntryType> subscribeTypes = Arrays.asList(DebeziumEntry.EntryType.ROWDATA);
+
     /**
      * 消息处理器
      */
@@ -79,8 +73,23 @@ public abstract class AbstractDebeziumClient<R> implements InitializingBean, Deb
     public void stop() {
         log.info("Stop Debezium Client Of Instance： {}", this.getClass().getSimpleName());
         this.running = false;
-        for (DebeziumEngine<R> debeziumEngine : debeziumEngines) {
-            debeziumEngine.close();
+        for (DebeziumEngine<ChangeEvent<String, String>> debeziumEngine : changeEventEngines) {
+            try {
+                log.info("Stop Debezium Engine Of Instance： {}", this.getClass().getSimpleName());
+                debeziumEngine.close();
+                log.info("Stopped Debezium Engine Of Instance： {}", this.getClass().getSimpleName());
+            } catch (Exception e) {
+                log.error("Error stopping Debezium Engine Of Instance： {}", this.getClass().getSimpleName(), e);
+            }
+        }
+        for (DebeziumEngine<RecordChangeEvent<SourceRecord>> debeziumEngine : recordChangeEventEngines) {
+            try {
+                log.info("Stop Debezium Engine Of Instance： {}", this.getClass().getSimpleName());
+                debeziumEngine.close();
+                log.info("Stopped Debezium Engine Of Instance： {}", this.getClass().getSimpleName());
+            } catch (Exception e) {
+                log.error("Error stopping Debezium Engine Of Instance： {}", this.getClass().getSimpleName(), e);
+            }
         }
         Thread.sleep(2000);
         log.warn(ThreadPoolEnum.SQL_SERVER_LISTENER_POOL + "线程池关闭!");

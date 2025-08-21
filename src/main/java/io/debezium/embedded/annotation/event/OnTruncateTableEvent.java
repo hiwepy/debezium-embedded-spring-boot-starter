@@ -7,19 +7,20 @@ import org.springframework.core.annotation.AliasFor;
 import java.lang.annotation.*;
 
 /**
- * 刪除索引操作
+ * 刪除表操作监听器
  *
  * @author lujun
  */
+
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@OnDebeziumEvent(eventType = DebeziumEntry.EventType.DINDEX)
-public @interface OnDropIndexEvent {
+@OnDebeziumEvent(eventType = DebeziumEntry.EventType.TRUNCATE)
+public @interface OnTruncateTableEvent {
     /**
      * debezium 指令
      * default for all
-     * @return debezium destination
+     *  @return debezium destination
      */
     @AliasFor(annotation = OnDebeziumEvent.class)
     String destination() default "";
@@ -30,12 +31,4 @@ public @interface OnDropIndexEvent {
      */
     @AliasFor(annotation = OnDebeziumEvent.class)
     String schema();
-
-    /**
-     * 监听的表
-     * default for all
-     * @return 监听的表
-     */
-    @AliasFor(annotation = OnDebeziumEvent.class)
-    String table();
 }

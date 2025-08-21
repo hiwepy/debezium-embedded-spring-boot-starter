@@ -44,8 +44,8 @@ public class DebeziumEmbeddedProperties {
 
         /**
          * 订阅类型
-         */
         List<DebeziumEntry.EntryType> subscribeTypes = Collections.singletonList(DebeziumEntry.EntryType.ROWDATA);
+         */
 
         /**
          * 订阅事件类型
