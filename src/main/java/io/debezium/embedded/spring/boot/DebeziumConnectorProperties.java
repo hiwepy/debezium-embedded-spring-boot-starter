@@ -1,6 +1,6 @@
 package io.debezium.embedded.spring.boot;
 
-import io.debezium.embedded.connector.ConnectorType;
+import io.debezium.embedded.configurer.connector.ConnectorType;
 import lombok.Data;
 
 /**

@@ -1,6 +1,6 @@
 package io.debezium.embedded.spring.boot;
 
-import io.debezium.embedded.history.SchemaHistoryType;
+import io.debezium.embedded.configurer.history.SchemaHistoryType;
 import lombok.Data;
 
 import java.nio.charset.Charset;

@@ -1,6 +1,6 @@
 package io.debezium.embedded.spring.boot;
 
-import io.debezium.embedded.storage.OffsetStorageType;
+import io.debezium.embedded.configurer.storage.OffsetStorageType;
 import lombok.Data;
 
 import java.util.HashMap;
