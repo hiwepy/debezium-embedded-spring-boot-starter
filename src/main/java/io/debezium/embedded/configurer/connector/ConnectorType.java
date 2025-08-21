@@ -10,10 +10,6 @@ public enum ConnectorType {
      */
     MYSQL,
     /**
-     * MariaDB 连接器
-     */
-    MARIADB,
-    /**
      * MongoDB 连接器
      */
     MONGODB,
@@ -34,21 +30,9 @@ public enum ConnectorType {
      */
     DB2,
     /**
-     * Cassandra 连接器
-     */
-    CASSANDRA,
-    /**
      * Vitess 连接器
      */
     VITESS,
-    /**
-     * Spanner 连接器
-     */
-    SPANNER,
-    /**
-     * Informix 连接器
-     */
-    INFORMIX,
     /**
      * 自定义连接器
      */

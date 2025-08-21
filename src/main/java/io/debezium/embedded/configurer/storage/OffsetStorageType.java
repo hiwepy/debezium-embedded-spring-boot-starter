@@ -6,7 +6,7 @@ package io.debezium.embedded.configurer.storage;
 public enum OffsetStorageType {
 
     /**
-     * 文件存储
+     * 内存存储
      */
     MEMORY,
     /**

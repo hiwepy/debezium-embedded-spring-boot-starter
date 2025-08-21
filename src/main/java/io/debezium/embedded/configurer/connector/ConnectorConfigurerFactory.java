@@ -18,8 +18,6 @@ public class ConnectorConfigurerFactory {
         switch (properties.getType()) {
             case MYSQL:
                 return new MySqlConnectorConfigurer();
-            case MARIADB:
-                return new MariaDbConnectorConfigurer();
             case POSTGRESQL:
                 return new PostgreSqlConnectorConfigurer();
             case MONGODB:
@@ -30,14 +28,8 @@ public class ConnectorConfigurerFactory {
                 return new SqlServerConnectorConfigurer();
             case DB2:
                 return new Db2ConnectorConfigurer();
-            case CASSANDRA:
-                return new CassandraConnectorConfigurer();
             case VITESS:
                 return new VitessConnectorConfigurer();
-            case SPANNER:
-                return new SpannerConnectorConfigurer();
-            case INFORMIX:
-                return new InformixConnectorConfigurer();
             case CUSTOM:
                 return new CustomConnectorConfigurer();
             default:
