@@ -22,21 +22,38 @@ public class RedisOffsetStorageConfigurer implements OffsetStorageConfigurer {
         PropertyMapper map = PropertyMapper.get().alwaysApplyingWhenNonNull();
 
         // Offset Store - 严格按照官方文档配置
-        builder.with("offset.storage", "io.debezium.storage.redis.RedisOffsetBackingStore");
+        builder.with("offset.storage", "io.debezium.storage.redis.offset.RedisOffsetBackingStore");
+        
+        // 基础配置
+        map.from(redis::getKey).whenHasText().to(value -> builder.with("offset.storage.redis.key", value));
         map.from(redis::getAddress).whenHasText().to(value -> builder.with("offset.storage.redis.address", value));
-        map.from(redis::getDatabase).to(value -> builder.with("offset.storage.redis.database", value));
+        map.from(redis::getUser).whenHasText().to(value -> builder.with("offset.storage.redis.user", value));
         map.from(redis::getPassword).whenHasText().to(value -> builder.with("offset.storage.redis.password", value));
-        map.from(redis::getUsername).whenHasText().to(value -> builder.with("offset.storage.redis.username", value));
-        map.from(redis::getClientName).whenHasText().to(value -> builder.with("offset.storage.redis.client.name", value));
-        map.from(redis::getConnectionTimeout).to(value -> builder.with("offset.storage.redis.connection.timeout.ms", value));
-        map.from(redis::getReadTimeout).to(value -> builder.with("offset.storage.redis.read.timeout.ms", value));
-        map.from(redis::getPoolSize).to(value -> builder.with("offset.storage.redis.pool.size", value));
-        map.from(redis::getSsl).to(value -> builder.with("offset.storage.redis.ssl.enabled", value));
-        map.from(redis::getSslCertPath).whenHasText().to(value -> builder.with("offset.storage.redis.ssl.cert.path", value));
-        map.from(redis::getSslKeyPath).whenHasText().to(value -> builder.with("offset.storage.redis.ssl.key.path", value));
-        map.from(redis::getSslCaPath).whenHasText().to(value -> builder.with("offset.storage.redis.ssl.ca.path", value));
-        map.from(redis::getMaxRetries).to(value -> builder.with("offset.storage.redis.max.retries", value));
-        map.from(redis::getRetryDelayMs).to(value -> builder.with("offset.storage.redis.retry.delay.ms", value));
-        map.from(redis::getFlushIntervalMs).to(value -> builder.with("offset.flush.interval.ms", value));
+        map.from(redis::getDbIndex).to(value -> builder.with("offset.storage.redis.db.index", value));
+        
+        // SSL 配置
+        map.from(redis::getSslEnabled).to(value -> builder.with("offset.storage.redis.ssl.enabled", value));
+        map.from(redis::getSslHostnameVerificationEnabled).to(value -> builder.with("offset.storage.redis.ssl.hostname.verification.enabled", value));
+        map.from(redis::getSslTruststorePath).whenHasText().to(value -> builder.with("offset.storage.redis.ssl.truststore.path", value));
+        map.from(redis::getSslTruststorePassword).whenHasText().to(value -> builder.with("offset.storage.redis.ssl.truststore.password", value));
+        map.from(redis::getSslTruststoreType).whenHasText().to(value -> builder.with("offset.storage.redis.ssl.truststore.type", value));
+        map.from(redis::getSslKeystorePath).whenHasText().to(value -> builder.with("offset.storage.redis.ssl.keystore.path", value));
+        map.from(redis::getSslKeystorePassword).whenHasText().to(value -> builder.with("offset.storage.redis.ssl.keystore.password", value));
+        map.from(redis::getSslKeystoreType).whenHasText().to(value -> builder.with("offset.storage.redis.ssl.keystore.type", value));
+        
+        // 超时配置
+        map.from(redis::getConnectionTimeoutMs).to(value -> builder.with("offset.storage.redis.connection.timeout.ms", value));
+        map.from(redis::getSocketTimeoutMs).to(value -> builder.with("offset.storage.redis.socket.timeout.ms", value));
+        
+        // 重试配置
+        map.from(redis::getRetryInitialDelayMs).to(value -> builder.with("offset.storage.redis.retry.initial.delay.ms", value));
+        map.from(redis::getRetryMaxDelayMs).to(value -> builder.with("offset.storage.redis.retry.max.delay.ms", value));
+        map.from(redis::getRetryMaxAttempts).to(value -> builder.with("offset.storage.redis.retry.max.attempts", value));
+        
+        // 等待配置
+        map.from(redis::getWaitEnabled).to(value -> builder.with("offset.storage.redis.wait.enabled", value));
+        map.from(redis::getWaitTimeoutMs).to(value -> builder.with("offset.storage.redis.wait.timeout.ms", value));
+        map.from(redis::getWaitRetryEnabled).to(value -> builder.with("offset.storage.redis.wait.retry.enabled", value));
+        map.from(redis::getWaitRetryDelayMs).to(value -> builder.with("offset.storage.redis.wait.retry.delay.ms", value));
     }
 }

@@ -1,6 +1,7 @@
 package io.debezium.embedded.spring.boot.example;
 
-import io.debezium.embedded.history.AzureBlobSchemaHistoryConfigurer;
+import io.debezium.embedded.configurer.history.AzureBlobSchemaHistoryConfigurer;
+import io.debezium.embedded.configurer.history.SchemaHistoryType;
 import io.debezium.embedded.spring.boot.DebeziumSchemaHistoryProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -43,7 +44,7 @@ public class AzureBlobSchemaHistoryExample {
         DebeziumSchemaHistoryProperties properties = new DebeziumSchemaHistoryProperties();
         
         // 设置历史记录类型为 Azure Blob Storage
-        properties.setType(io.debezium.embedded.history.SchemaHistoryType.AZURE_BLOB);
+        properties.setType(SchemaHistoryType.AZURE_BLOB);
         
         // 配置 Azure Blob Storage 连接参数
         DebeziumSchemaHistoryProperties.AzureBlob azureBlob = properties.getAzureBlob();

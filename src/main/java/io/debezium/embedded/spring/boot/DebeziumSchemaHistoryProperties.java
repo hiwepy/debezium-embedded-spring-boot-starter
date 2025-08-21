@@ -3,8 +3,6 @@ package io.debezium.embedded.spring.boot;
 import io.debezium.embedded.configurer.history.SchemaHistoryType;
 import lombok.Data;
 
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 
 /**
  * Debezium 数据库历史记录配置属性。
@@ -60,6 +58,7 @@ public class DebeziumSchemaHistoryProperties {
     
     @Data
     public static class File {
+
         /**
          * 历史记录文件路径
          * 
@@ -67,114 +66,12 @@ public class DebeziumSchemaHistoryProperties {
          * <p>默认值：dbhistory.dat</p>
          */
         private String filename = "dbhistory.dat";
-        
-        /**
-         * 是否跳过无法解析的 DDL
-         * 
-         * <p>指定是否跳过无法解析的 DDL 语句。</p>
-         * <p>默认值：true</p>
-         */
-        private Boolean skipUnparseableDdl = true;
-        
-        /**
-         * 是否只存储监控表的 DDL
-         * 
-         * <p>指定是否只存储被监控表的 DDL 语句。</p>
-         * <p>默认值：true</p>
-         */
-        private Boolean storeOnlyMonitoredTablesDdl = true;
-        
-        /**
-         * 是否只存储捕获表的 DDL
-         * 
-         * <p>指定是否只存储被捕获表的 DDL 语句。</p>
-         * <p>默认值：true</p>
-         */
-        private Boolean storeOnlyCapturedTablesDdl = true;
-        
-        /**
-         * 文件编码
-         * 
-         * <p>指定历史记录文件的编码格式。</p>
-         * <p>默认值：UTF-8</p>
-         */
-        private Charset encoding = StandardCharsets.UTF_8;
-        
-        /**
-         * 是否启用文件同步
-         * 
-         * <p>指定是否在写入后同步文件到磁盘。</p>
-         * <p>默认值：true</p>
-         */
-        private Boolean sync = true;
-        
-        /**
-         * 写入缓冲区大小
-         * 
-         * <p>指定写入缓冲区的大小（字节）。</p>
-         * <p>默认值：8192</p>
-         */
-        private Integer bufferSize = 8192;
-        
-        /**
-         * 是否启用文件锁定
-         * 
-         * <p>指定是否启用文件锁定机制。</p>
-         * <p>默认值：true</p>
-         */
-        private Boolean fileLocking = true;
-        
-        /**
-         * 文件锁定超时时间（毫秒）
-         * 
-         * <p>指定文件锁定的超时时间。</p>
-         * <p>默认值：30000</p>
-         */
-        private Integer fileLockTimeoutMs = 30000;
-        
-        /**
-         * 是否启用文件备份
-         * 
-         * <p>指定是否在写入前备份现有文件。</p>
-         * <p>默认值：true</p>
-         */
-        private Boolean backup = true;
-        
-        /**
-         * 备份文件后缀
-         * 
-         * <p>指定备份文件的后缀名。</p>
-         * <p>默认值：.bak</p>
-         */
-        private String backupSuffix = ".bak";
-        
-        /**
-         * 最大备份文件数量
-         * 
-         * <p>指定保留的最大备份文件数量。</p>
-         * <p>默认值：5</p>
-         */
-        private Integer maxBackupFiles = 5;
-        
-        /**
-         * 是否启用压缩
-         * 
-         * <p>指定是否启用文件压缩。</p>
-         * <p>默认值：false</p>
-         */
-        private Boolean compression = false;
-        
-        /**
-         * 压缩级别（1-9）
-         * 
-         * <p>指定压缩级别，1 为最快压缩，9 为最高压缩比。</p>
-         * <p>默认值：6</p>
-         */
-        private Integer compressionLevel = 6;
+
     }
     
     @Data
     public static class Kafka {
+
         /**
          * Kafka 主题名称
          * 
@@ -583,94 +480,148 @@ public class DebeziumSchemaHistoryProperties {
     @Data
     public static class Redis {
         /**
+         * Redis 键名
+         * 
+         * <p>Debezium 用于存储 Schema History 数据的 Redis 键。</p>
+         * <p>默认值：metadata:debezium:schema_history</p>
+         */
+        private String key = "metadata:debezium:schema_history";
+        
+        /**
          * Redis 服务器地址
          * 
-         * <p>指定 Redis 服务器的地址，格式为 host:port。</p>
-         * <p>默认值：localhost:6379</p>
+         * <p>Debezium 连接 Redis 存储 Schema History 数据的 URL。</p>
+         * <p>格式：host:port 或 redis://host:port</p>
          */
-        private String address = "localhost:6379";
+        private String address;
         
         /**
-         * 数据库索引
+         * Redis 用户名
          * 
-         * <p>指定使用的 Redis 数据库索引。</p>
-         * <p>默认值：0</p>
+         * <p>Debezium 连接 Redis 存储 Schema History 数据的用户账户。</p>
          */
-        private Integer database = 0;
+        private String user;
         
         /**
-         * 键
+         * Redis 密码
          * 
-         * <p>指定存储 Schema History 时使用的键。</p>
-         * <p>无默认值，必须显式配置。</p>
-         */
-        private String key;
-        
-        /**
-         * 密码
-         * 
-         * <p>指定连接 Redis 的密码。</p>
+         * <p>Debezium 连接 Redis 存储 Schema History 数据的用户账户密码。</p>
          */
         private String password;
         
         /**
-         * 用户名（Redis 6.0+ ACL 支持）
+         * Redis 数据库索引
          * 
-         * <p>指定连接 Redis 的用户名。</p>
+         * <p>Debezium 用于访问 Redis 存储 Schema History 数据的数据库索引 (0..15)。</p>
+         * <p>默认值：0</p>
          */
-        private String username;
+        private Integer dbIndex = 0;
         
         /**
-         * 客户端名称
+         * 是否启用 SSL/TLS
          * 
-         * <p>指定 Redis 客户端的名称。</p>
+         * <p>指定 Debezium 在与 Redis 通信存储 Schema History 数据时是否使用 SSL。</p>
+         * <p>默认值：false</p>
          */
-        private String clientName;
+        private Boolean sslEnabled = false;
+        
+        /**
+         * SSL 主机名验证是否启用
+         * 
+         * <p>指定 Debezium 在与 Redis 通信存储 Schema History 数据时是否启用主机名验证。</p>
+         * <p>默认值：false</p>
+         */
+        private Boolean sslHostnameVerificationEnabled = false;
+        
+        /**
+         * SSL 信任库路径
+         * 
+         * <p>用于 Redis Schema History SSL/TLS 连接的信任库文件路径。</p>
+         */
+        private String sslTruststorePath;
+        
+        /**
+         * SSL 信任库密码
+         * 
+         * <p>用于 Redis Schema History SSL/TLS 连接的信任库文件密码。</p>
+         */
+        private String sslTruststorePassword;
+        
+        /**
+         * SSL 信任库类型
+         * 
+         * <p>用于 Redis Schema History SSL/TLS 连接的信任库文件类型。</p>
+         * <p>默认值：JKS</p>
+         */
+        private String sslTruststoreType = "JKS";
+        
+        /**
+         * SSL 密钥库路径
+         * 
+         * <p>用于 Redis Schema History SSL/TLS 连接的密钥库文件路径。</p>
+         */
+        private String sslKeystorePath;
+        
+        /**
+         * SSL 密钥库密码
+         * 
+         * <p>用于 Redis Schema History SSL/TLS 连接的密钥库文件密码。</p>
+         */
+        private String sslKeystorePassword;
+        
+        /**
+         * SSL 密钥库类型
+         * 
+         * <p>用于 Redis Schema History SSL/TLS 连接的密钥库文件类型。</p>
+         * <p>默认值：JKS</p>
+         */
+        private String sslKeystoreType = "JKS";
         
         /**
          * 连接超时时间（毫秒）
          * 
-         * <p>指定建立 Redis 连接的超时时间。</p>
-         * <p>默认值：2000（2秒）</p>
+         * <p>指定 Debezium 在连接超时前等待建立到 Redis 连接的时间（毫秒）。</p>
+         * <p>默认值：2000</p>
          */
-        private Integer connectionTimeout = 2000;
+        private Integer connectionTimeoutMs = 2000;
         
         /**
          * Socket 超时时间（毫秒）
          * 
-         * <p>指定 Redis Socket 超时时间。</p>
-         * <p>默认值：2000（2秒）</p>
+         * <p>指定 Debezium 允许与 Redis 交换 Schema History 数据的时间间隔（毫秒）。</p>
+         * <p>如果数据包在指定间隔内未传输，Debezium 将关闭 socket。</p>
+         * <p>默认值：2000</p>
          */
-        private Integer socketTimeout = 2000;
+        private Integer socketTimeoutMs = 2000;
         
         /**
          * 重试初始延迟时间（毫秒）
          * 
-         * <p>指定 Redis 重试的初始延迟时间。</p>
-         * <p>默认值：300（0.3秒）</p>
+         * <p>指定 Debezium 在初始连接 Redis 失败后等待重试连接的时间（毫秒）。</p>
+         * <p>默认值：300</p>
          */
-        private Integer retryInitialDelay = 300;
+        private Integer retryInitialDelayMs = 300;
         
         /**
          * 重试最大延迟时间（毫秒）
          * 
-         * <p>指定 Redis 重试的最大延迟时间。</p>
-         * <p>默认值：10000（10秒）</p>
+         * <p>指定 Debezium 在连接尝试失败后等待重试连接的最大时间（毫秒）。</p>
+         * <p>默认值：10000</p>
          */
-        private Integer retryMaxDelay = 10000;
+        private Integer retryMaxDelayMs = 10000;
         
         /**
-         * 最大重试次数
+         * 重试最大尝试次数
          * 
-         * <p>指定 Redis 操作的最大重试次数。</p>
+         * <p>指定 Debezium 在连接尝试失败后重试连接到 Redis 的最大次数。</p>
          * <p>默认值：10</p>
          */
         private Integer retryMaxAttempts = 10;
         
         /**
-         * 是否启用等待
+         * 等待启用
          * 
-         * <p>指定是否等待 Redis 写入确认。</p>
+         * <p>在配置为使用副本分片的 Redis 环境中，指定 Debezium 是否等待 Redis 验证数据已写入副本。</p>
          * <p>默认值：false</p>
          */
         private Boolean waitEnabled = false;
@@ -678,15 +629,15 @@ public class DebeziumSchemaHistoryProperties {
         /**
          * 等待超时时间（毫秒）
          * 
-         * <p>指定 Redis 等待超时时间。</p>
-         * <p>默认值：1000（1秒）</p>
+         * <p>指定 Debezium 等待 Redis 确认数据已写入副本分片的时间（毫秒）。</p>
+         * <p>默认值：1000</p>
          */
-        private Integer waitTimeout = 1000;
+        private Integer waitTimeoutMs = 1000;
         
         /**
-         * 是否启用等待重试
+         * 等待重试启用
          * 
-         * <p>指定是否启用等待重试。</p>
+         * <p>指定 Debezium 是否重试失败的请求以确认数据是否写入副本分片。</p>
          * <p>默认值：false</p>
          */
         private Boolean waitRetryEnabled = false;
@@ -694,61 +645,10 @@ public class DebeziumSchemaHistoryProperties {
         /**
          * 等待重试延迟时间（毫秒）
          * 
-         * <p>指定等待重试的延迟时间。</p>
-         * <p>默认值：1000（1秒）</p>
+         * <p>指定 Debezium 在失败后重新提交请求到 Redis 以确认数据已写入副本分片之前等待的时间（毫秒）。</p>
+         * <p>默认值：1000</p>
          */
-        private Integer waitRetryDelay = 1000;
-        
-        /**
-         * 是否启用 SSL/TLS
-         * 
-         * <p>指定是否启用 SSL/TLS 连接。</p>
-         * <p>默认值：false</p>
-         */
-        private Boolean ssl = false;
-        
-        /**
-         * SSL 证书路径
-         * 
-         * <p>指定 SSL 证书文件的路径。</p>
-         */
-        private String sslCertPath;
-        
-        /**
-         * SSL 密钥路径
-         * 
-         * <p>指定 SSL 密钥文件的路径。</p>
-         */
-        private String sslKeyPath;
-        
-        /**
-         * SSL CA 证书路径
-         * 
-         * <p>指定 SSL CA 证书文件的路径。</p>
-         */
-        private String sslCaPath;
-        
-        /**
-         * SSL 密钥库路径
-         * 
-         * <p>指定 SSL 密钥库文件的路径。</p>
-         */
-        private String sslKeystorePath;
-        
-        /**
-         * SSL 密钥库密码
-         * 
-         * <p>指定 SSL 密钥库的密码。</p>
-         */
-        private String sslKeystorePassword;
-        
-        /**
-         * SSL 密钥库类型
-         * 
-         * <p>指定 SSL 密钥库的类型。</p>
-         * <p>默认值：JKS</p>
-         */
-        private String sslKeystoreType = "JKS";
+        private Integer waitRetryDelayMs = 1000;
     }
     
     @Data

@@ -13,7 +13,6 @@ import java.util.Properties;
 @FunctionalInterface
 public interface RecordChangeEventHandler {
 
-
     /**
      * 处理消息
      * @param recordChangeEvents 数据变动事件对象集合
@@ -21,7 +20,7 @@ public interface RecordChangeEventHandler {
      * @param props 配置
      */
     void handleEvent(List<RecordChangeEvent<SourceRecord>> recordChangeEvents,
-                       DebeziumEngine.RecordCommitter<RecordChangeEvent<SourceRecord>> recordCommitter,
-                       Properties props);
+                     DebeziumEngine.RecordCommitter<RecordChangeEvent<SourceRecord>> recordCommitter,
+                     Properties props);
 
 }

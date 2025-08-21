@@ -1,13 +1,10 @@
 package io.debezium.spring.boot;
 
-import com.alibaba.fastjson.JSONObject;
-import io.debezium.annotation.DebeziumEventHandler;
-import io.debezium.annotation.event.*;
-import io.debezium.model.DebeziumModel;
+import io.debezium.embedded.annotation.DebeziumEventHandler;
+import io.debezium.embedded.annotation.event.*;
+import io.debezium.embedded.model.DebeziumModel;
 import io.debezium.embedded.protocol.DebeziumEntry;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.List;
 
 @DebeziumEventHandler
 @Slf4j
@@ -31,7 +28,7 @@ public class DebeziumMessageEventHandler {
     @OnInsertEvent(schema = "my_auth", table = "user_info")
     public void onEventInsertData(DebeziumModel model, DebeziumEntry.RowChange rowChange) {
 
-        // 1，获取当前事件的操作类型
+       /* // 1，获取当前事件的操作类型
         DebeziumEntry.EventType eventType = rowChange.getEventType();
         // 2,获取数据集
         List<DebeziumEntry.RowData> rowDatasList = rowChange.getRowDatasList();
@@ -52,7 +49,7 @@ public class DebeziumMessageEventHandler {
                     ",EventType:" + eventType +
                     ",Before:" + beforeData +
                     ",After:" + affterData);
-        }
+        }*/
 
     }
 

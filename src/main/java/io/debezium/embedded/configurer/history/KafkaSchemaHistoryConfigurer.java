@@ -28,11 +28,10 @@ public class KafkaSchemaHistoryConfigurer implements SchemaHistoryConfigurer {
         // 基础配置
         map.from(kafka::getTopic).whenHasText().to(value -> builder.with("schema.history.internal.kafka.topic", value));
         map.from(kafka::getBootstrapServers).whenHasText().to(value -> builder.with("schema.history.internal.kafka.bootstrap.servers", value));
-
-        map.from(kafka::getBootstrapServers).whenHasText().to(value -> builder.with("schema.history.internal.kafka.bootstrap.servers", value));
         map.from(kafka::getRecoveryAttempts).to(value -> builder.with("schema.history.internal.kafka.recovery.attempts", value));
         map.from(kafka::getRecoveryPollIntervalMs).to(value -> builder.with("schema.history.internal.kafka.recovery.poll.interval.ms", value));
         map.from(kafka::getQueryTimeoutMs).to(value -> builder.with("schema.history.internal.kafka.query.timeout.ms", value));
+        map.from(kafka::getCreateTimeoutMs).to(value -> builder.with("schema.history.internal.kafka.create.timeout.ms", value));
         
         // 生产者配置
         DebeziumSchemaHistoryProperties.Kafka.Producer producer = kafka.getProducer();

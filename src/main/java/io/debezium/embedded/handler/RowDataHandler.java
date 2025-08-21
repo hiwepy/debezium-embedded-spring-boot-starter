@@ -8,6 +8,6 @@ import io.debezium.embedded.protocol.DebeziumEntry;
  */
 public interface RowDataHandler<T> {
 
-    <R> void handlerRowData(T t, EntryHandler<R> entryHandler, DebeziumEntry.EventType eventType) throws Exception;
+    <R> void handlerRowData(T t, RecordChangeEventEntryHandler<R> entryHandler, DebeziumEntry.EventType eventType) throws Exception;
 
 }

@@ -50,12 +50,7 @@ public class DebeziumEmbeddedProperties {
         /**
          * 订阅事件类型
          */
-        EventType eventType = EventType.ChangeEvent;
-
-        /**
-         * 提交策略
-         */
-        OffsetCommitPolicy policy = OffsetCommitPolicy.always();
+        EventType eventType = EventType.CHANGE_EVENT;
 
         /**
          * 异步引擎属性
@@ -70,7 +65,7 @@ public class DebeziumEmbeddedProperties {
         /**
          * 数据库历史记录配置
          */
-        DebeziumSchemaHistoryProperties history = new DebeziumSchemaHistoryProperties();
+        DebeziumSchemaHistoryProperties schemaHistory = new DebeziumSchemaHistoryProperties();
 
         /**
          * 偏移量存储配置
@@ -85,8 +80,8 @@ public class DebeziumEmbeddedProperties {
      * </pre>
      */
     public enum EventType {
-        ChangeEvent,
-        RecordChangeEvent;
+        CHANGE_EVENT,
+        RECORD_CHANGE_EVENT;
     }
 
 }

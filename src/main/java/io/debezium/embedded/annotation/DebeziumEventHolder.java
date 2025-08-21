@@ -2,29 +2,29 @@ package io.debezium.embedded.annotation;
 
 
 import io.debezium.embedded.protocol.DebeziumEntry;
+import lombok.Getter;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
 /**
  * 监听 debezium 操作
- *
- * @author lujun
  */
+@Getter
 public class DebeziumEventHolder {
 
     /**
      * 目标 bean
      */
-    private Object target;
+    private final Object target;
     /**
      * 监听的方法
      */
-    private Method method;
+    private final Method method;
     /**
      * 监听的事件
      */
-    private OnDebeziumEvent event;
+    private final OnDebeziumEvent event;
 
     /**
      * 构造方法，设置目标，方法以及注解类型
@@ -36,30 +36,6 @@ public class DebeziumEventHolder {
         this.target = target;
         this.method = method;
         this.event = event;
-    }
-
-    /**
-     * 返回目标类
-     * @return Object
-     */
-    public Object getTarget() {
-        return target;
-    }
-
-    /**
-     * 返回方法
-     * @return Method
-     */
-    public Method getMethod() {
-        return method;
-    }
-
-    /**
-     * 返回注解类型
-     * @return OnDebeziumEvent
-     */
-    public OnDebeziumEvent getEvent() {
-        return event;
     }
 
     public boolean isMatch(DebeziumEntry.EventType eventType) {

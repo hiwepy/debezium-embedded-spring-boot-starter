@@ -2,15 +2,13 @@ package io.debezium.embedded.handler;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import io.debezium.data.Envelope;
+import io.debezium.embedded.annotation.DebeziumEventHandler;
 import io.debezium.embedded.annotation.DebeziumEventHolder;
-import io.debezium.embedded.context.DebeziumContext;
-import io.debezium.embedded.model.DebeziumModel;
+import io.debezium.embedded.annotation.OnDebeziumEvent;
 import io.debezium.embedded.protocol.DebeziumEntry;
 import io.debezium.embedded.util.DebeziumUtil;
-import io.debezium.engine.ChangeEvent;
-import io.debezium.embedded.util.GenericUtil;
 import io.debezium.embedded.util.HandlerUtil;
+import io.debezium.engine.ChangeEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -37,18 +35,14 @@ public class DefaultChangeEventHandler implements ChangeEventHandler, Applicatio
     /**
      * 表数据变更处理器
      */
-    private Map<String, EntryHandler> tableHandlerMap;
+    private Map<String, RecordChangeEventEntryHandler> tableHandlerMap;
     /**
      * 行数据处理器
      */
     private RowDataHandler<ChangeEvent<String, String>> rowDataHandler;
 
-    public DefaultChangeEventHandler(List<DebeziumEntry.EntryType> subscribeTypes,
-                                     List<? extends EntryHandler> entryHandlers,
+    public DefaultChangeEventHandler(List<? extends RecordChangeEventEntryHandler> entryHandlers,
                                      RowDataHandler<ChangeEvent<String, String>> rowDataHandler) {
-        if(Objects.nonNull(subscribeTypes)){
-            this.subscribeTypes = subscribeTypes;
-        }
         this.tableHandlerMap = HandlerUtil.getTableHandlerMap(entryHandlers);
         this.rowDataHandler = rowDataHandler;
     }
@@ -67,9 +61,14 @@ public class DefaultChangeEventHandler implements ChangeEventHandler, Applicatio
 
                 JSONObject payload = jsonValue.getJSONObject(DebeziumUtil.PAYLOAD);
                 if (payload != null) {
-                    ChangeDataMessage message = new ChangeDataMessage();
                     // 设置操作类型
                     String handleType = JSON.parseObject(JSON.toJSONString(payload.get("op")), String.class);
+
+                   /* // 判断当前entryType类型是否订阅
+                    if (this.isSubscribed(entryType)) {
+
+
+                    }
                     message.setDataType(handleType);
                     // 设置变更前后的数据
                     JSONObject beforeData = payload.getJSONObject("before");
@@ -82,6 +81,9 @@ public class DefaultChangeEventHandler implements ChangeEventHandler, Applicatio
                     }
                     // 设置数据库名称和表名称
                     JSONObject source = payload.getJSONObject("source");
+                    // 获取数据库实例
+                    String schemaName = source.getString("table");
+
                     if (source != null) {
                         message.setDatabaseName(source.getString("db"));
                         message.setTableName(source.getString("table"));
@@ -100,14 +102,14 @@ public class DefaultChangeEventHandler implements ChangeEventHandler, Applicatio
                         log.error("未找到当前数据表的处理器");
                     }else{
                         strategy.syncTableData(message);
-                    }
+                    }*/
                 }
             } catch (Exception e) {
                 log.error("解析变更事件失败: {}", e.getMessage());
             }
         }
 
-
+/*
         // 遍历 entryes，单条解析
         for (DebeziumEntry.Entry entry : message.getEntries()) {
             // 获取类型
@@ -139,7 +141,7 @@ public class DefaultChangeEventHandler implements ChangeEventHandler, Applicatio
                         continue;
                     }
                     // 获取表对应的处理器
-                    EntryHandler<?> entryHandler = HandlerUtil.getEntryHandler(tableHandlerMap, schemaName, tableName);
+                    RecordChangeEventEntryHandler<?> entryHandler = HandlerUtil.getEntryHandler(tableHandlerMap, schemaName, tableName);
                     // 判断是否有对应的处理器
                     if(Objects.nonNull(entryHandler)){
                         DebeziumModel model = DebeziumModel.builder()
@@ -160,9 +162,9 @@ public class DefaultChangeEventHandler implements ChangeEventHandler, Applicatio
             } else {
                 log.info("当前操作类型为：{}", entryType);
             }
-        }
+        }*/
     }
-
+/*
     public void handlerRowData(DebeziumModel model, DebeziumEntry.RowChange rowChange, DebeziumEventHolder eventHolder, DebeziumEntry.EventType eventType) throws Exception {
         try {
             DebeziumContext.setModel(model);
@@ -176,7 +178,7 @@ public class DefaultChangeEventHandler implements ChangeEventHandler, Applicatio
         }
     }
 
-    public void handlerRowData(DebeziumModel model, DebeziumEntry.RowData rowData, EntryHandler entryHandler, DebeziumEntry.EventType eventType) throws Exception {
+    public void handlerRowData(DebeziumModel model, DebeziumEntry.RowData rowData, RecordChangeEventEntryHandler entryHandler, DebeziumEntry.EventType eventType) throws Exception {
         try {
             // 设置上下文
             DebeziumContext.setModel(model);
@@ -186,7 +188,7 @@ public class DefaultChangeEventHandler implements ChangeEventHandler, Applicatio
             // 移除上下文
             DebeziumContext.removeModel();
         }
-    }
+    }*/
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {

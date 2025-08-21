@@ -21,9 +21,9 @@ public class KafkaOffsetStorageConfigurer implements OffsetStorageConfigurer {
         PropertyMapper map = PropertyMapper.get().alwaysApplyingWhenNonNull();
         // Offset Store
         builder.with("offset.storage", "org.apache.kafka.connect.storage.KafkaOffsetBackingStore");
-        map.from(kafka::getOffsetStorageTopic).whenHasText().to(value -> builder.with("offset.storage.topic", value));
-        map.from(kafka::getOffsetStoragePartitions).to(value -> builder.with("offset.storage.partitions", value));
-        map.from(kafka::getOffsetStorageReplicationFactor).to(value -> builder.with("offset.storage.replication.factor", value));
+        map.from(kafka::getTopic).whenHasText().to(value -> builder.with("offset.storage.topic", value));
+        map.from(kafka::getPartitions).to(value -> builder.with("offset.storage.partitions", value));
+        map.from(kafka::getReplicationFactor).to(value -> builder.with("offset.storage.replication.factor", value));
     }
 }
 

@@ -3,6 +3,7 @@ package io.debezium.embedded.handler;
 import com.alibaba.fastjson.JSON;
 import io.debezium.embedded.annotation.DebeziumEventHandler;
 import io.debezium.embedded.annotation.DebeziumEventHolder;
+import io.debezium.embedded.annotation.OnDebeziumEvent;
 import io.debezium.embedded.context.DebeziumContext;
 import io.debezium.embedded.model.DebeziumModel;
 import io.debezium.embedded.protocol.DebeziumEntry;
@@ -24,9 +25,8 @@ import org.springframework.util.ReflectionUtils;
 import java.lang.reflect.Method;
 import java.util.*;
 
-
 @Slf4j
-public abstract class DefaultRecordChangeEventHandler implements RecordChangeEventHandler, ApplicationContextAware {
+public class DefaultRecordChangeEventHandler implements RecordChangeEventHandler, ApplicationContextAware {
 
     /**
      * 通过注解方式的表数据变更处理器
@@ -35,13 +35,13 @@ public abstract class DefaultRecordChangeEventHandler implements RecordChangeEve
     /**
      * 表处理器
      */
-    private Map<String, EntryHandler> tableHandlerMap;
+    private Map<String, RecordChangeEventEntryHandler> tableHandlerMap;
     /**
      * 行数据处理器
      */
     private RowDataHandler<List<Map<String, String>>> rowDataHandler;
 
-    public DefaultRecordChangeEventHandler(List<? extends EntryHandler> entryHandlers,
+    public DefaultRecordChangeEventHandler(List<? extends RecordChangeEventEntryHandler> entryHandlers,
                                            RowDataHandler<List<Map<String, String>>> rowDataHandler) {
         this.tableHandlerMap = HandlerUtil.getTableHandlerMap(entryHandlers);
         this.rowDataHandler = rowDataHandler;
@@ -76,7 +76,7 @@ public abstract class DefaultRecordChangeEventHandler implements RecordChangeEve
             }
             String jsonString = JSON.toJSONString(changeListenerModel);
             log.info("Send change data: {}", jsonString);
-            try {
+            /*try {
                 // 获取表对应的注解处理器
                 List<DebeziumEventHolder> eventHolders = HandlerUtil.getEventHolders(tableEventHolderMap, destination, schemaName, tableName, eventType);
                 if(!CollectionUtils.isEmpty(eventHolders)){
@@ -93,7 +93,7 @@ public abstract class DefaultRecordChangeEventHandler implements RecordChangeEve
                     continue;
                 }
                 // 获取表对应的处理器
-                EntryHandler<?> entryHandler = HandlerUtil.getEntryHandler(tableHandlerMap, schemaName, tableName);
+                RecordChangeEventEntryHandler<?> entryHandler = HandlerUtil.getEntryHandler(tableHandlerMap, schemaName, tableName);
                 // 判断是否有对应的处理器
                 if(Objects.nonNull(entryHandler)){
                     DebeziumModel model = DebeziumModel.builder()
@@ -107,9 +107,13 @@ public abstract class DefaultRecordChangeEventHandler implements RecordChangeEve
                 }
             } catch (Exception e) {
                 throw new RuntimeException("parse event has an error , data:" + maps.toString(), e);
-            }
+            }*/
         }
-        recordCommitter.markBatchFinished();
+        try {
+            recordCommitter.markBatchFinished();
+        } catch (Exception e) {
+            log.error("Commit batch has an error", e);
+        }
     }
 
 
@@ -126,7 +130,7 @@ public abstract class DefaultRecordChangeEventHandler implements RecordChangeEve
         }
     }
 
-    public void handlerRowData(DebeziumModel model, List<Map<String, String>> rowData, EntryHandler entryHandler, DebeziumEntry.EventType eventType) throws Exception {
+    public void handlerRowData(DebeziumModel model, List<Map<String, String>> rowData, RecordChangeEventEntryHandler entryHandler, DebeziumEntry.EventType eventType) throws Exception {
         try {
             // 设置上下文
             DebeziumContext.setModel(model);

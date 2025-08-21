@@ -1,6 +1,7 @@
 package io.debezium.embedded.spring.boot.example;
 
-import io.debezium.embedded.history.RedisSchemaHistoryConfigurer;
+import io.debezium.embedded.configurer.history.RedisSchemaHistoryConfigurer;
+import io.debezium.embedded.configurer.history.SchemaHistoryType;
 import io.debezium.embedded.spring.boot.DebeziumSchemaHistoryProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -45,43 +46,43 @@ public class RedisSchemaHistoryExample {
         DebeziumSchemaHistoryProperties properties = new DebeziumSchemaHistoryProperties();
         
         // 设置历史记录类型为 Redis
-        properties.setType(io.debezium.embedded.history.DatabaseHistoryType.REDIS);
+        properties.setType(SchemaHistoryType.REDIS);
         
         // 配置 Redis 连接参数
         DebeziumSchemaHistoryProperties.Redis redis = properties.getRedis();
         
         // ==================== Schema History 配置 ====================
         // 基本连接配置
-        redis.setAddress("localhost:6379");
-        redis.setDatabase(1);  // 使用不同的数据库
-        redis.setKey("debezium:schema-history:");  // 必须显式配置，无默认值
-        redis.setPassword("");  // 如果 Redis 设置了密码，请填写
-        redis.setUsername("");  // Redis 6.0+ ACL 支持
-        redis.setClientName("debezium-schema-history-client");
-        
-        // 超时配置
-        redis.setConnectionTimeout(2000);
-        redis.setSocketTimeout(2000);
-        
-        // 重试配置
-        redis.setRetryInitialDelay(300);
-        redis.setRetryMaxDelay(10000);
-        redis.setRetryMaxAttempts(10);
-        
-        // 等待配置
-        redis.setWaitEnabled(false);
-        redis.setWaitTimeout(1000);
-        redis.setWaitRetryEnabled(false);
-        redis.setWaitRetryDelay(1000);
+        redis.setKey("metadata:debezium:schema_history");  // Redis 键名，默认值
+        redis.setAddress("localhost:6379");  // Redis 服务器地址
+        redis.setUser("");  // Redis 用户名（可选）
+        redis.setPassword("");  // Redis 密码（可选）
+        redis.setDbIndex(1);  // Redis 数据库索引，使用不同的数据库
         
         // SSL/TLS 配置（生产环境建议启用）
-        redis.setSsl(false);
-        redis.setSslCertPath("");
-        redis.setSslKeyPath("");
-        redis.setSslCaPath("");
-        redis.setSslKeystorePath("");
-        redis.setSslKeystorePassword("");
-        redis.setSslKeystoreType("JKS");
+        redis.setSslEnabled(false);  // 是否启用 SSL/TLS
+        redis.setSslHostnameVerificationEnabled(false);  // SSL 主机名验证是否启用
+        redis.setSslTruststorePath("");  // SSL 信任库路径
+        redis.setSslTruststorePassword("");  // SSL 信任库密码
+        redis.setSslTruststoreType("JKS");  // SSL 信任库类型
+        redis.setSslKeystorePath("");  // SSL 密钥库路径
+        redis.setSslKeystorePassword("");  // SSL 密钥库密码
+        redis.setSslKeystoreType("JKS");  // SSL 密钥库类型
+        
+        // 超时配置
+        redis.setConnectionTimeoutMs(2000);  // 连接超时时间（毫秒）
+        redis.setSocketTimeoutMs(2000);  // Socket 超时时间（毫秒）
+        
+        // 重试配置
+        redis.setRetryInitialDelayMs(300);  // 重试初始延迟时间（毫秒）
+        redis.setRetryMaxDelayMs(10000);  // 重试最大延迟时间（毫秒）
+        redis.setRetryMaxAttempts(10);  // 重试最大尝试次数
+        
+        // 等待配置
+        redis.setWaitEnabled(false);  // 等待启用
+        redis.setWaitTimeoutMs(1000);  // 等待超时时间（毫秒）
+        redis.setWaitRetryEnabled(false);  // 等待重试启用
+        redis.setWaitRetryDelayMs(1000);  // 等待重试延迟时间（毫秒）
         
         return properties;
     }

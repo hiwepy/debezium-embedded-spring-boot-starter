@@ -1,6 +1,7 @@
 package io.debezium.embedded.spring.boot.example;
 
-import io.debezium.embedded.history.AmazonS3SchemaHistoryConfigurer;
+import io.debezium.embedded.configurer.history.AmazonS3SchemaHistoryConfigurer;
+import io.debezium.embedded.configurer.history.SchemaHistoryType;
 import io.debezium.embedded.spring.boot.DebeziumSchemaHistoryProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -43,7 +44,7 @@ public class S3SchemaHistoryExample {
         DebeziumSchemaHistoryProperties properties = new DebeziumSchemaHistoryProperties();
         
         // 设置历史记录类型为 S3
-        properties.setType(io.debezium.embedded.history.SchemaHistoryType.S3);
+        properties.setType(SchemaHistoryType.S3);
         
         // 配置 S3 连接参数
         DebeziumSchemaHistoryProperties.S3 s3 = properties.getS3();

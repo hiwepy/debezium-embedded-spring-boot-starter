@@ -17,15 +17,39 @@ debezium:
     # ========================================
     # MySQL 连接器配置
     # ========================================
-    - connector:
+    - event-type: change_event
+      # 连接器配置
+      connector:
+        # 连接器名称
         destination: mysql-connector
+        # 连接器类型
         type: MYSQL
-        # Debezium Server 主机地址。如果设置了address属性，则忽略。
+        # MySQL 主机地址
         host: 127.0.0.1
+        # MySQL 端口
+        port: 3306
+        # 数据库和表过滤
+        database-include-list:
+          - test
+        table-include-list:
+          - test.user
+      # 数据库历史记录
+      schema-history:
+        type: redis
+        redis:
+          address: 121.41.2.18:16379
+          password: hpkRzkC7pcDnYp3e
+      # 偏移量存储配置
+      offset-storage:
+        type: redis
+        redis:
+          address: 121.41.2.18:16379
+          password: hpkRzkC7pcDnYp3e
     # ========================================
     # MongoDB 连接器配置
     # ========================================
     - connector:
+        # 连接器名称
         destination: mongodb-connector
         # Debezium Server 主机地址。如果设置了address属性，则忽略。
         host: 127.0.0.1
@@ -35,11 +59,9 @@ debezium:
         username: xxx
         # Debezium Server 密码
         password: 222
-      history:
-        file:
-          backup: true
+      # 偏移量存储配置
       offset-storage:
-        type: FILE
+        type: file
         file:
           file-name: /tmp/debezium-offsets.dat
           flush-interval-ms: 60000

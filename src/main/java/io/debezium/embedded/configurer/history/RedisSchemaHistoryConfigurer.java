@@ -23,28 +23,36 @@ public class RedisSchemaHistoryConfigurer implements SchemaHistoryConfigurer {
         
         builder.with("schema.history.internal", "io.debezium.storage.redis.history.RedisSchemaHistory");
         
-        // 严格按照官方文档配置参数
-        map.from(redis::getAddress).whenHasText().to(value -> builder.with("schema.history.internal.storage.redis.address", value));
-        map.from(redis::getDatabase).to(value -> builder.with("schema.history.internal.storage.redis.database", value));
-        map.from(redis::getKey).whenHasText().to(value -> builder.with("schema.history.internal.storage.redis.key", value));
-        map.from(redis::getPassword).whenHasText().to(value -> builder.with("schema.history.internal.storage.redis.password", value));
-        map.from(redis::getUsername).whenHasText().to(value -> builder.with("schema.history.internal.storage.redis.username", value));
-        map.from(redis::getClientName).whenHasText().to(value -> builder.with("schema.history.internal.storage.redis.client.name", value));
-        map.from(redis::getConnectionTimeout).to(value -> builder.with("schema.history.internal.storage.redis.connection.timeout.ms", value));
-        map.from(redis::getSocketTimeout).to(value -> builder.with("schema.history.internal.storage.redis.socket.timeout.ms", value));
-        map.from(redis::getRetryInitialDelay).to(value -> builder.with("schema.history.internal.storage.redis.retry.initial.delay.ms", value));
-        map.from(redis::getRetryMaxDelay).to(value -> builder.with("schema.history.internal.storage.redis.retry.max.delay.ms", value));
-        map.from(redis::getRetryMaxAttempts).to(value -> builder.with("schema.history.internal.storage.redis.retry.max.attempts", value));
-        map.from(redis::getWaitEnabled).to(value -> builder.with("schema.history.internal.storage.redis.wait.enabled", value));
-        map.from(redis::getWaitTimeout).to(value -> builder.with("schema.history.internal.storage.redis.wait.timeout.ms", value));
-        map.from(redis::getWaitRetryEnabled).to(value -> builder.with("schema.history.internal.storage.redis.wait.retry.enabled", value));
-        map.from(redis::getWaitRetryDelay).to(value -> builder.with("schema.history.internal.storage.redis.wait.retry.delay.ms", value));
-        map.from(redis::getSsl).to(value -> builder.with("schema.history.internal.storage.redis.ssl.enabled", value));
-        map.from(redis::getSslCertPath).whenHasText().to(value -> builder.with("schema.history.internal.storage.redis.ssl.cert.path", value));
-        map.from(redis::getSslKeyPath).whenHasText().to(value -> builder.with("schema.history.internal.storage.redis.ssl.key.path", value));
-        map.from(redis::getSslCaPath).whenHasText().to(value -> builder.with("schema.history.internal.storage.redis.ssl.ca.path", value));
+        // 基础配置
+        map.from(redis::getKey).whenHasText().to(value -> builder.with("schema.history.internal.redis.key", value));
+        map.from(redis::getAddress).whenHasText().to(value -> builder.with("schema.history.internal.redis.address", value));
+        map.from(redis::getUser).whenHasText().to(value -> builder.with("schema.history.internal.redis.user", value));
+        map.from(redis::getPassword).whenHasText().to(value -> builder.with("schema.history.internal.redis.password", value));
+        map.from(redis::getDbIndex).to(value -> builder.with("schema.history.internal.redis.db.index", value));
+        
+        // SSL 配置
+        map.from(redis::getSslEnabled).to(value -> builder.with("schema.history.internal.storage.redis.ssl.enabled", value));
+        map.from(redis::getSslHostnameVerificationEnabled).to(value -> builder.with("schema.history.internal.storage.redis.ssl.hostname.verification.enabled", value));
+        map.from(redis::getSslTruststorePath).whenHasText().to(value -> builder.with("schema.history.internal.storage.redis.ssl.truststore.path", value));
+        map.from(redis::getSslTruststorePassword).whenHasText().to(value -> builder.with("schema.history.internal.storage.redis.ssl.truststore.password", value));
+        map.from(redis::getSslTruststoreType).whenHasText().to(value -> builder.with("schema.history.internal.storage.redis.ssl.truststore.type", value));
         map.from(redis::getSslKeystorePath).whenHasText().to(value -> builder.with("schema.history.internal.storage.redis.ssl.keystore.path", value));
         map.from(redis::getSslKeystorePassword).whenHasText().to(value -> builder.with("schema.history.internal.storage.redis.ssl.keystore.password", value));
         map.from(redis::getSslKeystoreType).whenHasText().to(value -> builder.with("schema.history.internal.storage.redis.ssl.keystore.type", value));
+        
+        // 超时配置
+        map.from(redis::getConnectionTimeoutMs).to(value -> builder.with("schema.history.internal.storage.redis.connection.timeout.ms", value));
+        map.from(redis::getSocketTimeoutMs).to(value -> builder.with("schema.history.internal.storage.redis.socket.timeout.ms", value));
+        
+        // 重试配置
+        map.from(redis::getRetryInitialDelayMs).to(value -> builder.with("schema.history.internal.storage.redis.retry.initial.delay.ms", value));
+        map.from(redis::getRetryMaxDelayMs).to(value -> builder.with("schema.history.internal.storage.redis.retry.max.delay.ms", value));
+        map.from(redis::getRetryMaxAttempts).to(value -> builder.with("schema.history.internal.storage.redis.retry.max.attempts", value));
+        
+        // 等待配置
+        map.from(redis::getWaitEnabled).to(value -> builder.with("schema.history.internal.storage.redis.wait.enabled", value));
+        map.from(redis::getWaitTimeoutMs).to(value -> builder.with("schema.history.internal.storage.redis.wait.timeout.ms", value));
+        map.from(redis::getWaitRetryEnabled).to(value -> builder.with("schema.history.internal.storage.redis.wait.retry.enabled", value));
+        map.from(redis::getWaitRetryDelayMs).to(value -> builder.with("schema.history.internal.storage.redis.wait.retry.delay.ms", value));
     }
 }

@@ -1,6 +1,6 @@
 package io.debezium.embedded.spring.boot.example;
 
-import io.debezium.embedded.handler.EntryHandler;
+import io.debezium.embedded.handler.RecordChangeEventEntryHandler;
 import io.debezium.embedded.spring.boot.example.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component
-public class UserEventHandler implements EntryHandler<User> {
+public class UserEventHandlerRecordChangeEvent implements RecordChangeEventEntryHandler<User> {
 
     @Override
     public void insert(User user) {

@@ -21,9 +21,9 @@ public class FileOffsetStorageConfigurer implements OffsetStorageConfigurer {
         PropertyMapper map = PropertyMapper.get().alwaysApplyingWhenNonNull();
         // Offset Store
         builder.with("offset.storage", "org.apache.kafka.connect.storage.FileOffsetBackingStore");
-        map.from(file::getOffsetStorageFileName).whenHasText().to(value -> builder.with("offset.storage.file.filename", value));
-        map.from(file::getOffsetStorageFlushIntervalMs).to(value -> builder.with("offset.flush.interval.ms", value));
-        map.from(file::getOffsetStorageFlushTimeoutMs).to(value -> builder.with("offset.flush.timeout.ms", value));
+        map.from(file::getFileName).whenHasText().to(value -> builder.with("offset.storage.file.filename", value));
+        map.from(file::getFlushIntervalMs).to(value -> builder.with("offset.flush.interval.ms", value));
+        map.from(file::getFlushTimeoutMs).to(value -> builder.with("offset.flush.timeout.ms", value));
 
     }
 }

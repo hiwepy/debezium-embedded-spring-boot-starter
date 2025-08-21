@@ -4,8 +4,7 @@ package io.debezium.embedded.handler;
  * 处理 Entry
  * @param <R> Entry
  */
-public interface EntryHandler<R> {
-
+public interface RecordChangeEventEntryHandler<R> {
 
 
     default void insert(R t) {

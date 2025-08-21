@@ -1,7 +1,8 @@
 package io.debezium.embedded.spring.boot.example;
 
-import io.debezium.embedded.handler.EntryHandler;
+import io.debezium.embedded.handler.RecordChangeEventEntryHandler;
 import io.debezium.embedded.spring.boot.example.entity.User;
+import io.debezium.embedded.spring.boot.example.entity.Order;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -32,7 +33,7 @@ public class EmbeddedDebeziumExample {
      * 实现 EntryHandler<User> 接口，处理用户表的增删改事件
      */
     @Component
-    public static class UserEventHandler implements EntryHandler<User> {
+    public static class UserEventHandlerRecordChangeEvent implements RecordChangeEventEntryHandler<User> {
 
         @Override
         public void insert(User user) {
@@ -60,7 +61,7 @@ public class EmbeddedDebeziumExample {
      * 订单表变更事件处理器示例
      */
     @Component
-    public static class OrderEventHandler implements EntryHandler<Order> {
+    public static class OrderEventHandlerRecordChangeEvent implements RecordChangeEventEntryHandler<Order> {
 
         @Override
         public void insert(Order order) {
@@ -78,44 +79,6 @@ public class EmbeddedDebeziumExample {
         public void delete(Order order) {
             log.info("订单删除: {}", order);
             // 处理订单删除逻辑
-        }
-    }
-
-    /**
-     * 订单实体类示例
-     */
-    public static class Order {
-        private Long id;
-        private String orderNo;
-        private Long userId;
-        private String status;
-        private String createTime;
-        private String updateTime;
-
-        // getters and setters
-        public Long getId() { return id; }
-        public void setId(Long id) { this.id = id; }
-        public String getOrderNo() { return orderNo; }
-        public void setOrderNo(String orderNo) { this.orderNo = orderNo; }
-        public Long getUserId() { return userId; }
-        public void setUserId(Long userId) { this.userId = userId; }
-        public String getStatus() { return status; }
-        public void setStatus(String status) { this.status = status; }
-        public String getCreateTime() { return createTime; }
-        public void setCreateTime(String createTime) { this.createTime = createTime; }
-        public String getUpdateTime() { return updateTime; }
-        public void setUpdateTime(String updateTime) { this.updateTime = updateTime; }
-
-        @Override
-        public String toString() {
-            return "Order{" +
-                    "id=" + id +
-                    ", orderNo='" + orderNo + '\'' +
-                    ", userId=" + userId +
-                    ", status='" + status + '\'' +
-                    ", createTime='" + createTime + '\'' +
-                    ", updateTime='" + updateTime + '\'' +
-                    '}';
         }
     }
 }

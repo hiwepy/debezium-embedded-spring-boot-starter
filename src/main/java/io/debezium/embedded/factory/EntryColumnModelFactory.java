@@ -2,7 +2,7 @@ package io.debezium.embedded.factory;
 
 
 import io.debezium.embedded.enums.TableNameEnum;
-import io.debezium.embedded.handler.EntryHandler;
+import io.debezium.embedded.handler.RecordChangeEventEntryHandler;
 import io.debezium.embedded.protocol.DebeziumEntry;
 import com.baomidou.mybatisplus.core.metadata.TableFieldInfo;
 import com.baomidou.mybatisplus.core.metadata.TableInfo;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 public class EntryColumnModelFactory extends AbstractModelFactory<List<DebeziumEntry.Column>> {
 
     @Override
-    public <R> R newInstance(EntryHandler entryHandler, List<DebeziumEntry.Column> columns) throws Exception {
+    public <R> R newInstance(RecordChangeEventEntryHandler entryHandler, List<DebeziumEntry.Column> columns) throws Exception {
         String debeziumTableName = HandlerUtil.getDebeziumTableNameCombination(entryHandler);
         if (TableNameEnum.ALL.name().toLowerCase().equals(debeziumTableName)) {
             Map<String, String> map = columns.stream().collect(Collectors.toMap(DebeziumEntry.Column::getName, DebeziumEntry.Column::getValue));
@@ -36,7 +36,7 @@ public class EntryColumnModelFactory extends AbstractModelFactory<List<DebeziumE
     }
 
     @Override
-    public <R> R newInstance(EntryHandler entryHandler, List<DebeziumEntry.Column> columns, Set<String> updateColumn) throws Exception {
+    public <R> R newInstance(RecordChangeEventEntryHandler entryHandler, List<DebeziumEntry.Column> columns, Set<String> updateColumn) throws Exception {
         String debeziumTableName = HandlerUtil.getDebeziumTableNameCombination(entryHandler);
         if (TableNameEnum.ALL.name().toLowerCase().equals(debeziumTableName)) {
             Map<String, String> map = columns.stream().filter(column -> updateColumn.contains(column.getName()))

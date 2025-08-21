@@ -1,7 +1,7 @@
 package io.debezium.embedded.util;
 
 
-import io.debezium.embedded.handler.EntryHandler;
+import io.debezium.embedded.handler.RecordChangeEventEntryHandler;
 import io.debezium.embedded.model.DebeziumModel;
 import io.debezium.embedded.protocol.DebeziumEntry;
 import com.baomidou.mybatisplus.core.metadata.TableInfo;
@@ -21,7 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class GenericUtil {
 
-    private static Map<Class<? extends EntryHandler>, Class> cache = new ConcurrentHashMap<>();
+    private static Map<Class<? extends RecordChangeEventEntryHandler>, Class> cache = new ConcurrentHashMap<>();
 
     public static Object[] getInvokeArgs(Method method, DebeziumModel model, DebeziumEntry.RowChange rowChange, DebeziumEntry.EventType eventType) {
         return Arrays.stream(method.getParameterTypes()).map(pClass -> {
@@ -54,7 +54,7 @@ public class GenericUtil {
             }).toArray();
     }
 
-    public static String getTableGenericProperties(EntryHandler entryHandler) {
+    public static String getTableGenericProperties(RecordChangeEventEntryHandler entryHandler) {
         Class<?> tableClass = getTableClass(entryHandler);
         if (tableClass != null) {
             // 3.2、获取 mybatis-plus 的注解信息
@@ -68,15 +68,15 @@ public class GenericUtil {
 
 
     @SuppressWarnings("unchecked")
-    public static <T> Class<T> getTableClass(EntryHandler object) {
+    public static <T> Class<T> getTableClass(RecordChangeEventEntryHandler object) {
         // 1、获取处理器的泛型类型
-        Class<? extends EntryHandler> handlerClass = object.getClass();
+        Class<? extends RecordChangeEventEntryHandler> handlerClass = object.getClass();
         Class tableClass = cache.get(handlerClass);
         if (tableClass == null) {
             Type[] interfacesTypes = handlerClass.getGenericInterfaces();
             for (Type t : interfacesTypes) {
                 Class c = (Class) ((ParameterizedType) t).getRawType();
-                if (c.equals(EntryHandler.class)) {
+                if (c.equals(RecordChangeEventEntryHandler.class)) {
                     tableClass = (Class<T>) ((ParameterizedType) t).getActualTypeArguments()[0];
                     cache.putIfAbsent(handlerClass, tableClass);
                     return tableClass;

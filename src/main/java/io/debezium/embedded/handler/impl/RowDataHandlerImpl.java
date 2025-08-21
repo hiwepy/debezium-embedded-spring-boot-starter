@@ -2,7 +2,7 @@ package io.debezium.embedded.handler.impl;
 
 
 import io.debezium.embedded.factory.IModelFactory;
-import io.debezium.embedded.handler.EntryHandler;
+import io.debezium.embedded.handler.RecordChangeEventEntryHandler;
 import io.debezium.embedded.handler.RowDataHandler;
 import io.debezium.embedded.protocol.DebeziumEntry;
 
@@ -24,7 +24,7 @@ public class RowDataHandlerImpl implements RowDataHandler<DebeziumEntry.RowData>
     }
 
     @Override
-    public <R> void handlerRowData(DebeziumEntry.RowData rowData, EntryHandler<R> entryHandler, DebeziumEntry.EventType eventType) throws Exception {
+    public <R> void handlerRowData(DebeziumEntry.RowData rowData, RecordChangeEventEntryHandler<R> entryHandler, DebeziumEntry.EventType eventType) throws Exception {
         if (Objects.isNull(rowData) || Objects.isNull(entryHandler) || Objects.isNull(eventType)) {
             return;
         }

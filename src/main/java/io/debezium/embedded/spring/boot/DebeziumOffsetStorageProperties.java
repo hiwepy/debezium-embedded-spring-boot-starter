@@ -85,7 +85,7 @@ public class DebeziumOffsetStorageProperties {
          * <p>默认值：/tmp/offsets.dat</p>
          * <p>建议使用绝对路径，确保应用有读写权限。</p>
          */
-        private String offsetStorageFileName = "/tmp/offsets.dat";
+        private String fileName = "/tmp/offsets.dat";
         
         /**
          * 刷新间隔时间（毫秒）
@@ -95,7 +95,7 @@ public class DebeziumOffsetStorageProperties {
          * <p>默认值：60000（60秒）</p>
          * <p>建议根据数据重要性和性能要求进行调整。</p>
          */
-        private Integer offsetStorageFlushIntervalMs = 60_000;
+        private Integer flushIntervalMs = 60_000;
         
         /**
          * 刷新超时时间（毫秒）
@@ -105,10 +105,7 @@ public class DebeziumOffsetStorageProperties {
          * <p>默认值：null（无限制）</p>
          * <p>建议在生产环境中设置合理的超时时间，避免长时间阻塞。</p>
          */
-        private Integer offsetStorageFlushTimeoutMs = 5000;
-
-
-
+        private Integer flushTimeoutMs = 5000;
 
     }
 
@@ -128,7 +125,7 @@ public class DebeziumOffsetStorageProperties {
          * <p>默认值：debezium-offsets</p>
          * <p>如果主题不存在，将自动创建。</p>
          */
-        private String offsetStorageTopic = "debezium-offsets";
+        private String topic = "debezium-offsets";
 
         /**
          * 主题分区数
@@ -137,16 +134,16 @@ public class DebeziumOffsetStorageProperties {
          * <p>默认值：25</p>
          * <p>建议根据并发需求设置合适的分区数。</p>
          */
-        private Integer offsetStoragePartitions = 25;
+        private Integer partitions = 25;
 
         /**
          * 副本因子
          *
          * <p>指定偏移量主题的副本数量。仅在主题不存在时生效。</p>
-         * <p>默认值：1</p>
+         * <p>默认值：3</p>
          * <p>建议在生产环境中设置为 3 或更高，确保高可用性。</p>
          */
-        private Integer offsetStorageReplicationFactor = 1;
+        private Integer replicationFactor = 3;
 
 
 
@@ -594,138 +591,179 @@ public class DebeziumOffsetStorageProperties {
      */
     @Data
     public static class Redis {
+
         // ==================== Offset Store 配置 ====================
+        
+        /**
+         * Redis 键名
+         * 
+         * <p>Debezium 用于存储偏移量的 Redis 键。</p>
+         * <p>默认值：metadata:debezium:offsets</p>
+         */
+        private String key = "metadata:debezium:offsets";
         
         /**
          * Redis 服务器地址
          * 
-         * <p>指定 Redis 服务器的地址，格式为 host:port。</p>
-         * <p>默认值：localhost:6379</p>
-         * <p>支持单机、主从、集群等部署模式。</p>
+         * <p>Debezium 连接 Redis 存储偏移量数据的 URL。</p>
+         * <p>格式：host:port 或 redis://host:port</p>
          */
-        private String address = "localhost:6379";
+        private String address;
+        
+        /**
+         * Redis 用户名
+         * 
+         * <p>Debezium 连接 Redis 存储偏移量数据的用户账户。</p>
+         */
+        private String user;
         
         /**
          * Redis 密码
          * 
-         * <p>指定连接 Redis 的密码。</p>
-         * <p>如果 Redis 未设置密码，可以留空。</p>
+         * <p>Debezium 连接 Redis 存储偏移量数据的用户账户密码。</p>
          */
         private String password;
         
         /**
          * Redis 数据库索引
          * 
-         * <p>指定使用的 Redis 数据库索引。</p>
+         * <p>Debezium 用于访问 Redis 存储偏移量数据的数据库索引 (0..15)。</p>
          * <p>默认值：0</p>
-         * <p>Redis 支持 0-15 共 16 个数据库。</p>
          */
-        private Integer database = 0;
-        
-
-        
-        /**
-         * 刷新间隔时间（毫秒）
-         * 
-         * <p>指定将偏移量信息刷新到 Redis 的最大时间间隔。</p>
-         * <p>默认值：60000（60秒）</p>
-         * <p>建议根据数据重要性和性能要求进行调整。</p>
-         */
-        private Integer flushIntervalMs = 60_000;
-        
-        /**
-         * 连接超时时间（毫秒）
-         * 
-         * <p>指定建立 Redis 连接的超时时间。</p>
-         * <p>默认值：30000（30秒）</p>
-         * <p>建议根据网络延迟调整。</p>
-         */
-        private Integer connectionTimeout = 30000;
-        
-        /**
-         * 读取超时时间（毫秒）
-         * 
-         * <p>指定从 Redis 读取数据的超时时间。</p>
-         * <p>默认值：30000（30秒）</p>
-         * <p>建议根据 Redis 性能调整。</p>
-         */
-        private Integer readTimeout = 30000;
-        
-        /**
-         * 连接池大小
-         * 
-         * <p>指定 Redis 连接池的大小。</p>
-         * <p>默认值：10</p>
-         * <p>建议根据并发需求调整。</p>
-         */
-        private Integer poolSize = 10;
+        private Integer dbIndex = 0;
         
         /**
          * 是否启用 SSL/TLS
          * 
-         * <p>指定是否启用 SSL/TLS 连接。</p>
+         * <p>指定 Debezium 在与 Redis 通信存储偏移量数据时是否使用 SSL。</p>
          * <p>默认值：false</p>
-         * <p>生产环境建议启用 SSL。</p>
          */
-        private Boolean ssl = false;
+        private Boolean sslEnabled = false;
         
         /**
-         * SSL 证书路径
+         * SSL 主机名验证是否启用
          * 
-         * <p>指定 SSL 证书文件的路径。</p>
-         * <p>仅在启用 SSL 时生效。</p>
+         * <p>指定 Debezium 在与 Redis 通信存储偏移量数据时是否启用主机名验证。</p>
+         * <p>默认值：false</p>
          */
-        private String sslCertPath;
+        private Boolean sslHostnameVerificationEnabled = false;
         
         /**
-         * SSL 密钥路径
+         * SSL 信任库路径
          * 
-         * <p>指定 SSL 密钥文件的路径。</p>
-         * <p>仅在启用 SSL 时生效。</p>
+         * <p>用于 Redis 偏移量存储 SSL/TLS 连接的信任库文件路径。</p>
          */
-        private String sslKeyPath;
+        private String sslTruststorePath;
         
         /**
-         * SSL CA 证书路径
+         * SSL 信任库密码
          * 
-         * <p>指定 SSL CA 证书文件的路径。</p>
-         * <p>仅在启用 SSL 时生效。</p>
+         * <p>用于 Redis 偏移量存储 SSL/TLS 连接的信任库文件密码。</p>
          */
-        private String sslCaPath;
+        private String sslTruststorePassword;
         
         /**
-         * 用户名（Redis 6.0+ ACL 支持）
+         * SSL 信任库类型
          * 
-         * <p>指定连接 Redis 的用户名。</p>
-         * <p>仅在 Redis 6.0+ 且启用 ACL 时生效。</p>
+         * <p>用于 Redis 偏移量存储 SSL/TLS 连接的信任库文件类型。</p>
+         * <p>默认值：JKS</p>
          */
-        private String username;
+        private String sslTruststoreType = "JKS";
         
         /**
-         * 客户端名称
+         * SSL 密钥库路径
          * 
-         * <p>指定 Redis 客户端的名称。</p>
-         * <p>用于在 Redis 中标识客户端连接。</p>
+         * <p>用于 Redis 偏移量存储 SSL/TLS 连接的密钥库文件路径。</p>
          */
-        private String clientName;
+        private String sslKeystorePath;
         
         /**
-         * 最大重试次数
+         * SSL 密钥库密码
          * 
-         * <p>指定 Redis 操作失败时的最大重试次数。</p>
-         * <p>默认值：3</p>
-         * <p>建议根据网络稳定性调整。</p>
+         * <p>用于 Redis 偏移量存储 SSL/TLS 连接的密钥库文件密码。</p>
          */
-        private Integer maxRetries = 3;
+        private String sslKeystorePassword;
         
         /**
-         * 重试延迟时间（毫秒）
+         * SSL 密钥库类型
          * 
-         * <p>指定重试之间的延迟时间。</p>
-         * <p>默认值：1000（1秒）</p>
-         * <p>用于避免频繁重试对 Redis 造成压力。</p>
+         * <p>用于 Redis 偏移量存储 SSL/TLS 连接的密钥库文件类型。</p>
+         * <p>默认值：JKS</p>
          */
-        private Integer retryDelayMs = 1000;
+        private String sslKeystoreType = "JKS";
+        
+        /**
+         * 连接超时时间（毫秒）
+         * 
+         * <p>指定 Debezium 在连接超时前等待建立到 Redis 连接的时间（毫秒）。</p>
+         * <p>默认值：2000</p>
+         */
+        private Integer connectionTimeoutMs = 2000;
+        
+        /**
+         * Socket 超时时间（毫秒）
+         * 
+         * <p>指定 Debezium 允许与 Redis 交换偏移量数据的时间间隔（毫秒）。</p>
+         * <p>如果数据包在指定间隔内未传输，Debezium 将关闭 socket。</p>
+         * <p>默认值：2000</p>
+         */
+        private Integer socketTimeoutMs = 2000;
+        
+        /**
+         * 重试初始延迟时间（毫秒）
+         * 
+         * <p>指定 Debezium 在初始连接 Redis 失败后等待重试连接的时间（毫秒）。</p>
+         * <p>默认值：300</p>
+         */
+        private Integer retryInitialDelayMs = 300;
+        
+        /**
+         * 重试最大延迟时间（毫秒）
+         * 
+         * <p>指定 Debezium 在连接尝试失败后等待重试连接的最大时间（毫秒）。</p>
+         * <p>默认值：10000</p>
+         */
+        private Integer retryMaxDelayMs = 10000;
+        
+        /**
+         * 重试最大尝试次数
+         * 
+         * <p>指定 Debezium 在连接尝试失败后重试连接到 Redis 的最大次数。</p>
+         * <p>默认值：10</p>
+         */
+        private Integer retryMaxAttempts = 10;
+        
+        /**
+         * 等待启用
+         * 
+         * <p>在配置为使用副本分片的 Redis 环境中，指定 Debezium 是否等待 Redis 验证数据已写入副本。</p>
+         * <p>默认值：false</p>
+         */
+        private Boolean waitEnabled = false;
+        
+        /**
+         * 等待超时时间（毫秒）
+         * 
+         * <p>指定 Debezium 等待 Redis 确认数据已写入副本分片的时间（毫秒）。</p>
+         * <p>默认值：1000</p>
+         */
+        private Integer waitTimeoutMs = 1000;
+        
+        /**
+         * 等待重试启用
+         * 
+         * <p>指定 Debezium 是否重试失败的请求以确认数据是否写入副本分片。</p>
+         * <p>默认值：false</p>
+         */
+        private Boolean waitRetryEnabled = false;
+        
+        /**
+         * 等待重试延迟时间（毫秒）
+         * 
+         * <p>指定 Debezium 在失败后重新提交请求到 Redis 以确认数据已写入副本分片之前等待的时间（毫秒）。</p>
+         * <p>默认值：1000</p>
+         */
+        private Integer waitRetryDelayMs = 1000;
 
 
     }

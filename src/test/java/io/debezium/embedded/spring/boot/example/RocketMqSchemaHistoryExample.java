@@ -1,6 +1,7 @@
 package io.debezium.embedded.spring.boot.example;
 
-import io.debezium.embedded.history.RocketMqSchemaHistoryConfigurer;
+import io.debezium.embedded.configurer.history.RocketMqSchemaHistoryConfigurer;
+import io.debezium.embedded.configurer.history.SchemaHistoryType;
 import io.debezium.embedded.spring.boot.DebeziumSchemaHistoryProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -43,7 +44,7 @@ public class RocketMqSchemaHistoryExample {
         DebeziumSchemaHistoryProperties properties = new DebeziumSchemaHistoryProperties();
         
         // 设置历史记录类型为 RocketMQ
-        properties.setType(io.debezium.embedded.history.SchemaHistoryType.ROCKETMQ);
+        properties.setType(SchemaHistoryType.ROCKETMQ);
         
         // 配置 RocketMQ 连接参数
         DebeziumSchemaHistoryProperties.RocketMq rocketMq = properties.getRocketMq();
