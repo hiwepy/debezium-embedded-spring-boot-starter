@@ -17,7 +17,6 @@ public enum OffsetStorageType {
      * Kafka 存储
      */
     KAFKA,
-
     /**
      * 自定义存储
      */

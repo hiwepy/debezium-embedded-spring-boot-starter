@@ -110,16 +110,6 @@ public class DebeziumConnectorProperties {
     private SqlServer sqlServer = new SqlServer();
 
     /**
-     * Cassandra 特定配置
-     */
-    private Cassandra cassandra = new Cassandra();
-
-    /**
-     * Spanner 特定配置
-     */
-    private Spanner spanner = new Spanner();
-
-    /**
      * 自定义连接器配置
      */
     private Custom custom = new Custom();
@@ -528,106 +518,6 @@ public class DebeziumConnectorProperties {
          * 快照隔离级别
          */
         private String snapshotIsolationMode = "snapshot";
-    }
-
-    @Data
-    public static class Cassandra {
-        /**
-         * 连接字符串
-         */
-        private String connectionString;
-        /**
-         * 数据库列表（keyspace）
-         */
-        private String databaseList;
-        /**
-         * 表列表
-         */
-        private String tableList;
-        /**
-         * 快照模式
-         */
-        private String snapshotMode = "initial";
-        /**
-         * 连接超时时间（毫秒）
-         */
-        private Integer connectTimeoutMs = 30000;
-        /**
-         * 读取超时时间（毫秒）
-         */
-        private Integer readTimeoutMs = 30000;
-        /**
-         * 删除时生成墓碑
-         */
-        private Boolean tombstonesOnDelete = false;
-        /**
-         * 包含查询
-         */
-        private Boolean includeQuery = false;
-        /**
-         * 轮询间隔（毫秒）
-         */
-        private Integer pollIntervalMs = 1000;
-        /**
-         * 最大队列大小
-         */
-        private Integer maxQueueSize = 8192;
-        /**
-         * 最大批次大小
-         */
-        private Integer maxBatchSize = 2048;
-    }
-
-    @Data
-    public static class Spanner {
-        /**
-         * 连接字符串
-         */
-        private String connectionString;
-        /**
-         * 数据库列表
-         */
-        private String databaseList;
-        /**
-         * 表列表
-         */
-        private String tableList;
-        /**
-         * 快照模式
-         */
-        private String snapshotMode = "initial";
-        /**
-         * 项目 ID
-         */
-        private String projectId;
-        /**
-         * 实例 ID
-         */
-        private String instanceId;
-        /**
-         * 数据库 ID
-         */
-        private String databaseId;
-        /**
-         * 删除时生成墓碑
-         */
-        private Boolean tombstonesOnDelete = false;
-        /**
-         * 包含查询
-         */
-        private Boolean includeQuery = false;
-        /**
-         * 轮询间隔（毫秒）
-         */
-        private Integer pollIntervalMs = 1000;
-        /**
-         * 最大队列大小
-         */
-        private Integer maxQueueSize = 8192;
-        /**
-         * 最大批次大小
-         */
-        private Integer maxBatchSize = 2048;
     }
 
     @Data
