@@ -1,12 +1,12 @@
 package io.debezium.embedded.configurer.history;
 
 import io.debezium.config.Configuration;
-import io.debezium.embedded.spring.boot.DebeziumSchemaHistoryProperties;
+import io.debezium.embedded.spring.boot.DebeziumDatabaseHistoryProperties;
 
 /**
  * Memory 数据库历史记录配置器。
  */
-public class MemorySchemaHistoryConfigurer implements SchemaHistoryConfigurer {
+public class MemoryDatabaseHistoryConfigurer implements DatabaseHistoryConfigurer {
     
     /**
      * Memory 历史记录配置。
@@ -15,9 +15,9 @@ public class MemorySchemaHistoryConfigurer implements SchemaHistoryConfigurer {
      * @param properties 数据库历史记录配置属性
      */
     @Override
-    public void apply(Configuration.Builder builder, DebeziumSchemaHistoryProperties properties) {
+    public void apply(Configuration.Builder builder, DebeziumDatabaseHistoryProperties properties) {
         // Internal schema history store
-        builder.with("schema.history.internal", "io.debezium.relational.history.MemorySchemaHistory");
+        builder.with("database.history", "io.debezium.relational.history.MemoryDatabaseHistory");
     }
 
 }

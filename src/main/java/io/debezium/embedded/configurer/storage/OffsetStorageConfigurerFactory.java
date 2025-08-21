@@ -4,7 +4,7 @@ import io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties;
 
 /**
  * Offset 存储配置器工厂。
- * @see <a href="https://debezium.io/documentation/reference/3.2/configuration/storage.html">storage.html</a>
+ * @see <a href="https://debezium.io/documentation//reference/1.9/development/engine.html">engine.html</a>
  */
 public class OffsetStorageConfigurerFactory {
     
@@ -16,8 +16,6 @@ public class OffsetStorageConfigurerFactory {
      */
     public static OffsetStorageConfigurer from(DebeziumOffsetStorageProperties properties) {
         switch (properties.getType()) {
-            case MEMORY:
-                return new MemoryOffsetStorageConfigurer();
             case FILE:
                 return new FileOffsetStorageConfigurer();
             case KAFKA:

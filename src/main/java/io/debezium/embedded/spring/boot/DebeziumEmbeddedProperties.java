@@ -62,7 +62,7 @@ public class DebeziumEmbeddedProperties {
         /**
          * 数据库历史记录配置
          */
-        DebeziumSchemaHistoryProperties schemaHistory = new DebeziumSchemaHistoryProperties();
+        DebeziumDatabaseHistoryProperties databaseHistory = new DebeziumDatabaseHistoryProperties();
 
         /**
          * 偏移量存储配置

@@ -34,11 +34,10 @@ debezium:
         table-include-list:
           - test.user
       # 数据库历史记录
-      schema-history:
-        type: redis
-        redis:
-          address: 121.41.2.18:16379
-          password: hpkRzkC7pcDnYp3e
+      database-history:
+        type: file
+        file:
+          file-name: /tmp/debezium-offsets.dat
       # 偏移量存储配置
       offset-storage:
         type: memory

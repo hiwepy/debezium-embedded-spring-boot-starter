@@ -10,14 +10,15 @@ import org.springframework.boot.context.properties.PropertyMapper;
 public class SqlServerConnectorConfigurer implements ConnectorConfigurer {
     @Override
     public void apply(Configuration.Builder builder, DebeziumConnectorProperties properties) {
-        builder.with("connector.class", "io.debezium.connector.sqlserver.SqlServerConnector");
-        
-        /*
-         * 批量设置参数
-         */
+
         PropertyMapper map = PropertyMapper.get().alwaysApplyingWhenNonNull();
-        
-        // 基础连接配置
+
+        // 基础配置
+        builder.with("connector.class", "io.debezium.connector.sqlserver.SqlServerConnector");
+        map.from(properties::getDestination).whenHasText().to(value -> builder.with("name", value));
+        map.from(properties::getType).to(value -> builder.with("database.dbType", value.name().toLowerCase()));
+
+        // 数据库连接配置
         map.from(properties::getHost).whenHasText().to(value -> builder.with("database.hostname", value));
         map.from(properties::getPort).whenNonNull().to(value -> builder.with("database.port", value));
         map.from(properties::getUsername).whenHasText().to(value -> builder.with("database.user", value));
@@ -36,27 +37,7 @@ public class SqlServerConnectorConfigurer implements ConnectorConfigurer {
             map.from(sqlServer::getDatabase).whenHasText().to(value -> builder.with("database.dbname", value));
             map.from(sqlServer::getSnapshotMode).whenHasText().to(value -> builder.with("snapshot.mode", value));
             map.from(sqlServer::getSnapshotIsolationMode).whenHasText().to(value -> builder.with("snapshot.isolation.mode", value));
-            
-            // 其他重要配置
-            builder.with("database.encrypt", "false")
-                   .with("database.trustServerCertificate", "true")
-                   .with("database.applicationName", "DebeziumConnector")
-                   .with("database.connectionTimeout", "30000")
-                   .with("database.commandTimeout", "30000")
-                   .with("database.loginTimeout", "30000");
-            
-            // 事件处理配置
-            builder.with("tombstones.on.delete", "false")
-                   .with("include.query", "false")
-                   .with("database.initial.statements", "SET ARITHABORT ON; SET NUMERIC_ROUNDABORT OFF; SET CONCAT_NULL_YIELDS_NULL ON; SET ANSI_WARNINGS ON; SET ANSI_PADDING ON; SET ANSI_NULLS ON; SET QUOTED_IDENTIFIER ON;");
-            
-            // 性能优化配置
-            builder.with("poll.interval.ms", "1000")
-                   .with("max.queue.size", "8192")
-                   .with("max.batch.size", "2048")
-                   .with("database.history.skip.unparseable.ddl", "true")
-                   .with("database.history.store.only.monitored.tables.ddl", "true")
-                   .with("database.history.store.only.captured.tables.ddl", "true");
+
         }
     }
 }

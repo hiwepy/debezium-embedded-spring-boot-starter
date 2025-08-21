@@ -1,13 +1,13 @@
 package io.debezium.embedded.configurer.history;
 
 import io.debezium.config.Configuration;
-import io.debezium.embedded.spring.boot.DebeziumSchemaHistoryProperties;
+import io.debezium.embedded.spring.boot.DebeziumDatabaseHistoryProperties;
 import org.springframework.boot.context.properties.PropertyMapper;
 
 /**
  * 文件数据库历史记录配置器。
  */
-public class FileSchemaHistoryConfigurer implements SchemaHistoryConfigurer {
+public class FileDatabaseHistoryConfigurer implements DatabaseHistoryConfigurer {
     
     /**
      * 应用数据库历史记录配置。
@@ -16,17 +16,17 @@ public class FileSchemaHistoryConfigurer implements SchemaHistoryConfigurer {
      * @param properties 数据库历史记录配置属性
      */
     @Override
-    public void apply(Configuration.Builder builder, DebeziumSchemaHistoryProperties properties) {
+    public void apply(Configuration.Builder builder, DebeziumDatabaseHistoryProperties properties) {
 
-        DebeziumSchemaHistoryProperties.File file = properties.getFile();
+        DebeziumDatabaseHistoryProperties.File file = properties.getFile();
 
         // Internal schema history store
-        builder.with("schema.history.internal", "io.debezium.storage.file.history.FileSchemaHistory");
+        builder.with("database.history", "io.debezium.relational.history.FileDatabaseHistory");
         /*
          * 批量设置参数
          */
         PropertyMapper map = PropertyMapper.get().alwaysApplyingWhenNonNull();
-        map.from(file::getFilename).whenHasText().to(value -> builder.with("schema.history.internal.file", value));
+        map.from(file::getFileName).whenHasText().to(value -> builder.with("database.history.file.filename", value));
 
     }
 }

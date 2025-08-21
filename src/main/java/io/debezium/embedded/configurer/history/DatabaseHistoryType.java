@@ -3,7 +3,7 @@ package io.debezium.embedded.configurer.history;
 /**
  * 数据库历史记录类型枚举。
  */
-public enum SchemaHistoryType {
+public enum DatabaseHistoryType {
 
     /**
      * 内存历史记录

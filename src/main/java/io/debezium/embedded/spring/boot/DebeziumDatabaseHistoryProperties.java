@@ -1,6 +1,6 @@
 package io.debezium.embedded.spring.boot;
 
-import io.debezium.embedded.configurer.history.SchemaHistoryType;
+import io.debezium.embedded.configurer.history.DatabaseHistoryType;
 import lombok.Data;
 
 
@@ -8,13 +8,13 @@ import lombok.Data;
  * Debezium 数据库历史记录配置属性。
  */
 @Data
-public class DebeziumSchemaHistoryProperties {
+public class DebeziumDatabaseHistoryProperties {
 
     
     /**
      * 历史记录类型
      */
-    private SchemaHistoryType type = SchemaHistoryType.MEMORY;
+    private DatabaseHistoryType type = DatabaseHistoryType.MEMORY;
     
     /**
      * 文件历史记录配置
@@ -40,7 +40,7 @@ public class DebeziumSchemaHistoryProperties {
          * <p>指定存储数据库模式历史记录的文件路径。</p>
          * <p>默认值：dbhistory.dat</p>
          */
-        private String filename = "dbhistory.dat";
+        private String fileName = "dbhistory.dat";
 
     }
     

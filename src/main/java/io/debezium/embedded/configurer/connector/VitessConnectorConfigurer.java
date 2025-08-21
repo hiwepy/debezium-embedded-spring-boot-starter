@@ -8,16 +8,21 @@ import org.springframework.boot.context.properties.PropertyMapper;
  * Vitess 连接器配置器。
  */
 public class VitessConnectorConfigurer implements ConnectorConfigurer {
+
     @Override
     public void apply(Configuration.Builder builder, DebeziumConnectorProperties properties) {
-        builder.with("connector.class", "io.debezium.connector.vitess.VitessConnector");
         
         /*
          * 批量设置参数
          */
         PropertyMapper map = PropertyMapper.get().alwaysApplyingWhenNonNull();
-        
-        // 基础连接配置
+
+        // 基础配置
+        builder.with("connector.class", "io.debezium.connector.vitess.VitessConnector");
+        map.from(properties::getDestination).whenHasText().to(value -> builder.with("name", value));
+        map.from(properties::getType).to(value -> builder.with("database.dbType", value.name().toLowerCase()));
+
+        // 数据库连接配置
         map.from(properties::getServerName).whenHasText().to(value -> builder.with("database.server.name", value));
         
         // Vitess 特定配置

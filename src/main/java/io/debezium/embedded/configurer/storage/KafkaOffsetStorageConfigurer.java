@@ -24,6 +24,8 @@ public class KafkaOffsetStorageConfigurer implements OffsetStorageConfigurer {
         map.from(kafka::getTopic).whenHasText().to(value -> builder.with("offset.storage.topic", value));
         map.from(kafka::getPartitions).to(value -> builder.with("offset.storage.partitions", value));
         map.from(kafka::getReplicationFactor).to(value -> builder.with("offset.storage.replication.factor", value));
+        map.from(kafka::getFlushIntervalMs).to(value -> builder.with("offset.flush.interval.ms", value));
+        map.from(kafka::getFlushTimeoutMs).to(value -> builder.with("offset.flush.timeout.ms", value));
     }
 }
 

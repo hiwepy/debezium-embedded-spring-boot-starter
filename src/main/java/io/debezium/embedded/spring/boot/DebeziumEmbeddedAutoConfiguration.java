@@ -5,8 +5,8 @@ import io.debezium.embedded.Connect;
 import io.debezium.embedded.client.DebeziumEmbeddedClient;
 import io.debezium.embedded.configurer.connector.ConnectorConfigurer;
 import io.debezium.embedded.configurer.connector.ConnectorConfigurerFactory;
-import io.debezium.embedded.configurer.history.SchemaHistoryConfigurer;
-import io.debezium.embedded.configurer.history.SchemaHistoryConfigurerFactory;
+import io.debezium.embedded.configurer.history.DatabaseHistoryConfigurer;
+import io.debezium.embedded.configurer.history.DatabaseHistoryConfigurerFactory;
 import io.debezium.embedded.configurer.storage.OffsetStorageConfigurer;
 import io.debezium.embedded.configurer.storage.OffsetStorageConfigurerFactory;
 import io.debezium.embedded.factory.MapColumnModelFactory;
@@ -130,7 +130,7 @@ public class DebeziumEmbeddedAutoConfiguration {
             DebeziumAsyncEngineProperties asyncEngineProperties = instance.getAsync();
             DebeziumConnectorProperties connectorProperties = instance.getConnector();
             DebeziumOffsetStorageProperties storageProperties = instance.getOffsetStorage();
-            DebeziumSchemaHistoryProperties historyProperties = instance.getSchemaHistory();
+            DebeziumDatabaseHistoryProperties historyProperties = instance.getDatabaseHistory();
 
             // 1. 创建基础配置
             Configuration.Builder builder = Configuration.create()
@@ -153,7 +153,7 @@ public class DebeziumEmbeddedAutoConfiguration {
             storageConfigurer.apply(builder, storageProperties);
 
             // 4. 交由历史配置器写入数据库历史配置
-            SchemaHistoryConfigurer historyConfigurer = SchemaHistoryConfigurerFactory.from(historyProperties);
+            DatabaseHistoryConfigurer historyConfigurer = DatabaseHistoryConfigurerFactory.from(historyProperties);
             historyConfigurer.apply(builder, historyProperties);
 
             Configuration config = builder.build();

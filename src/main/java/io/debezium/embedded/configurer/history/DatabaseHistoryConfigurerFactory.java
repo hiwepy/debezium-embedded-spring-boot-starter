@@ -1,11 +1,11 @@
 package io.debezium.embedded.configurer.history;
 
-import io.debezium.embedded.spring.boot.DebeziumSchemaHistoryProperties;
+import io.debezium.embedded.spring.boot.DebeziumDatabaseHistoryProperties;
 
 /**
  * 数据库历史记录配置器工厂。
  */
-public class SchemaHistoryConfigurerFactory {
+public class DatabaseHistoryConfigurerFactory {
     
     /**
      * 根据历史记录类型创建对应的配置器。
@@ -13,16 +13,16 @@ public class SchemaHistoryConfigurerFactory {
      * @param historyProperties 历史记录类型
      * @return 历史记录配置器
      */
-    public static SchemaHistoryConfigurer from(DebeziumSchemaHistoryProperties historyProperties) {
+    public static DatabaseHistoryConfigurer from(DebeziumDatabaseHistoryProperties historyProperties) {
         switch (historyProperties.getType()) {
             case MEMORY:
-                return new MemorySchemaHistoryConfigurer();
+                return new MemoryDatabaseHistoryConfigurer();
             case FILE:
-                return new FileSchemaHistoryConfigurer();
+                return new FileDatabaseHistoryConfigurer();
             case KAFKA:
-                return new KafkaSchemaHistoryConfigurer();
+                return new KafkaDatabaseHistoryConfigurer();
             case CUSTOM:
-                return new CustomSchemaHistoryConfigurer();
+                return new CustomDatabaseHistoryConfigurer();
             default:
                 throw new IllegalArgumentException("Unsupported schema history type: " + historyProperties.getType());
         }
