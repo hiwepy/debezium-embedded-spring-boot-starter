@@ -553,23 +553,6 @@
 			<artifactId>transmittable-thread-local</artifactId>
 		</dependency>
 
-        <!-- For Embed Tomcat -->
-        <!-- <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-tomcat</artifactId>
-        </dependency> -->
-        <!-- For Embed Jetty -->
-        <!-- <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jetty</artifactId>
-        </dependency> -->
-        <!-- For Embed Undertow -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-undertow</artifactId>
-            <scope>test</scope>
-        </dependency>
-
 	</dependencies>
 
 
