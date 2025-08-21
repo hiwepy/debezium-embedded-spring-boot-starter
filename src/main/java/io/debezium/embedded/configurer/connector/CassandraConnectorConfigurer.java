@@ -17,14 +17,15 @@ public class CassandraConnectorConfigurer implements ConnectorConfigurer {
      */
     @Override
     public void apply(Configuration.Builder builder, DebeziumConnectorProperties properties) {
-        builder
-                .with("connector.class", "io.debezium.connector.cassandra.CassandraConnector")
-                .with("database.server.name", properties.getServerName());
-
+        builder.with("connector.class", "io.debezium.connector.cassandra.CassandraConnector");
+        
         /*
          * 批量设置参数
          */
         PropertyMapper map = PropertyMapper.get().alwaysApplyingWhenNonNull();
+        
+        // 基础连接配置
+        map.from(properties::getServerName).whenHasText().to(value -> builder.with("database.server.name", value));
         
         // 数据库和表过滤
         map.from(properties::getDatabaseIncludeList).whenHasText().to(value -> builder.with("keyspace.include.list", value));
@@ -37,7 +38,11 @@ public class CassandraConnectorConfigurer implements ConnectorConfigurer {
             
             // 如果没有连接字符串，使用传统的连接方式
             if (cassandra.getConnectionString() == null || cassandra.getConnectionString().trim().isEmpty()) {
-                builder.with("cassandra.hosts", properties.getHost() + ":" + properties.getPort());
+                map.from(properties::getHost).whenHasText().to(host -> 
+                    map.from(properties::getPort).whenNonNull().to(port -> 
+                        builder.with("cassandra.hosts", host + ":" + port)
+                    )
+                );
                 map.from(properties::getUsername).whenHasText().to(value -> builder.with("cassandra.user", value));
                 map.from(properties::getPassword).whenHasText().to(value -> builder.with("cassandra.password", value));
             }

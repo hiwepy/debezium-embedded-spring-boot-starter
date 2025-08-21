@@ -38,10 +38,13 @@ public class DefaultChangeEventHandler implements ChangeEventHandler, Applicatio
     /**
      * 行数据处理器
      */
-    private RowDataHandler<ChangeEvent<String, String>> rowDataHandler;
+    /**
+     * 行数据处理器
+     */
+    private RowDataHandler<List<Map<String, String>>> rowDataHandler;
 
     public DefaultChangeEventHandler(List<? extends RecordChangeEventEntryHandler> entryHandlers,
-                                     RowDataHandler<ChangeEvent<String, String>> rowDataHandler) {
+                                           RowDataHandler<List<Map<String, String>>> rowDataHandler) {
         this.tableHandlerMap = HandlerUtil.getTableHandlerMap(entryHandlers);
         this.rowDataHandler = rowDataHandler;
     }

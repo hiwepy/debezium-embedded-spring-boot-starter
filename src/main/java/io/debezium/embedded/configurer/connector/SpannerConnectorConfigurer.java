@@ -10,14 +10,15 @@ import org.springframework.boot.context.properties.PropertyMapper;
 public class SpannerConnectorConfigurer implements ConnectorConfigurer {
     @Override
     public void apply(Configuration.Builder builder, DebeziumConnectorProperties properties) {
-        builder
-                .with("connector.class", "io.debezium.connector.spanner.SpannerConnector")
-                .with("database.server.name", properties.getServerName());
-
+        builder.with("connector.class", "io.debezium.connector.spanner.SpannerConnector");
+        
         /*
          * 批量设置参数
          */
         PropertyMapper map = PropertyMapper.get().alwaysApplyingWhenNonNull();
+        
+        // 基础连接配置
+        map.from(properties::getServerName).whenHasText().to(value -> builder.with("database.server.name", value));
         
         // 数据库和表过滤
         map.from(properties::getDatabaseIncludeList).whenHasText().to(value -> builder.with("database.include.list", value));

@@ -19,9 +19,11 @@ public class CustomConnectorConfigurer implements ConnectorConfigurer {
             map.from(properties.getCustom()::getConnectorClass).whenHasText().to(value -> builder.with("connector.class", value));
             
             // 添加自定义配置属性
-            if (properties.getCustom().getProps() != null) {
-                properties.getCustom().getProps().forEach(builder::with);
-            }
+            map.from(properties.getCustom()::getProps).whenNonNull().to(props -> {
+                if (props != null) {
+                    props.forEach(builder::with);
+                }
+            });
         }
     }
 }

@@ -10,9 +10,7 @@ import io.debezium.embedded.configurer.history.SchemaHistoryConfigurerFactory;
 import io.debezium.embedded.configurer.storage.OffsetStorageConfigurer;
 import io.debezium.embedded.configurer.storage.OffsetStorageConfigurerFactory;
 import io.debezium.embedded.factory.MapColumnModelFactory;
-import io.debezium.embedded.handler.ChangeEventHandler;
-import io.debezium.embedded.handler.RecordChangeEventHandler;
-import io.debezium.embedded.handler.RowDataHandler;
+import io.debezium.embedded.handler.*;
 import io.debezium.embedded.handler.impl.MapRowDataHandlerImpl;
 import io.debezium.engine.ChangeEvent;
 import io.debezium.engine.DebeziumEngine;
@@ -37,6 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Debezium Embedded 自动配置
@@ -74,19 +73,19 @@ public class DebeziumEmbeddedAutoConfiguration {
         return new MapRowDataHandlerImpl(new MapColumnModelFactory());
     }
 
-    /*@Bean
+    @Bean
     @ConditionalOnMissingBean
-    public ChangeEventHandler asyncRecordChangeEventHandler(RowDataHandler<List<Map<String, String>>> rowDataHandler,
+    public ChangeEventHandler changeEventHandler(RowDataHandler<List<Map<String, String>>> rowDataHandler,
                                                                  ObjectProvider<RecordChangeEventEntryHandler> entryHandlerProvider) {
         return new DefaultChangeEventHandler(entryHandlerProvider.stream().collect(Collectors.toList()), rowDataHandler);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public RecordChangeEventHandler syncRecordChangeEventHandler(RowDataHandler<List<Map<String, String>>> rowDataHandler,
+    public RecordChangeEventHandler recordChangeEventHandler(RowDataHandler<List<Map<String, String>>> rowDataHandler,
                                                                 ObjectProvider<RecordChangeEventEntryHandler> entryHandlerProvider) {
         return new DefaultRecordChangeEventHandler(entryHandlerProvider.stream().collect(Collectors.toList()), rowDataHandler);
-    }*/
+    }
 
     /**
      * 初始化 DebeziumEmbeddedClient

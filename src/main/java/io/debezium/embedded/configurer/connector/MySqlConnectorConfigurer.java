@@ -16,14 +16,14 @@ public class MySqlConnectorConfigurer implements ConnectorConfigurer {
     
     @Override
     public void apply(Configuration.Builder builder, DebeziumConnectorProperties properties) {
+        PropertyMapper map = PropertyMapper.get().alwaysApplyingWhenNonNull();
         // ==================== 必需配置 ====================
         builder.with("connector.class", "io.debezium.connector.mysql.MySqlConnector");
-        
+
         // 数据库连接配置（必需）
-        mapRequiredProperties(builder, properties);
+        mapRequiredProperties(builder, map, properties);
         
         // ==================== 批量设置可选参数 ====================
-        PropertyMapper map = PropertyMapper.get().alwaysApplyingWhenNonNull();
         
         // 数据库和表过滤配置
         mapDatabaseAndTableFilters(builder, map, properties);
@@ -61,13 +61,13 @@ public class MySqlConnectorConfigurer implements ConnectorConfigurer {
     /**
      * 映射必需配置属性
      */
-    private void mapRequiredProperties(Configuration.Builder builder, DebeziumConnectorProperties properties) {
-        builder.with("database.hostname", properties.getHost())
-               .with("database.port", properties.getPort())
-               .with("database.user", properties.getUsername())
-               .with("database.password", properties.getPassword())
-               .with("database.server.id", properties.getServerId())
-               .with("database.server.name", properties.getServerName());
+    private void mapRequiredProperties(Configuration.Builder builder, PropertyMapper map, DebeziumConnectorProperties properties) {
+        map.from(properties::getHost).whenHasText().to(value -> builder.with("database.hostname", value));
+        map.from(properties::getPort).whenNonNull().to(value -> builder.with("database.port", value));
+        map.from(properties::getUsername).whenHasText().to(value -> builder.with("database.user", value));
+        map.from(properties::getPassword).whenHasText().to(value -> builder.with("database.password", value));
+        map.from(properties::getServerId).whenHasText().to(value -> builder.with("database.server.id", value));
+        map.from(properties::getServerName).whenHasText().to(value -> builder.with("database.server.name", value));
     }
     
     /**

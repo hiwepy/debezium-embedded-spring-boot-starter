@@ -10,17 +10,22 @@ import org.springframework.boot.context.properties.PropertyMapper;
 public class VitessConnectorConfigurer implements ConnectorConfigurer {
     @Override
     public void apply(Configuration.Builder builder, DebeziumConnectorProperties properties) {
-        builder
-                .with("connector.class", "io.debezium.connector.vitess.VitessConnector")
-                .with("database.server.name", properties.getServerName());
-
+        builder.with("connector.class", "io.debezium.connector.vitess.VitessConnector");
+        
         /*
          * 批量设置参数
          */
         PropertyMapper map = PropertyMapper.get().alwaysApplyingWhenNonNull();
         
+        // 基础连接配置
+        map.from(properties::getServerName).whenHasText().to(value -> builder.with("database.server.name", value));
+        
         // Vitess 特定配置
-        builder.with("vitess.hosts", properties.getHost() + ":" + properties.getPort());
+        map.from(properties::getHost).whenHasText().to(host -> 
+            map.from(properties::getPort).whenNonNull().to(port -> 
+                builder.with("vitess.hosts", host + ":" + port)
+            )
+        );
         map.from(properties::getUsername).whenHasText().to(value -> builder.with("vitess.user", value));
         map.from(properties::getPassword).whenHasText().to(value -> builder.with("vitess.password", value));
 

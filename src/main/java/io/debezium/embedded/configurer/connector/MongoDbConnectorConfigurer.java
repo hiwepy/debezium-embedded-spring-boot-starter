@@ -10,9 +10,8 @@ import org.springframework.boot.context.properties.PropertyMapper;
 public class MongoDbConnectorConfigurer implements ConnectorConfigurer {
     @Override
     public void apply(Configuration.Builder builder, DebeziumConnectorProperties properties) {
-        builder.with("connector.class", "io.debezium.connector.mongodb.MongoDbConnector")
-               .with("database.server.name", properties.getServerName());
-
+        builder.with("connector.class", "io.debezium.connector.mongodb.MongoDbConnector");
+        
         // MongoDB 特定配置
         if (properties.getMongoDb() != null) {
             DebeziumConnectorProperties.MongoDb mongoDb = properties.getMongoDb();
@@ -22,13 +21,20 @@ public class MongoDbConnectorConfigurer implements ConnectorConfigurer {
              */
             PropertyMapper map = PropertyMapper.get().alwaysApplyingWhenNonNull();
             
+            // 基础连接配置
+            map.from(properties::getServerName).whenHasText().to(value -> builder.with("database.server.name", value));
+            
             // 连接配置
             map.from(mongoDb::getConnectionString).whenHasText().to(value -> builder.with("mongodb.connection.string", value));
             map.from(mongoDb::getAuthSource).whenHasText().to(value -> builder.with("mongodb.authsource", value));
             
             // 如果没有连接字符串，使用传统的连接方式
             if (mongoDb.getConnectionString() == null || mongoDb.getConnectionString().trim().isEmpty()) {
-                builder.with("mongodb.hosts", properties.getHost() + ":" + properties.getPort());
+                map.from(properties::getHost).whenHasText().to(host -> 
+                    map.from(properties::getPort).whenNonNull().to(port -> 
+                        builder.with("mongodb.hosts", host + ":" + port)
+                    )
+                );
                 map.from(properties::getUsername).whenHasText().to(value -> builder.with("mongodb.user", value));
                 map.from(properties::getPassword).whenHasText().to(value -> builder.with("mongodb.password", value));
             }

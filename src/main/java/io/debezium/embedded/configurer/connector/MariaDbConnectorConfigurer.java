@@ -10,20 +10,21 @@ import org.springframework.boot.context.properties.PropertyMapper;
 public class MariaDbConnectorConfigurer implements ConnectorConfigurer {
     @Override
     public void apply(Configuration.Builder builder, DebeziumConnectorProperties properties) {
-        builder
-                .with("connector.class", "io.debezium.connector.mysql.MySqlConnector")
-                .with("database.hostname", properties.getHost())
-                .with("database.port", properties.getPort())
-                .with("database.user", properties.getUsername())
-                .with("database.password", properties.getPassword())
-                .with("database.server.id", properties.getServerId())
-                .with("database.server.name", properties.getServerName())
-                .with("include.schema.changes", "false");
-
+        builder.with("connector.class", "io.debezium.connector.mysql.MySqlConnector")
+               .with("include.schema.changes", "false");
+        
         /*
          * 批量设置参数
          */
         PropertyMapper map = PropertyMapper.get().alwaysApplyingWhenNonNull();
+        
+        // 基础连接配置
+        map.from(properties::getHost).whenHasText().to(value -> builder.with("database.hostname", value));
+        map.from(properties::getPort).whenNonNull().to(value -> builder.with("database.port", value));
+        map.from(properties::getUsername).whenHasText().to(value -> builder.with("database.user", value));
+        map.from(properties::getPassword).whenHasText().to(value -> builder.with("database.password", value));
+        map.from(properties::getServerId).whenHasText().to(value -> builder.with("database.server.id", value));
+        map.from(properties::getServerName).whenHasText().to(value -> builder.with("database.server.name", value));
         
         // 数据库和表过滤
         map.from(properties::getDatabaseIncludeList).whenHasText().to(value -> builder.with("database.include.list", value));
