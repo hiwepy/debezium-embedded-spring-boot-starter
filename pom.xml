@@ -361,7 +361,7 @@
 		<java.version>17</java.version>
 		<!-- Dependency versions -->
         <commons-lang3.version>3.18.0</commons-lang3.version>
-		<debezium.version>3.2.0.Final</debezium.version>
+		<debezium.version>3.2.1.Final</debezium.version>
         <disruptor.version>4.0.0</disruptor.version>
         <kafka.version>3.9.1</kafka.version>
         <pulsar-client.version>4.0.6</pulsar-client.version>
