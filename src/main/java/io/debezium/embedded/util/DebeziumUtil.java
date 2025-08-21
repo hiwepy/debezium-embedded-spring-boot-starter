@@ -1,6 +1,6 @@
 package io.debezium.embedded.util;
 
-import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson2.JSON;
 import io.debezium.data.Envelope;
 import io.debezium.embedded.model.DebeziumModel;
 import io.debezium.embedded.protocol.DebeziumEntry;
@@ -17,7 +17,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static io.debezium.data.Envelope.FieldName.*;
+import static io.debezium.data.Envelope.FieldName.AFTER;
+import static io.debezium.data.Envelope.FieldName.BEFORE;
 import static java.util.stream.Collectors.toMap;
 
 @Slf4j
@@ -71,7 +72,7 @@ public class DebeziumUtil {
             Integer eventType = null;
             Map<String, Object> result = new HashMap<>(4);
             if (operation == Envelope.Operation.CREATE) {
-                eventType = DebeziumEntry.EventTypeEnum.CREATE.getType();
+                eventType = DebeziumEntry.EventType.CREATE.getIndex();
                 result.put(DATA, getChangeData(sourceRecordChangeValue, AFTER));
                 result.put(BEFORE_DATA, null);
             }
@@ -80,7 +81,7 @@ public class DebeziumUtil {
                 if (!changeMap.containsKey(TABLE)) {
                     return null;
                 }
-                eventType = DebeziumEntry.EventTypeEnum.UPDATE.getType();
+                eventType = DebeziumEntry.EventType.UPDATE.getIndex();
                 String currentTableName = String.valueOf(changeMap.get(TABLE).toString());
                 // 忽略非重要属性变更
                 Map<String, String> resultMap = filterChangeData(sourceRecordChangeValue, currentTableName);
@@ -91,8 +92,8 @@ public class DebeziumUtil {
                 result.put(BEFORE_DATA, resultMap.get(BEFORE));
             }
             if (operation == Envelope.Operation.DELETE) {
-                eventType = DebeziumEntry.EventTypeEnum.DELETE.getType();
-                result.put(DATA, getChangeData(sourceRecordChangeValue, BEFORE));
+                eventType = DebeziumEntry.EventType.DELETE.getIndex();
+                result.put(DATA, getChangeData(sourceRecordChangeValue, AFTER));
                 result.put(BEFORE_DATA, getChangeData(sourceRecordChangeValue, BEFORE));
             }
             result.put(EVENT_TYPE, eventType);

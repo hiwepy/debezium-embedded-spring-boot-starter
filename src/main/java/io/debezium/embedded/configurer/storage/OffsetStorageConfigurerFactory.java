@@ -15,14 +15,22 @@ public class OffsetStorageConfigurerFactory {
      * @return 存储配置器
      */
     public static OffsetStorageConfigurer from(DebeziumOffsetStorageProperties properties) {
-        return switch (properties.getType()) {
-            case MEMORY -> new MemoryOffsetStorageConfigurer();
-            case FILE -> new FileOffsetStorageConfigurer();
-            case KAFKA -> new KafkaOffsetStorageConfigurer();
-            case JDBC -> new JdbcOffsetStorageConfigurer();
-            case REDIS -> new RedisOffsetStorageConfigurer();
-            case CUSTOM -> new CustomOffsetStorageConfigurer();
-        };
+        switch (properties.getType()) {
+            case MEMORY:
+                return new MemoryOffsetStorageConfigurer();
+            case FILE:
+                return new FileOffsetStorageConfigurer();
+            case KAFKA:
+                return new KafkaOffsetStorageConfigurer();
+            case JDBC:
+                return new JdbcOffsetStorageConfigurer();
+            case REDIS:
+                return new RedisOffsetStorageConfigurer();
+            case CUSTOM:
+                return new CustomOffsetStorageConfigurer();
+            default:
+                throw new IllegalArgumentException("Unsupported offset storage type: " + properties.getType());
+        }
     }
 }
 

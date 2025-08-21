@@ -13,7 +13,7 @@
 	<groupId>com.github.hiwepy</groupId>
 	<artifactId>debezium-embedded-spring-boot-starter</artifactId>
 	<description>Spring Boot Starter For Debezium Embedded</description>
-	<version>3.3.x.20240823.RELEASE</version>
+	<version>3.3.x.20250820-SNAPSHOT</version>
 	<name>${project.groupId}:${project.artifactId}</name>
 	<url>https://github.com/hiwepy/${project.artifactId}</url>
 	<packaging>jar</packaging>
@@ -359,10 +359,15 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>17</java.version>
+        <maven-gpg-plugin.version>3.2.6</maven-gpg-plugin.version>
+        <maven-nexus-staging-plugin.version>1.7.0</maven-nexus-staging-plugin.version>
+        <maven-release-plugin.version>3.1.1</maven-release-plugin.version>
 		<!-- Dependency versions -->
+        <commons-beanutils.version>1.11.0</commons-beanutils.version>
         <commons-lang3.version>3.18.0</commons-lang3.version>
 		<debezium.version>3.2.1.Final</debezium.version>
         <disruptor.version>4.0.0</disruptor.version>
+        <fastjson2.version>2.0.57</fastjson2.version>
         <kafka.version>3.9.1</kafka.version>
         <pulsar-client.version>4.0.6</pulsar-client.version>
         <mybatis-plus.version>3.5.8</mybatis-plus.version>
@@ -381,6 +386,17 @@
                 <version>${debezium.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>commons-beanutils</groupId>
+                <artifactId>commons-beanutils</artifactId>
+                <version>${commons-beanutils.version}</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/com.alibaba.fastjson2/fastjson2 -->
+            <dependency>
+                <groupId>com.alibaba.fastjson2</groupId>
+                <artifactId>fastjson2</artifactId>
+                <version>${fastjson2.version}</version>
             </dependency>
 			<!-- https://mvnrepository.com/artifact/com.baomidou/mybatis-plus -->
 			<dependency>
@@ -443,12 +459,15 @@
             <artifactId>commons-lang3</artifactId>
             <version>${commons-lang3.version}</version>
         </dependency>
-        <!-- For Debezium -->
         <dependency>
-            <groupId>io.debezium</groupId>
-            <artifactId>debezium-api</artifactId>
-            <version>${debezium.version}</version>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.alibaba.fastjson2</groupId>
+            <artifactId>fastjson2</artifactId>
+        </dependency>
+        <!-- For Debezium -->
         <dependency>
             <groupId>io.debezium</groupId>
             <artifactId>debezium-common</artifactId>
@@ -591,29 +610,6 @@
             <version>${debezium.version}</version>
             <scope>provided</scope>
         </dependency>
-		<!-- https://mvnrepository.com/artifact/com.rabbitmq/amqp-client -->
-		<dependency>
-			<groupId>com.rabbitmq</groupId>
-			<artifactId>amqp-client</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.apache.kafka/kafka-clients -->
-		<dependency>
-			<groupId>org.apache.kafka</groupId>
-			<artifactId>kafka-clients</artifactId>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.apache.pulsar/pulsar-client -->
-		<dependency>
-			<groupId>org.apache.pulsar</groupId>
-			<artifactId>pulsar-client</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.apache.rocketmq/rocketmq-client -->
-		<dependency>
-			<groupId>org.apache.rocketmq</groupId>
-			<artifactId>rocketmq-client</artifactId>
-			<scope>provided</scope>
-		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.baomidou/mybatis-plus -->
 		<dependency>
 			<groupId>com.baomidou</groupId>

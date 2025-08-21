@@ -14,15 +14,25 @@ public class SchemaHistoryConfigurerFactory {
      * @return 历史记录配置器
      */
     public static SchemaHistoryConfigurer from(DebeziumSchemaHistoryProperties historyProperties) {
-        return switch (historyProperties.getType()) {
-            case FILE -> new FileSchemaHistoryConfigurer();
-            case KAFKA -> new KafkaSchemaHistoryConfigurer();
-            case JDBC -> new JdbcSchemaHistoryConfigurer();
-            case REDIS -> new RedisSchemaHistoryConfigurer();
-            case S3 -> new AmazonS3SchemaHistoryConfigurer();
-            case ROCKETMQ -> new RocketMqSchemaHistoryConfigurer();
-            case AZURE_BLOB -> new AzureBlobSchemaHistoryConfigurer();
-            case CUSTOM -> new CustomSchemaHistoryConfigurer();
-        };
+        switch (historyProperties.getType()) {
+            case FILE:
+                return new FileSchemaHistoryConfigurer();
+            case KAFKA:
+                return new KafkaSchemaHistoryConfigurer();
+            case JDBC:
+                return new JdbcSchemaHistoryConfigurer();
+            case REDIS:
+                return new RedisSchemaHistoryConfigurer();
+            case S3:
+                return new AmazonS3SchemaHistoryConfigurer();
+            case ROCKETMQ:
+                return new RocketMqSchemaHistoryConfigurer();
+            case AZURE_BLOB:
+                return new AzureBlobSchemaHistoryConfigurer();
+            case CUSTOM:
+                return new CustomSchemaHistoryConfigurer();
+            default:
+                throw new IllegalArgumentException("Unsupported schema history type: " + historyProperties.getType());
+        }
     }
 }

@@ -25,7 +25,6 @@ import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
@@ -44,7 +43,6 @@ import java.util.stream.Collectors;
  */
 @org.springframework.context.annotation.Configuration
 @ConditionalOnClass({ DebeziumEngine.class })
-@ConditionalOnProperty(prefix = "debezium.embedded", name = "enabled", havingValue = "true")
 @EnableConfigurationProperties({DebeziumEmbeddedProperties.class, DebeziumThreadPoolProperties.class})
 @Import(DebeziumThreadPoolAutoConfiguration.class)
 @Slf4j
@@ -77,14 +75,14 @@ public class DebeziumEmbeddedAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public ChangeEventHandler asyncRecordChangeEventHandler(RowDataHandler<List<Map<String, String>>> rowDataHandler,
+    public ChangeEventHandler changeEventHandler(RowDataHandler<List<Map<String, String>>> rowDataHandler,
                                                                  ObjectProvider<RecordChangeEventEntryHandler> entryHandlerProvider) {
         return new DefaultChangeEventHandler(entryHandlerProvider.stream().collect(Collectors.toList()), rowDataHandler);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public RecordChangeEventHandler syncRecordChangeEventHandler(RowDataHandler<List<Map<String, String>>> rowDataHandler,
+    public RecordChangeEventHandler recordChangeEventHandler(RowDataHandler<List<Map<String, String>>> rowDataHandler,
                                                                 ObjectProvider<RecordChangeEventEntryHandler> entryHandlerProvider) {
         return new DefaultRecordChangeEventHandler(entryHandlerProvider.stream().collect(Collectors.toList()), rowDataHandler);
     }

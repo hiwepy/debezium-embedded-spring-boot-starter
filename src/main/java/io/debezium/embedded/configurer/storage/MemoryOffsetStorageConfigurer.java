@@ -2,7 +2,6 @@ package io.debezium.embedded.configurer.storage;
 
 import io.debezium.config.Configuration;
 import io.debezium.embedded.spring.boot.DebeziumOffsetStorageProperties;
-import org.springframework.boot.context.properties.PropertyMapper;
 
 /**
  * Memory 型 Offset 存储配置。

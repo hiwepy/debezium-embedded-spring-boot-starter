@@ -1,7 +1,7 @@
 package io.debezium.embedded.context;
 
-import io.debezium.embedded.model.DebeziumModel;
 import com.alibaba.ttl.TransmittableThreadLocal;
+import io.debezium.embedded.model.DebeziumModel;
 
 /**
  * debezium上下文

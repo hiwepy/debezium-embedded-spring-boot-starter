@@ -1,5 +1,5 @@
 #########################################################################################################################################################
-###Debezium (DebeziumProperties、DebeziumKafkaProperties、DebeziumRabbitMQProperties、DebeziumRocketMQProperties、DebeziumPulsarProperties、DebeziumTcpProperties) 基本配置：
+### Debezium 基本配置：
 #########################################################################################################################################################
 debezium:
   # Debezium 异步消费线程池配置

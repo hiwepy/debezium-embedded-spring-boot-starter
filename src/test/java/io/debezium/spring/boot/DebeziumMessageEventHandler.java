@@ -1,7 +1,9 @@
 package io.debezium.spring.boot;
 
 import io.debezium.embedded.annotation.DebeziumEventHandler;
-import io.debezium.embedded.annotation.event.*;
+import io.debezium.embedded.annotation.event.OnDeleteEvent;
+import io.debezium.embedded.annotation.event.OnInsertEvent;
+import io.debezium.embedded.annotation.event.OnUpdateEvent;
 import io.debezium.embedded.model.DebeziumModel;
 import io.debezium.embedded.protocol.DebeziumEntry;
 import lombok.extern.slf4j.Slf4j;
@@ -10,19 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class DebeziumMessageEventHandler {
 
-    @OnCreateTableEvent(schema = "my_auth")
-    public void onCreateTableEvent(DebeziumModel model, DebeziumEntry.RowChange rowChange) {
-        log.info("onCreateTableEvent");
-    }
-
-    @OnCreateTableEvent(schema = "my_auth")
-    public void onCreateTableEvent2(DebeziumModel model, DebeziumEntry.RowChange rowChange) {
-        log.info("onCreateTableEvent2");
-    }
-
-    @OnCreateIndexEvent(schema = "my_auth", table = "user_info")
-    public void onCreateIndexEvent(DebeziumModel model, DebeziumEntry.RowChange rowChange) {
-        log.info("OnCreateIndexEvent");
+    @OnInsertEvent(schema = "my_auth", table = "user_info")
+    public void onTruncateTableEvent(DebeziumModel model, DebeziumEntry.RowChange rowChange) {
+        log.info("onTruncateTableEvent");
     }
 
     @OnInsertEvent(schema = "my_auth", table = "user_info")
