@@ -1,7 +1,7 @@
 package io.debezium.embedded.annotation.event;
 
+import io.debezium.data.Envelope;
 import io.debezium.embedded.annotation.OnDebeziumEvent;
-import io.debezium.embedded.protocol.DebeziumEntry;
 import org.springframework.core.annotation.AliasFor;
 
 import java.lang.annotation.*;
@@ -15,7 +15,7 @@ import java.lang.annotation.*;
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@OnDebeziumEvent(eventType = DebeziumEntry.EventType.TRUNCATE)
+@OnDebeziumEvent(operations = Envelope.Operation.TRUNCATE)
 public @interface OnTruncateTableEvent {
     /**
      * debezium 指令
@@ -31,4 +31,12 @@ public @interface OnTruncateTableEvent {
      */
     @AliasFor(annotation = OnDebeziumEvent.class)
     String schema();
+
+    /**
+     * 监听的表
+     * default for all
+     * @return table name
+     */
+    @AliasFor(annotation = OnDebeziumEvent.class)
+    String table();
 }

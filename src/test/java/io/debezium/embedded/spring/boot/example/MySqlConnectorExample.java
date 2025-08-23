@@ -19,6 +19,7 @@ public class MySqlConnectorExample {
     @Bean
     public DebeziumConnectorProperties mySqlConnectorProperties() {
 
+
         DebeziumConnectorProperties properties = new DebeziumConnectorProperties();
         
         // 基础配置
@@ -38,42 +39,7 @@ public class MySqlConnectorExample {
         
         // MySQL 特定配置
         DebeziumConnectorProperties.MySql mySql = properties.getMySql();
-        
-        // 快照配置
-        mySql.setSnapshotMode("initial");
-        mySql.setSnapshotLockingMode("minimal");
-        mySql.setSnapshotNewTables(true);
-        mySql.setSnapshotDelayMs(1000L);
-        mySql.setSnapshotFetchSize(2048);
-        
-        // 性能配置
-        mySql.setConnectTimeoutMs(30000);
-        mySql.setPollIntervalMs(1000);
-        mySql.setMaxQueueSize(16384);
-        mySql.setMaxBatchSize(4096);
-        mySql.setMaxQueueSizeInBytes(2147483648L);
-        
-        // GTID 配置
-        mySql.setGtidSourceFilterDmlEvents(true);
-        mySql.setGtidSourceIncludeDatabases("test_db,user_db");
-        mySql.setGtidSourceExcludeDatabases("mysql,information_schema");
-        
-        // 连接配置
-        mySql.setAllowPublicKeyRetrieval(true);
-        mySql.setUseSSL(false);
-        mySql.setAutoReconnect(true);
-        mySql.setCharacterEncoding("utf8mb4");
-        mySql.setServerTimezone("Asia/Shanghai");
-        
-        // 事件处理
-        mySql.setIncludeQuery(true);
-        mySql.setIncludeSchemaChanges(true);
-        mySql.setProvideTransactionMetadata(true);
-        
-        // 增量快照
-        mySql.setIncrementalSnapshotChunkSize(1024);
-        mySql.setIncrementalSnapshotAllowSchemaChanges(true);
-        mySql.setSignalDataCollection("test_db.debezium_signals");
+
         
         return properties;
     }

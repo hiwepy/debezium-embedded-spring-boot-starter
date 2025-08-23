@@ -1,25 +1,23 @@
 package io.debezium.embedded.configurer.connector;
 
 import io.debezium.config.Configuration;
+import io.debezium.connector.mongodb.MongoDbConnector;
+import io.debezium.connector.postgresql.PostgresConnector;
 import io.debezium.embedded.spring.boot.DebeziumConnectorProperties;
 import org.springframework.boot.context.properties.PropertyMapper;
 
 /**
  * MongoDB 连接器配置器。
  */
-public class MongoDbConnectorConfigurer implements ConnectorConfigurer {
+public class MongoDbConnectorConfigurer extends AbstractConnectorConfigurer {
+
     @Override
-    public void apply(Configuration.Builder builder, DebeziumConnectorProperties properties) {
+    public String getConnectorClass() {
+        return MongoDbConnector.class.getName();
+    }
 
-        PropertyMapper map = PropertyMapper.get().alwaysApplyingWhenNonNull();
-
-        // 基础配置
-        builder.with("connector.class", "io.debezium.connector.mongodb.MongoDbConnector");
-        map.from(properties::getDestination).whenHasText().to(value -> builder.with("name", value));
-        map.from(properties::getType).to(value -> builder.with("database.dbType", value.name().toLowerCase()));
-
-        // 基础连接配置
-        map.from(properties::getServerName).whenHasText().to(value -> builder.with("database.server.name", value));
+    @Override
+    public void apply(PropertyMapper map, Configuration.Builder builder, DebeziumConnectorProperties properties) {
 
         // 如果没有连接字符串，使用传统的连接方式
         map.from(properties::getHost).whenHasText().to(host ->

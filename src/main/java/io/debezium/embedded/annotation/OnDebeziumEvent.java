@@ -1,7 +1,7 @@
 package io.debezium.embedded.annotation;
 
 
-import io.debezium.embedded.protocol.DebeziumEntry;
+import io.debezium.data.Envelope;
 
 import java.lang.annotation.*;
 
@@ -40,8 +40,8 @@ public @interface OnDebeziumEvent {
     /**
      * 监听操作的类型
      * default for all\
-     * @return DebeziumEntry.EventType
+     * @return Envelope.Operation
      */
-    DebeziumEntry.EventType[] eventType();
+    Envelope.Operation[] operations();
 
 }

@@ -1,13 +1,13 @@
 package io.debezium.embedded.handler;
 
-import io.debezium.embedded.protocol.DebeziumEntry;
+import io.debezium.data.Envelope;
+import io.debezium.embedded.model.DebeziumModel;
 
 /**
  * 处理行数据
- * @param <T> 行数据
  */
-public interface RowDataHandler<T> {
+public interface RowDataHandler {
 
-    <R> void handlerRowData(T t, RecordChangeEventEntryHandler<R> entryHandler, DebeziumEntry.EventType eventType) throws Exception;
+    <R> void handlerRowData(DebeziumModel rowModel, RecordChangeEventEntryHandler<R> entryHandler, Envelope.Operation operation) throws Exception;
 
 }

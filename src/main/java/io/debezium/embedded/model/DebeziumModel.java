@@ -1,9 +1,11 @@
 package io.debezium.embedded.model;
 
 
-import io.debezium.embedded.protocol.DebeziumEntry;
-import lombok.Builder;
+import java.util.List;
+
+import io.debezium.data.Envelope;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -11,57 +13,49 @@ import lombok.Setter;
  */
 @Setter
 @Getter
-@Builder
+@NoArgsConstructor
 public class DebeziumModel {
-
-    public static class ChangeListenerModel {
-        /**
-         * 当前DB
-         */
-        private String db;
-        /**
-         * 当前表
-         */
-        private String table;
-        /**
-         * 操作类型 1 add 2 update 3 delete
-         */
-        private Integer eventType;
-        /**
-         * 操作时间
-         */
-        private Long changeTime;
-    }
 
     /**
      * 消息id
      */
-    private long id;
-
+    private String id;
     /**
      * 库名
      */
     private String destination;
     /**
+     * 数据库类型
+     */
+    private String dbType;
+    /**
      * 库名
      */
-    private String schema;
+    private String database;
     /**
      * 表名
      */
     private String table;
     /**
+     * 偏移量
+     */
+    private Long offset;
+    /**
      * 事件类型
      */
-    private DebeziumEntry.EventType eventType;
-    /**
-     * 现数据
-     */
-    private String data;
+    private Envelope.Operation operation;
     /**
      * 之前数据
      */
     private String beforeData;
+    /**
+     * 现数据
+     */
+    private String afterData;
+
+    private List<Column> beforeColumns;
+    private List<Column> afterColumns;
+
     /**
      * binlog changeTime
      */
@@ -71,13 +65,22 @@ public class DebeziumModel {
      */
     private Long createTime;
 
+    @Setter
+    @Getter
+    @NoArgsConstructor
+    public static class Column{
+        private String name;
+        private Object value;
+        private String type;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("DebeziumModel{");
         sb.append("id=").append(id);
-        sb.append(", schema='").append(schema).append('\'');
+        sb.append(", database='").append(database).append('\'');
         sb.append(", table='").append(table).append('\'');
-        sb.append(", eventType='").append(eventType).append('\'');
+        sb.append(", operation='").append(operation).append('\'');
         sb.append(", changeTime=").append(changeTime);
         sb.append(", createTime=").append(createTime);
         sb.append('}');

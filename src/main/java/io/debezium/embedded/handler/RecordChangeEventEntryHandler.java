@@ -6,7 +6,6 @@ package io.debezium.embedded.handler;
  */
 public interface RecordChangeEventEntryHandler<R> {
 
-
     default void insert(R t) {
 
     }
@@ -18,6 +17,10 @@ public interface RecordChangeEventEntryHandler<R> {
 
 
     default void delete(R t) {
+
+    }
+
+    default void truncate(R t) {
 
     }
 }

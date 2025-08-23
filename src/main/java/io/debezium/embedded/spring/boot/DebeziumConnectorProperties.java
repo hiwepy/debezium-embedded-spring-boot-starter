@@ -55,6 +55,26 @@ public class DebeziumConnectorProperties {
     private String serverName;
 
     /**
+     * 包含的 Schema 列表（PostgreSQL 等使用）
+     */
+    private String schemaIncludeList;
+
+    /**
+     * 排除的 Schema 列表
+     */
+    private String schemaExcludeList;
+
+    /**
+     * 数据库白名单
+     */
+    private String databaseWhitelist;
+
+    /**
+     * 数据库黑名单
+     */
+    private String databaseBlacklist;
+
+    /**
      * 包含的数据库列表
      */
     private String databaseIncludeList;
@@ -65,6 +85,16 @@ public class DebeziumConnectorProperties {
     private String databaseExcludeList;
 
     /**
+     * 数据表白名单
+     */
+    private String tableWhitelist;
+
+    /**
+     * 数据表黑名单
+     */
+    private String tableBlacklist;
+
+    /**
      * 包含的表列表
      */
     private String tableIncludeList;
@@ -73,16 +103,6 @@ public class DebeziumConnectorProperties {
      * 排除的表列表
      */
     private String tableExcludeList;
-
-    /**
-     * 包含的 Schema 列表（PostgreSQL 等使用）
-     */
-    private String schemaIncludeList;
-
-    /**
-     * 排除的 Schema 列表
-     */
-    private String schemaExcludeList;
 
     /**
      * MySQL 特定配置

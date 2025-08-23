@@ -1,11 +1,10 @@
 package io.debezium.embedded.util;
 
-
 import com.baomidou.mybatisplus.core.metadata.TableInfo;
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
+import io.debezium.data.Envelope;
 import io.debezium.embedded.handler.RecordChangeEventEntryHandler;
 import io.debezium.embedded.model.DebeziumModel;
-import io.debezium.embedded.protocol.DebeziumEntry;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -23,32 +22,26 @@ public class GenericUtil {
 
     private static Map<Class<? extends RecordChangeEventEntryHandler>, Class> cache = new ConcurrentHashMap<>();
 
-    public static Object[] getInvokeArgs(Method method, DebeziumModel model, DebeziumEntry.RowChange rowChange, DebeziumEntry.EventType eventType) {
+    public static Object[] getInvokeArgs(Method method, DebeziumModel rowModel) {
         return Arrays.stream(method.getParameterTypes()).map(pClass -> {
                     if(DebeziumModel.class.isAssignableFrom(pClass)){
-                        return model;
-                    }
-                    if(DebeziumEntry.RowChange.class.isAssignableFrom(pClass)) {
-                        return rowChange;
-                    }
-                    if(DebeziumEntry.EventType.class.isAssignableFrom(pClass)) {
-                        return eventType;
+                        return rowModel;
                     }
                     return null;
                 })
                 .toArray();
     }
 
-    public static Object[] getInvokeArgs(Method method, DebeziumModel model, List<Map<String, String>> rowData, DebeziumEntry.EventType eventType) {
+    public static Object[] getInvokeArgs(Method method, DebeziumModel rowModel, List<Map<String, String>> rowData, Envelope.Operation operation) {
         return Arrays.stream(method.getParameterTypes()).map(pClass -> {
                 if(DebeziumModel.class.isAssignableFrom(pClass)){
-                    return model;
+                    return rowModel;
                 }
                 if(List.class.isAssignableFrom(pClass)) {
                     return rowData;
                 }
-                if(DebeziumEntry.EventType.class.isAssignableFrom(pClass)) {
-                    return eventType;
+                if(Envelope.Operation.class.isAssignableFrom(pClass)) {
+                    return operation;
                 }
                 return null;
             }).toArray();
@@ -68,7 +61,7 @@ public class GenericUtil {
 
 
     @SuppressWarnings("unchecked")
-    public static <T> Class<T> getTableClass(RecordChangeEventEntryHandler object) {
+    public static <T> Class<T> getTableClass(RecordChangeEventEntryHandler<T> object) {
         // 1、获取处理器的泛型类型
         Class<? extends RecordChangeEventEntryHandler> handlerClass = object.getClass();
         Class tableClass = cache.get(handlerClass);

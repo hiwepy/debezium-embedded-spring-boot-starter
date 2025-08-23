@@ -1,4 +1,4 @@
-package io.debezium.embedded.handler;
+package io.debezium.embedded.spring.boot;
 
 import lombok.extern.slf4j.Slf4j;
 

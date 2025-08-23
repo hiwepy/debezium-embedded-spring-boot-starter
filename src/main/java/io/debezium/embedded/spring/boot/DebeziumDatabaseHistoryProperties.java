@@ -15,7 +15,11 @@ public class DebeziumDatabaseHistoryProperties {
      * 历史记录类型
      */
     private DatabaseHistoryType type = DatabaseHistoryType.MEMORY;
-    
+
+    private Boolean skipUnparseableDdl;
+    private Boolean storeOnlyCapturedTablesDdl;
+    private String ddlFilter;
+    private Boolean preferDdl;
     /**
      * 文件历史记录配置
      */
@@ -83,18 +87,10 @@ public class DebeziumDatabaseHistoryProperties {
          * 查询超时时间（毫秒）
          * 
          * <p>指定 Kafka AdminClient 提交请求获取集群信息后等待响应的超时时间。</p>
-         * <p>默认值：3</p>
+         * <p>默认值：3000</p>
          */
-        private Integer queryTimeoutMs = 3;
-        
-        /**
-         * 创建超时时间（毫秒）
-         * 
-         * <p>指定 Kafka AdminClient 提交请求创建 Kafka 历史主题后等待响应的超时时间。</p>
-         * <p>默认值：30</p>
-         */
-        private Integer createTimeoutMs = 30;
-        
+        private Integer queryTimeoutMs = 3000;
+
         /**
          * 生产者配置
          */

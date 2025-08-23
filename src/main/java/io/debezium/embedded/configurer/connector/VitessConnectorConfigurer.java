@@ -1,30 +1,23 @@
 package io.debezium.embedded.configurer.connector;
 
 import io.debezium.config.Configuration;
+import io.debezium.connector.vitess.VitessConnector;
 import io.debezium.embedded.spring.boot.DebeziumConnectorProperties;
 import org.springframework.boot.context.properties.PropertyMapper;
 
 /**
  * Vitess 连接器配置器。
  */
-public class VitessConnectorConfigurer implements ConnectorConfigurer {
+public class VitessConnectorConfigurer  extends AbstractConnectorConfigurer {
 
     @Override
-    public void apply(Configuration.Builder builder, DebeziumConnectorProperties properties) {
-        
-        /*
-         * 批量设置参数
-         */
-        PropertyMapper map = PropertyMapper.get().alwaysApplyingWhenNonNull();
+    public String getConnectorClass() {
+        return VitessConnector.class.getName();
+    }
 
-        // 基础配置
-        builder.with("connector.class", "io.debezium.connector.vitess.VitessConnector");
-        map.from(properties::getDestination).whenHasText().to(value -> builder.with("name", value));
-        map.from(properties::getType).to(value -> builder.with("database.dbType", value.name().toLowerCase()));
+    @Override
+    public void apply(PropertyMapper map, Configuration.Builder builder, DebeziumConnectorProperties properties) {
 
-        // 数据库连接配置
-        map.from(properties::getServerName).whenHasText().to(value -> builder.with("database.server.name", value));
-        
         // Vitess 特定配置
         map.from(properties::getHost).whenHasText().to(host -> 
             map.from(properties::getPort).whenNonNull().to(port -> 

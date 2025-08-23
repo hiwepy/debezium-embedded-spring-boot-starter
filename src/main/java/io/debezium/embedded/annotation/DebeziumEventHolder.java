@@ -1,7 +1,7 @@
 package io.debezium.embedded.annotation;
 
 
-import io.debezium.embedded.protocol.DebeziumEntry;
+import io.debezium.data.Envelope;
 import lombok.Getter;
 
 import java.lang.reflect.Method;
@@ -38,8 +38,8 @@ public class DebeziumEventHolder {
         this.event = event;
     }
 
-    public boolean isMatch(DebeziumEntry.EventType eventType) {
-        return this.getEvent().eventType().length == 0 || Arrays.stream(this.getEvent().eventType()).anyMatch(ev -> ev == eventType) || eventType == null;
+    public boolean isMatch(Envelope.Operation operation) {
+        return this.getEvent().operations().length == 0 || Arrays.stream(this.getEvent().operations()).anyMatch(ev -> ev == operation) || operation == null;
     }
 
 }

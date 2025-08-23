@@ -1,6 +1,5 @@
 package io.debezium.embedded.spring.boot;
 
-import io.debezium.embedded.handler.DebeziumThreadUncaughtExceptionHandler;
 import io.debezium.engine.DebeziumEngine;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;

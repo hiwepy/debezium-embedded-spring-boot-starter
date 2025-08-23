@@ -1,7 +1,7 @@
 package io.debezium.embedded.annotation.event;
 
+import io.debezium.data.Envelope;
 import io.debezium.embedded.annotation.OnDebeziumEvent;
-import io.debezium.embedded.protocol.DebeziumEntry;
 import org.springframework.core.annotation.AliasFor;
 
 import java.lang.annotation.*;
@@ -15,7 +15,7 @@ import java.lang.annotation.*;
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@OnDebeziumEvent(eventType = DebeziumEntry.EventType.DELETE)
+@OnDebeziumEvent(operations = Envelope.Operation.DELETE)
 public @interface OnDeleteEvent {
 
     /**
@@ -25,7 +25,6 @@ public @interface OnDeleteEvent {
      */
     @AliasFor(annotation = OnDebeziumEvent.class)
     String destination() default "";
-
 
     /**
      * 数据库实例
