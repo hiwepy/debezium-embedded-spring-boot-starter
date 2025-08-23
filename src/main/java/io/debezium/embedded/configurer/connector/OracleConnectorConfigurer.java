@@ -1,7 +1,6 @@
 package io.debezium.embedded.configurer.connector;
 
 import io.debezium.config.Configuration;
-import io.debezium.connector.mysql.MySqlConnector;
 import io.debezium.connector.oracle.OracleConnector;
 import io.debezium.embedded.spring.boot.DebeziumConnectorProperties;
 import org.springframework.boot.context.properties.PropertyMapper;

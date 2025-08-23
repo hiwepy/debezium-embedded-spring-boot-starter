@@ -2,11 +2,7 @@ package io.debezium.embedded.configurer.history;
 
 import io.debezium.config.Configuration;
 import io.debezium.embedded.spring.boot.DebeziumDatabaseHistoryProperties;
-import io.debezium.relational.HistorizedRelationalDatabaseConnectorConfig;
-import io.debezium.relational.history.AbstractDatabaseHistory;
-import io.debezium.relational.history.DatabaseHistory;
 import io.debezium.relational.history.KafkaDatabaseHistory;
-import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.springframework.boot.context.properties.PropertyMapper;
 
 import static io.debezium.relational.history.DatabaseHistory.CONFIGURATION_FIELD_PREFIX_STRING;

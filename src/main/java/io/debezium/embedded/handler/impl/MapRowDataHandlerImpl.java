@@ -2,7 +2,6 @@ package io.debezium.embedded.handler.impl;
 
 
 import com.alibaba.fastjson2.JSON;
-import com.alibaba.fastjson2.JSONObject;
 import io.debezium.data.Envelope;
 import io.debezium.embedded.factory.IModelFactory;
 import io.debezium.embedded.handler.RecordChangeEventEntryHandler;

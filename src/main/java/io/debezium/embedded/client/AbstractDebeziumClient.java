@@ -1,8 +1,5 @@
 package io.debezium.embedded.client;
 
-import io.debezium.config.Configuration;
-import io.debezium.embedded.handler.ChangeEventHandler;
-import io.debezium.embedded.handler.RecordChangeEventHandler;
 import io.debezium.engine.ChangeEvent;
 import io.debezium.engine.DebeziumEngine;
 import io.debezium.engine.RecordChangeEvent;

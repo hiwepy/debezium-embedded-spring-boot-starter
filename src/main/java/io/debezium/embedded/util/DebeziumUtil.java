@@ -9,15 +9,10 @@ import org.apache.kafka.connect.data.Field;
 import org.apache.kafka.connect.data.Struct;
 import org.springframework.util.CollectionUtils;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static io.debezium.data.Envelope.FieldName.AFTER;
-import static io.debezium.data.Envelope.FieldName.BEFORE;
 import static java.util.stream.Collectors.toMap;
 
 @Slf4j

@@ -1,12 +1,12 @@
 package io.debezium.embedded.model;
 
 
-import java.util.List;
-
 import io.debezium.data.Envelope;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 /**
  * debezium 消息模型
