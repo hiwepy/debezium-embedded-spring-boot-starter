@@ -2,7 +2,7 @@ package io.debezium.embedded.util;
 
 import com.alibaba.fastjson2.JSON;
 import io.debezium.data.Envelope;
-import io.debezium.embedded.model.DebeziumModel;
+import io.debezium.embedded.handler.RowEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.kafka.connect.data.Field;
@@ -61,7 +61,7 @@ public class DebeziumUtil {
         return map;
     }
 
-    public static void setChangeDataInfo(DebeziumModel model, Struct sourceRecordChangeValue) {
+    public static void setChangeDataInfo(RowEvent model, Struct sourceRecordChangeValue) {
         // 操作类型过滤,只处理增删改
         String op = sourceRecordChangeValue.getString(Envelope.FieldName.OPERATION);
         Envelope.Operation operation = Envelope.Operation.forCode(op);

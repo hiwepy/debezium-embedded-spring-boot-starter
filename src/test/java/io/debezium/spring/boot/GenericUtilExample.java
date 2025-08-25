@@ -1,6 +1,6 @@
 package io.debezium.spring.boot;
 
-import io.debezium.embedded.factory.RecordChangeEventEntryHandler;
+import io.debezium.embedded.handler.RowEntryHandler;
 import io.debezium.embedded.util.GenericUtil;
 import lombok.Data;
 
@@ -26,7 +26,7 @@ public class GenericUtilExample {
             System.out.println("Map处理器泛型类型: " + mapGenericType.getName());
             
             // 3. 测试匿名内部类处理器
-            RecordChangeEventEntryHandler<String> anonymousHandler = new RecordChangeEventEntryHandler<String>() {
+            RowEntryHandler<String> anonymousHandler = new RowEntryHandler<String>() {
                 @Override
                 public void insert(String entity) {
                     System.out.println("插入: " + entity);
@@ -49,7 +49,7 @@ public class GenericUtilExample {
             // 4. 测试直接获取接口泛型类型
             Class<?> directGenericType = GenericUtil.getInterfaceGenericType(
                 UserHandler.class, 
-                RecordChangeEventEntryHandler.class, 
+                RowEntryHandler.class,
                 0
             );
             assert directGenericType != null;
@@ -82,7 +82,7 @@ public class GenericUtilExample {
     }
 
     // 测试用的处理器
-    public static class UserHandler implements RecordChangeEventEntryHandler<User> {
+    public static class UserHandler implements RowEntryHandler<User> {
         @Override
         public void insert(User entity) {
             System.out.println("插入用户: " + entity);
@@ -100,7 +100,7 @@ public class GenericUtilExample {
     }
 
     // Map处理器
-    public static class MapHandler implements RecordChangeEventEntryHandler<Map<String, Object>> {
+    public static class MapHandler implements RowEntryHandler<Map<String, Object>> {
         @Override
         public void insert(Map<String, Object> entity) {
             System.out.println("插入Map: " + entity);

@@ -1,5 +1,7 @@
 package io.debezium.embedded.factory;
 
+import io.debezium.embedded.handler.RowEntryHandler;
+
 import java.util.Set;
 
 /**
@@ -17,7 +19,7 @@ public interface IModelFactory<T> {
      * @return 模型实例
      * @throws Exception 异常
      */ 
-    <R> R newInstance(T input, RecordChangeEventEntryHandler<R> entryHandler) throws Exception;
+    <R> R newInstance(T input, RowEntryHandler<R> entryHandler) throws Exception;
 
     /**
      * 创建模型实例
@@ -28,7 +30,7 @@ public interface IModelFactory<T> {
      * @return 模型实例
      * @throws Exception 异常
      */
-    default <R> R newInstance(T input, RecordChangeEventEntryHandler<R> entryHandler, Set<String> updatedColumns) throws Exception {
+    default <R> R newInstance(T input, RowEntryHandler<R> entryHandler, Set<String> updatedColumns) throws Exception {
         return null;
     }
 }

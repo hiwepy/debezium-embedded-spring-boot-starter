@@ -6,7 +6,7 @@ import io.debezium.embedded.annotation.DebeziumEventHolder;
 import io.debezium.embedded.annotation.DebeziumTable;
 import io.debezium.embedded.annotation.OnDebeziumEvent;
 import io.debezium.embedded.enums.TableNameEnum;
-import io.debezium.embedded.factory.RecordChangeEventEntryHandler;
+import io.debezium.embedded.handler.RowEntryHandler;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
 
@@ -22,10 +22,10 @@ public class HandlerUtil {
 
     protected static Map<String, Predicate<DebeziumEventHolder>> eventPredicateMap = new ConcurrentHashMap<>();
 
-    public static RecordChangeEventEntryHandler<?> getEntryHandler(List<RecordChangeEventEntryHandler<?>> entryHandlers, String schemaName, String tableName) {
+    public static RowEntryHandler<?> getEntryHandler(List<RowEntryHandler<?>> entryHandlers, String schemaName, String tableName) {
         StringJoiner joiner = new StringJoiner(".").add(schemaName).add(tableName);
-        RecordChangeEventEntryHandler<?> globalHandler = null;
-        for (RecordChangeEventEntryHandler<?> handler : entryHandlers) {
+        RowEntryHandler<?> globalHandler = null;
+        for (RowEntryHandler<?> handler : entryHandlers) {
             String debeziumTableNameCombination = getDebeziumTableNameCombination(handler);
             if (StringUtils.isBlank(debeziumTableNameCombination)) {
                 continue;
@@ -46,12 +46,12 @@ public class HandlerUtil {
     }
 
 
-    public static Map<String, RecordChangeEventEntryHandler<?>> getTableHandlerMap(List<RecordChangeEventEntryHandler<?>> entryHandlers) {
-        Map<String, RecordChangeEventEntryHandler<?>> map = new ConcurrentHashMap<>();
+    public static Map<String, RowEntryHandler<?>> getTableHandlerMap(List<RowEntryHandler<?>> entryHandlers) {
+        Map<String, RowEntryHandler<?>> map = new ConcurrentHashMap<>();
         if (CollectionUtils.isEmpty(entryHandlers)) {
             return map;
         }
-        for (RecordChangeEventEntryHandler<?> handler : entryHandlers) {
+        for (RowEntryHandler<?> handler : entryHandlers) {
             String debeziumTableNameCombination = getDebeziumTableNameCombination(handler);
             if (StringUtils.isNotBlank(debeziumTableNameCombination)) {
                 map.putIfAbsent(debeziumTableNameCombination.toLowerCase(), handler);
@@ -100,9 +100,9 @@ public class HandlerUtil {
         return map.getOrDefault(key, Collections.emptyList()).stream().filter(predicate).collect(Collectors.toList());
     }
 
-    public static RecordChangeEventEntryHandler<?> getEntryHandler(Map<String, RecordChangeEventEntryHandler<?>> map, String schemaName, String tableName) {
+    public static RowEntryHandler<?> getEntryHandler(Map<String, RowEntryHandler<?>> map, String schemaName, String tableName) {
         StringJoiner joiner = new StringJoiner(".").add(schemaName).add(tableName);
-        RecordChangeEventEntryHandler<?> entryHandler = map.get(joiner.toString().toLowerCase());
+        RowEntryHandler<?> entryHandler = map.get(joiner.toString().toLowerCase());
         if (entryHandler == null) {
             return map.get(TableNameEnum.ALL.name().toLowerCase());
         }
@@ -140,7 +140,7 @@ public class HandlerUtil {
         return df.and(sf).and(tf).and(ef);
     }
 
-    public static String getDebeziumTableNameCombination(RecordChangeEventEntryHandler<?> entryHandler) {
+    public static String getDebeziumTableNameCombination(RowEntryHandler<?> entryHandler) {
         DebeziumTable debeziumTable = entryHandler.getClass().getAnnotation(DebeziumTable.class);
         if (Objects.nonNull(debeziumTable)) {
             return getCombinationValue(debeziumTable.destination(), debeziumTable.schema(), debeziumTable.table());

@@ -1,4 +1,4 @@
-package io.debezium.embedded.model;
+package io.debezium.embedded.handler;
 
 
 import io.debezium.data.Envelope;
@@ -9,12 +9,12 @@ import lombok.Setter;
 import java.util.List;
 
 /**
- * debezium 消息模型
+ * debezium 行事件对象模型
  */
 @Setter
 @Getter
 @NoArgsConstructor
-public class DebeziumModel {
+public class RowEvent {
 
     /**
      * 消息id

@@ -10,9 +10,9 @@ import io.debezium.embedded.configurer.history.DatabaseHistoryConfigurerFactory;
 import io.debezium.embedded.configurer.storage.OffsetStorageConfigurer;
 import io.debezium.embedded.configurer.storage.OffsetStorageConfigurerFactory;
 import io.debezium.embedded.factory.MapColumnModelFactory;
-import io.debezium.embedded.factory.RecordChangeEventEntryHandler;
+import io.debezium.embedded.handler.RowEntryHandler;
 import io.debezium.embedded.handler.*;
-import io.debezium.embedded.handler.impl.MapRowDataHandlerImpl;
+import io.debezium.embedded.handler.impl.RowEventHandlerImpl;
 import io.debezium.engine.ChangeEvent;
 import io.debezium.engine.DebeziumEngine;
 import io.debezium.engine.RecordChangeEvent;
@@ -69,22 +69,22 @@ public class DebeziumEmbeddedAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public RowDataHandler recordRowDataHandler() {
-        return new MapRowDataHandlerImpl(new MapColumnModelFactory());
+    public RowEventHandler recordRowDataHandler() {
+        return new RowEventHandlerImpl(new MapColumnModelFactory());
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public ChangeEventHandler changeEventHandler(RowDataHandler rowDataHandler,
-                                                 ObjectProvider<RecordChangeEventEntryHandler<?>> entryHandlerProvider) {
-        return new DefaultChangeEventHandler(entryHandlerProvider.stream().collect(Collectors.toList()), rowDataHandler);
+    public ChangeEventHandler changeEventHandler(RowEventHandler rowEventHandler,
+                                                 ObjectProvider<RowEntryHandler<?>> entryHandlerProvider) {
+        return new DefaultChangeEventHandler(entryHandlerProvider.stream().collect(Collectors.toList()), rowEventHandler);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public RecordChangeEventHandler recordChangeEventHandler(RowDataHandler rowDataHandler,
-                                                             ObjectProvider<RecordChangeEventEntryHandler<?>> entryHandlerProvider) {
-        return new DefaultRecordChangeEventHandler(entryHandlerProvider.stream().collect(Collectors.toList()), rowDataHandler);
+    public RecordChangeEventHandler recordChangeEventHandler(RowEventHandler rowEventHandler,
+                                                             ObjectProvider<RowEntryHandler<?>> entryHandlerProvider) {
+        return new DefaultRecordChangeEventHandler(entryHandlerProvider.stream().collect(Collectors.toList()), rowEventHandler);
     }
 
     /**

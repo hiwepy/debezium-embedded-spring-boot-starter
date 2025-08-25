@@ -3,7 +3,7 @@ package io.debezium.spring.boot;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.debezium.embedded.factory.MapColumnModelFactory;
-import io.debezium.embedded.factory.RecordChangeEventEntryHandler;
+import io.debezium.embedded.handler.RowEntryHandler;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -110,7 +110,7 @@ public class MapColumnModelFactoryExample {
     }
     
     // 有注解的User处理器
-    public static class UserHandlerWithAnnotation implements RecordChangeEventEntryHandler<UserWithAnnotation> {
+    public static class UserHandlerWithAnnotation implements RowEntryHandler<UserWithAnnotation> {
         @Override
         public void insert(UserWithAnnotation entity) {
             System.out.println("插入用户: " + entity);
@@ -128,7 +128,7 @@ public class MapColumnModelFactoryExample {
     }
     
     // 无注解的User处理器
-    public static class UserHandlerWithoutAnnotation implements RecordChangeEventEntryHandler<UserWithoutAnnotation> {
+    public static class UserHandlerWithoutAnnotation implements RowEntryHandler<UserWithoutAnnotation> {
         @Override
         public void insert(UserWithoutAnnotation entity) {
             System.out.println("插入用户: " + entity);
@@ -146,7 +146,7 @@ public class MapColumnModelFactoryExample {
     }
     
     // Map处理器
-    public static class MapHandler implements RecordChangeEventEntryHandler<Map<String, Object>> {
+    public static class MapHandler implements RowEntryHandler<Map<String, Object>> {
         @Override
         public void insert(Map<String, Object> entity) {
             System.out.println("插入Map: " + entity);

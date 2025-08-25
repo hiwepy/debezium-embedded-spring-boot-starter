@@ -1,33 +1,24 @@
 package io.debezium.embedded.enums;
 
+import lombok.Getter;
+
 import java.util.StringJoiner;
 
+@Getter
 public enum TableNameEnum {
 
     ALL("*", "*", "*");
 
     public static final CharSequence DELIMITER = ".";
 
-    String destination;
-    String schema;
-    String table;
+    final String destination;
+    final String schema;
+    final String table;
 
     TableNameEnum(String destination, String schema, String table) {
         this.destination = destination;
         this.schema = schema;
         this.table = table;
-    }
-
-    public String getDestination() {
-        return destination;
-    }
-
-    public String getSchema() {
-        return schema;
-    }
-
-    public String getTable() {
-        return table;
     }
 
     @Override

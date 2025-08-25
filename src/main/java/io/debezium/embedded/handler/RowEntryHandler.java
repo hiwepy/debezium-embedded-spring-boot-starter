@@ -1,20 +1,18 @@
-package io.debezium.embedded.factory;
+package io.debezium.embedded.handler;
 
 /**
  * 处理 Entry
  * @param <R> Entry
  */
-public interface RecordChangeEventEntryHandler<R> {
+public interface RowEntryHandler<R> {
 
     default void insert(R t) {
 
     }
 
-
     default void update(R before, R after) {
 
     }
-
 
     default void delete(R t) {
 
@@ -23,4 +21,5 @@ public interface RecordChangeEventEntryHandler<R> {
     default void truncate(R t) {
 
     }
+
 }

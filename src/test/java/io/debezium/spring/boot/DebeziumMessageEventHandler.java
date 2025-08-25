@@ -6,7 +6,7 @@ import io.debezium.embedded.annotation.event.OnDeleteEvent;
 import io.debezium.embedded.annotation.event.OnInsertEvent;
 import io.debezium.embedded.annotation.event.OnTruncateTableEvent;
 import io.debezium.embedded.annotation.event.OnUpdateEvent;
-import io.debezium.embedded.model.DebeziumModel;
+import io.debezium.embedded.handler.RowEvent;
 import lombok.extern.slf4j.Slf4j;
 
 @DebeziumEventHandler
@@ -14,12 +14,12 @@ import lombok.extern.slf4j.Slf4j;
 public class DebeziumMessageEventHandler {
 
     @OnTruncateTableEvent(schema = "my_auth", table = "user_info")
-    public void onTruncateTableEvent(DebeziumModel model) {
+    public void onTruncateTableEvent(RowEvent model) {
         log.info("onTruncateTableEvent");
     }
 
     @OnInsertEvent(schema = "my_auth", table = "user_info")
-    public void onEventInsertData(DebeziumModel model) {
+    public void onEventInsertData(RowEvent model) {
 
         // 1，获取当前事件的操作类型
         Envelope.Operation eventType = model.getOperation();
@@ -32,12 +32,12 @@ public class DebeziumMessageEventHandler {
     }
 
     @OnUpdateEvent(schema = "my_auth", table = "user_info")
-    public void onEventUpdateData(DebeziumModel model) {
+    public void onEventUpdateData(RowEvent model) {
         log.info("onEventUpdateData");
     }
 
     @OnDeleteEvent(schema = "my_auth", table = "user_info")
-    public void onEventDeleteData(DebeziumModel model) {
+    public void onEventDeleteData(RowEvent model) {
         log.info("onEventDeleteData");
     }
 

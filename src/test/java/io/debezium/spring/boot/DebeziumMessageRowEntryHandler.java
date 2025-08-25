@@ -1,10 +1,10 @@
 package io.debezium.spring.boot;
 
-import io.debezium.embedded.factory.RecordChangeEventEntryHandler;
+import io.debezium.embedded.handler.RowEntryHandler;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DebeziumMessageRecordChangeEventEntryHandler implements RecordChangeEventEntryHandler<UserInfo> {
+public class DebeziumMessageRowEntryHandler implements RowEntryHandler<UserInfo> {
 
     @Override
     public void insert(UserInfo t) {

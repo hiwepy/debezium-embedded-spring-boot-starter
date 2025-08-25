@@ -6,8 +6,6 @@ import io.debezium.data.Envelope;
 import io.debezium.embedded.annotation.DebeziumEventHandler;
 import io.debezium.embedded.annotation.DebeziumEventHolder;
 import io.debezium.embedded.annotation.OnDebeziumEvent;
-import io.debezium.embedded.factory.RecordChangeEventEntryHandler;
-import io.debezium.embedded.model.DebeziumModel;
 import io.debezium.embedded.util.DebeziumUtil;
 import io.debezium.embedded.util.GenericUtil;
 import io.debezium.embedded.util.HandlerUtil;
@@ -40,15 +38,15 @@ public class DefaultChangeEventHandler implements ChangeEventHandler, Applicatio
     /**
      * 表数据变更处理器
      */
-    private final Map<String, RecordChangeEventEntryHandler<?>> tableHandlerMap;
+    private final Map<String, RowEntryHandler<?>> tableHandlerMap;
     /**
      * 行数据处理器
      */
-    private final RowDataHandler rowDataHandler;
+    private final RowEventHandler rowEventHandler;
 
-    public DefaultChangeEventHandler(List<RecordChangeEventEntryHandler<?>> entryHandlers, RowDataHandler rowDataHandler) {
+    public DefaultChangeEventHandler(List<RowEntryHandler<?>> entryHandlers, RowEventHandler rowEventHandler) {
         this.tableHandlerMap = HandlerUtil.getTableHandlerMap(entryHandlers);
-        this.rowDataHandler = rowDataHandler;
+        this.rowEventHandler = rowEventHandler;
     }
 
     @Override
@@ -73,9 +71,9 @@ public class DefaultChangeEventHandler implements ChangeEventHandler, Applicatio
                     }
                     JSONObject jsonKeyPayload = jsonKey.getJSONObject(DebeziumUtil.FieldName.PAYLOAD);
                     String id = Objects.nonNull(jsonKeyPayload) ? jsonKeyPayload.getString(DebeziumUtil.FieldName.KEY_ID) : "";
-                    DebeziumModel rowModel = new DebeziumModel();
-                    rowModel.setId(id);
-                    rowModel.setOperation(operation);
+                    RowEvent rowEvent = new RowEvent();
+                    rowEvent.setId(id);
+                    rowEvent.setOperation(operation);
                     // 设置数据库名称和表名称
                     JSONObject source = jsonPayload.getJSONObject(Envelope.FieldName.SOURCE);
                     if (Objects.isNull(source)) {
@@ -92,49 +90,49 @@ public class DefaultChangeEventHandler implements ChangeEventHandler, Applicatio
                         log.error("未找到table字段, 跳过此记录的处理：{}", event);
                         return;
                     }
-                    rowModel.setDatabase(databaseName);
-                    rowModel.setTable(tableName);
+                    rowEvent.setDatabase(databaseName);
+                    rowEvent.setTable(tableName);
                     // 设置偏移量
                     Long offset = source.getLong(DebeziumUtil.FieldName.OFFSET);
                     if (Objects.nonNull(offset)) {
-                        rowModel.setOffset(offset);
+                        rowEvent.setOffset(offset);
                     }
                     // 设置变更时间
                     Long timestamp = source.getLongValue(Envelope.FieldName.TIMESTAMP, LocalDateTime.now().toInstant(ZoneOffset.UTC).toEpochMilli());
-                    rowModel.setChangeTime(timestamp);
+                    rowEvent.setChangeTime(timestamp);
                     // 设置数据库类型
-                    rowModel.setDbType(props.getProperty(DATABASE_DB_TYPE));
+                    rowEvent.setDbType(props.getProperty(DATABASE_DB_TYPE));
 
                     // 设置变更前的数据
                     JSONObject beforeData = jsonPayload.getJSONObject(Envelope.FieldName.BEFORE);
                     if (Objects.nonNull(beforeData)) {
-                        rowModel.setBeforeData(beforeData.toJSONString());
+                        rowEvent.setBeforeData(beforeData.toJSONString());
                     } else {
-                        rowModel.setBeforeData(JSON_OBJECT.toJSONString());
+                        rowEvent.setBeforeData(JSON_OBJECT.toJSONString());
                     }
                     // 设置变更后的数据
                     JSONObject afterData = jsonPayload.getJSONObject(Envelope.FieldName.AFTER);
                     if (Objects.nonNull(afterData)) {
-                        rowModel.setAfterData(afterData.toJSONString());
+                        rowEvent.setAfterData(afterData.toJSONString());
                     } else {
-                        rowModel.setAfterData(JSON_OBJECT.toJSONString());
+                        rowEvent.setAfterData(JSON_OBJECT.toJSONString());
                     }
                     // 获取表对应的注解处理器
                     String destination = props.getProperty(ConnectorConfig.NAME_CONFIG);
-                    rowModel.setDestination(destination);
+                    rowEvent.setDestination(destination);
                     List<DebeziumEventHolder> eventHolders = HandlerUtil.getEventHolders(tableEventHolderMap, destination, databaseName, tableName, operation);
                     if(!CollectionUtils.isEmpty(eventHolders)){
                         for (DebeziumEventHolder eventHolder : eventHolders) {
-                            rowModel.setChangeTime(LocalDateTime.now().toInstant(ZoneOffset.UTC).toEpochMilli());
-                            this.handlerRowData(rowModel, eventHolder);
+                            rowEvent.setChangeTime(LocalDateTime.now().toInstant(ZoneOffset.UTC).toEpochMilli());
+                            this.handleRowEvent(rowEvent, eventHolder);
                         }
                     }
                     // 获取表对应的处理器
-                    RecordChangeEventEntryHandler<?> entryHandler = HandlerUtil.getEntryHandler(tableHandlerMap, databaseName, tableName);
+                    RowEntryHandler<?> entryHandler = HandlerUtil.getEntryHandler(tableHandlerMap, databaseName, tableName);
                     // 判断是否有对应的处理器
                     if(Objects.nonNull(entryHandler)){
-                        rowModel.setChangeTime(LocalDateTime.now().toInstant(ZoneOffset.UTC).toEpochMilli());
-                        this.handlerRowData(rowModel, entryHandler, operation);
+                        rowEvent.setChangeTime(LocalDateTime.now().toInstant(ZoneOffset.UTC).toEpochMilli());
+                        this.handleRowEvent(rowEvent, entryHandler, operation);
                     }
                 }
             } catch (Exception e) {
@@ -144,23 +142,23 @@ public class DefaultChangeEventHandler implements ChangeEventHandler, Applicatio
         }
     }
 
-    protected void handlerRowData(DebeziumModel rowModel, DebeziumEventHolder eventHolder) throws Exception {
+    protected void handleRowEvent(RowEvent rowEvent, DebeziumEventHolder eventHolder) throws Exception {
         try {
             Method method = eventHolder.getMethod();
             ReflectionUtils.makeAccessible(method);
-            Object[] args = GenericUtil.getInvokeArgs(method, rowModel);
+            Object[] args = GenericUtil.getInvokeArgs(method, rowEvent);
             method.invoke(eventHolder.getTarget(), args);
         } catch (Exception e) {
-            log.error("handlerRowData error", e);
+            log.error("handleRowEvent error", e);
         }
     }
 
-    protected void handlerRowData(DebeziumModel rowModel, RecordChangeEventEntryHandler<?> entryHandler, Envelope.Operation operation) throws Exception {
+    protected void handleRowEvent(RowEvent rowEvent, RowEntryHandler<?> entryHandler, Envelope.Operation operation) throws Exception {
         try {
             // 逐行调用Handler处理
-            rowDataHandler.handlerRowData(rowModel, entryHandler, operation);
+            rowEventHandler.handleRowEvent(rowEvent, entryHandler, operation);
         } catch (Exception e) {
-            log.error("handlerRowData error", e);
+            log.error("handleRowEvent error", e);
         }
     }
 

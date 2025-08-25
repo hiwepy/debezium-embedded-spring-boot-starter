@@ -5,8 +5,6 @@ import io.debezium.data.Envelope;
 import io.debezium.embedded.annotation.DebeziumEventHandler;
 import io.debezium.embedded.annotation.DebeziumEventHolder;
 import io.debezium.embedded.annotation.OnDebeziumEvent;
-import io.debezium.embedded.factory.RecordChangeEventEntryHandler;
-import io.debezium.embedded.model.DebeziumModel;
 import io.debezium.embedded.util.DebeziumUtil;
 import io.debezium.embedded.util.GenericUtil;
 import io.debezium.embedded.util.HandlerUtil;
@@ -41,15 +39,15 @@ public class DefaultRecordChangeEventHandler implements RecordChangeEventHandler
     /**
      * 表数据变更处理器
      */
-    private final Map<String, RecordChangeEventEntryHandler<?>> tableHandlerMap;
+    private final Map<String, RowEntryHandler<?>> tableHandlerMap;
     /**
      * 行数据处理器
      */
-    private final RowDataHandler rowDataHandler;
+    private final RowEventHandler rowEventHandler;
 
-    public DefaultRecordChangeEventHandler(List<RecordChangeEventEntryHandler<?>> entryHandlers, RowDataHandler rowDataHandler) {
+    public DefaultRecordChangeEventHandler(List<RowEntryHandler<?>> entryHandlers, RowEventHandler rowEventHandler) {
         this.tableHandlerMap = HandlerUtil.getTableHandlerMap(entryHandlers);
-        this.rowDataHandler = rowDataHandler;
+        this.rowEventHandler = rowEventHandler;
     }
 
     @Override
@@ -81,9 +79,9 @@ public class DefaultRecordChangeEventHandler implements RecordChangeEventHandler
                 log.warn("当前事件为{}，跳过此记录的处理：{}", operation, event);
                 continue;
             }
-            DebeziumModel rowModel = new DebeziumModel();
-            rowModel.setId(sourceRecord.topic());
-            rowModel.setOperation(operation);
+            RowEvent rowEvent = new RowEvent();
+            rowEvent.setId(sourceRecord.topic());
+            rowEvent.setOperation(operation);
             // 设置数据库名称和表名称
             String databaseName = source.getString(DebeziumUtil.FieldName.DATABASE);
             if (!StringUtils.hasText(databaseName)) {
@@ -95,43 +93,43 @@ public class DefaultRecordChangeEventHandler implements RecordChangeEventHandler
                 log.warn("未找到table字段, 跳过此记录的处理：{}", event);
                 continue;
             }
-            rowModel.setDatabase(databaseName);
-            rowModel.setTable(tableName);
+            rowEvent.setDatabase(databaseName);
+            rowEvent.setTable(tableName);
             // 设置偏移量
             Long offset = source.getInt64(DebeziumUtil.FieldName.OFFSET);
             if (Objects.nonNull(offset)) {
-                rowModel.setOffset(offset);
+                rowEvent.setOffset(offset);
             }
             // 设置变更时间
             Long timestamp = source.getInt64(Envelope.FieldName.TIMESTAMP);
             if (Objects.isNull(timestamp)) {
                 timestamp = LocalDateTime.now().toInstant(ZoneOffset.UTC).toEpochMilli();
             }
-            rowModel.setChangeTime(timestamp);
+            rowEvent.setChangeTime(timestamp);
             // 设置数据库类型
-            rowModel.setDbType(props.getProperty(DATABASE_DB_TYPE));
-            DebeziumUtil.setChangeDataInfo(rowModel, sourceRecordChangeValue);
+            rowEvent.setDbType(props.getProperty(DATABASE_DB_TYPE));
+            DebeziumUtil.setChangeDataInfo(rowEvent, sourceRecordChangeValue);
 
             try {
                 // 获取表对应的注解处理器
                 String destination = props.getProperty(ConnectorConfig.NAME_CONFIG);
-                rowModel.setDestination(destination);
+                rowEvent.setDestination(destination);
                 // 获取表对应的注解处理器
                 List<DebeziumEventHolder> eventHolders = HandlerUtil.getEventHolders(tableEventHolderMap, destination, databaseName, tableName, operation);
                 if(!CollectionUtils.isEmpty(eventHolders)){
                     for (DebeziumEventHolder eventHolder : eventHolders) {
-                        this.handlerRowData(rowModel, eventHolder);
+                        this.handleRowEvent(rowEvent, eventHolder);
                     }
                     continue;
                 }
                 // 获取表对应的处理器
-                RecordChangeEventEntryHandler<?> entryHandler = HandlerUtil.getEntryHandler(tableHandlerMap, databaseName, tableName);
+                RowEntryHandler<?> entryHandler = HandlerUtil.getEntryHandler(tableHandlerMap, databaseName, tableName);
                 // 判断是否有对应的处理器
                 if(Objects.nonNull(entryHandler)){
-                    this.handlerRowData(rowModel, entryHandler, operation);
+                    this.handleRowEvent(rowEvent, entryHandler, operation);
                 }
             } catch (Exception e) {
-                throw new RuntimeException("parse event has an error , data:" + JSON.toJSONString(rowModel), e);
+                throw new RuntimeException("parse event has an error , data:" + JSON.toJSONString(rowEvent), e);
             }
         }
         try {
@@ -141,23 +139,23 @@ public class DefaultRecordChangeEventHandler implements RecordChangeEventHandler
         }
     }
 
-    protected void handlerRowData(DebeziumModel rowModel, DebeziumEventHolder eventHolder) throws Exception {
+    protected void handleRowEvent(RowEvent rowEvent, DebeziumEventHolder eventHolder) throws Exception {
         try {
             Method method = eventHolder.getMethod();
             ReflectionUtils.makeAccessible(method);
-            Object[] args = GenericUtil.getInvokeArgs(method, rowModel);
+            Object[] args = GenericUtil.getInvokeArgs(method, rowEvent);
             method.invoke(eventHolder.getTarget(), args);
         } catch (Exception e) {
-            log.error("handlerRowData error", e);
+            log.error("handleRowEvent error", e);
         }
     }
 
-    protected void handlerRowData(DebeziumModel rowModel, RecordChangeEventEntryHandler<?> entryHandler, Envelope.Operation operation) throws Exception {
+    protected void handleRowEvent(RowEvent rowEvent, RowEntryHandler<?> entryHandler, Envelope.Operation operation) throws Exception {
         try {
             // 逐行调用Handler处理
-            rowDataHandler.handlerRowData(rowModel, entryHandler, operation);
+            rowEventHandler.handleRowEvent(rowEvent, entryHandler, operation);
         } catch (Exception e) {
-            log.error("handlerRowData error", e);
+            log.error("handleRowEvent error", e);
         }
     }
 

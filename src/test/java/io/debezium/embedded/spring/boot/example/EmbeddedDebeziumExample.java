@@ -1,6 +1,6 @@
 package io.debezium.embedded.spring.boot.example;
 
-import io.debezium.embedded.factory.RecordChangeEventEntryHandler;
+import io.debezium.embedded.handler.RowEntryHandler;
 import io.debezium.embedded.spring.boot.example.entity.Order;
 import io.debezium.embedded.spring.boot.example.entity.User;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +33,7 @@ public class EmbeddedDebeziumExample {
      * 实现 EntryHandler<User> 接口，处理用户表的增删改事件
      */
     @Component
-    public static class UserEventHandlerRecordChangeEvent implements RecordChangeEventEntryHandler<User> {
+    public static class UserEventHandlerRow implements RowEntryHandler<User> {
 
         @Override
         public void insert(User user) {
@@ -61,7 +61,7 @@ public class EmbeddedDebeziumExample {
      * 订单表变更事件处理器示例
      */
     @Component
-    public static class OrderEventHandlerRecordChangeEvent implements RecordChangeEventEntryHandler<Order> {
+    public static class OrderEventHandlerRow implements RowEntryHandler<Order> {
 
         @Override
         public void insert(Order order) {

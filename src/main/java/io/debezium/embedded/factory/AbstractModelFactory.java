@@ -1,6 +1,7 @@
 package io.debezium.embedded.factory;
 
 
+import io.debezium.embedded.handler.RowEntryHandler;
 import io.debezium.embedded.util.GenericUtil;
 
 import java.util.Objects;
@@ -21,7 +22,7 @@ public abstract class AbstractModelFactory<T> implements IModelFactory<T> {
      * @throws Exception 异常
      */
     @Override
-    public <R> R newInstance(T input, RecordChangeEventEntryHandler<R> entryHandler) throws Exception {
+    public <R> R newInstance(T input, RowEntryHandler<R> entryHandler) throws Exception {
         // 1、获取泛型类型
         Class<R> genericType = GenericUtil.getGenericType(entryHandler);
         // 2、如果泛型类型为空，则抛出异常
