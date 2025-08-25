@@ -8,6 +8,8 @@ import org.springframework.core.ResolvableType;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
@@ -48,9 +50,9 @@ public class GenericUtil {
         Class<?> handlerClass = entryHandler.getClass();
         // 2、从缓存中获取处理器的类型
         Class<?> tableClass = CACHE.get(handlerClass);
-        if (Objects.nonNull(tableClass)) {
-            // 3、使用Spring的ResolvableType获取泛型类型
-            Class<?> genericType = getGenericType(handlerClass, 0);
+        if (Objects.isNull(tableClass)) {
+            // 3、使用改进的方法获取泛型类型
+            Class<?> genericType = getInterfaceGenericType(handlerClass, RecordChangeEventEntryHandler.class, 0);
             if (genericType != null) {
                 CACHE.putIfAbsent(handlerClass, genericType);
                 return (Class<T>) genericType;
@@ -70,6 +72,48 @@ public class GenericUtil {
             return genericClass == null ? null : (Class<T>) genericClass;
         } catch (Exception e) {
             throw new RuntimeException("获取类[" + clazz.getName() + "]泛型类型失败." , e);
+        }
+    }
+
+    /**
+     * 获取接口的泛型类型
+     * 
+     * @param clazz 实现类
+     * @param interfaceClass 接口类
+     * @param index 泛型参数索引
+     * @return 泛型类型
+     */
+    public static <T> Class<T> getInterfaceGenericType(Class<?> clazz, Class<?> interfaceClass, int index) {
+        try {
+            // 获取所有实现的接口
+            Type[] genericInterfaces = clazz.getGenericInterfaces();
+            for (Type genericInterface : genericInterfaces) {
+                if (genericInterface instanceof ParameterizedType) {
+                    ParameterizedType parameterizedType = (ParameterizedType) genericInterface;
+                    // 检查是否是目标接口
+                    if (parameterizedType.getRawType().equals(interfaceClass)) {
+                        Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
+                        if (index >= 0 && index < actualTypeArguments.length) {
+                            Type actualType = actualTypeArguments[index];
+                            if (actualType instanceof Class) {
+                                return (Class<T>) actualType;
+                            } else if (actualType instanceof ParameterizedType) {
+                                return (Class<T>) ((ParameterizedType) actualType).getRawType();
+                            }
+                        }
+                    }
+                }
+            }
+            
+            // 如果没有找到，尝试从父类查找
+            Class<?> superClass = clazz.getSuperclass();
+            if (superClass != null && !superClass.equals(Object.class)) {
+                return getInterfaceGenericType(superClass, interfaceClass, index);
+            }
+            
+            return null;
+        } catch (Exception e) {
+            throw new RuntimeException("获取接口[" + interfaceClass.getName() + "]泛型类型失败.", e);
         }
     }
 
@@ -117,5 +161,4 @@ public class GenericUtil {
             throw new RuntimeException("获取方法[" + method.getName() + "]返回值泛型类型失败." , e);
         }
     }
-
 }
