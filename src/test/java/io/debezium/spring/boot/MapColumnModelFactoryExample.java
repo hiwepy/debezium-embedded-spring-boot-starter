@@ -1,8 +1,9 @@
-package io.debezium.embedded.factory;
+package io.debezium.spring.boot;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import io.debezium.embedded.handler.RecordChangeEventEntryHandler;
+import io.debezium.embedded.factory.MapColumnModelFactory;
+import io.debezium.embedded.factory.RecordChangeEventEntryHandler;
 
 import java.util.HashMap;
 import java.util.Map;

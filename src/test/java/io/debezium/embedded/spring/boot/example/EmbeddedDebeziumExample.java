@@ -1,6 +1,6 @@
 package io.debezium.embedded.spring.boot.example;
 
-import io.debezium.embedded.handler.RecordChangeEventEntryHandler;
+import io.debezium.embedded.factory.RecordChangeEventEntryHandler;
 import io.debezium.embedded.spring.boot.example.entity.Order;
 import io.debezium.embedded.spring.boot.example.entity.User;
 import lombok.extern.slf4j.Slf4j;

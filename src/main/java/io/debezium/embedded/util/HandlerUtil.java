@@ -6,7 +6,7 @@ import io.debezium.embedded.annotation.DebeziumEventHolder;
 import io.debezium.embedded.annotation.DebeziumTable;
 import io.debezium.embedded.annotation.OnDebeziumEvent;
 import io.debezium.embedded.enums.TableNameEnum;
-import io.debezium.embedded.handler.RecordChangeEventEntryHandler;
+import io.debezium.embedded.factory.RecordChangeEventEntryHandler;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
 

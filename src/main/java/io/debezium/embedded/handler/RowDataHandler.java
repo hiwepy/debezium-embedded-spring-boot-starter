@@ -1,6 +1,7 @@
 package io.debezium.embedded.handler;
 
 import io.debezium.data.Envelope;
+import io.debezium.embedded.factory.RecordChangeEventEntryHandler;
 import io.debezium.embedded.model.DebeziumModel;
 
 /**

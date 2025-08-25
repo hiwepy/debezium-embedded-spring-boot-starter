@@ -1,4 +1,4 @@
-package io.debezium.embedded.handler;
+package io.debezium.embedded.factory;
 
 /**
  * 处理 Entry

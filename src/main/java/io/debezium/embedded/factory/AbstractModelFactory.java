@@ -1,7 +1,6 @@
 package io.debezium.embedded.factory;
 
 
-import io.debezium.embedded.handler.RecordChangeEventEntryHandler;
 import io.debezium.embedded.util.GenericUtil;
 
 import java.util.Objects;

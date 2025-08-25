@@ -4,7 +4,7 @@ package io.debezium.embedded.handler.impl;
 import com.alibaba.fastjson2.JSON;
 import io.debezium.data.Envelope;
 import io.debezium.embedded.factory.IModelFactory;
-import io.debezium.embedded.handler.RecordChangeEventEntryHandler;
+import io.debezium.embedded.factory.RecordChangeEventEntryHandler;
 import io.debezium.embedded.handler.RowDataHandler;
 import io.debezium.embedded.model.DebeziumModel;
 import lombok.extern.slf4j.Slf4j;

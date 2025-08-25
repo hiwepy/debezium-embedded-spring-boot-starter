@@ -5,6 +5,7 @@ import io.debezium.data.Envelope;
 import io.debezium.embedded.annotation.DebeziumEventHandler;
 import io.debezium.embedded.annotation.DebeziumEventHolder;
 import io.debezium.embedded.annotation.OnDebeziumEvent;
+import io.debezium.embedded.factory.RecordChangeEventEntryHandler;
 import io.debezium.embedded.model.DebeziumModel;
 import io.debezium.embedded.util.DebeziumUtil;
 import io.debezium.embedded.util.GenericUtil;

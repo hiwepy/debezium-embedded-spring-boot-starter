@@ -2,7 +2,7 @@ package io.debezium.embedded.util;
 
 import com.baomidou.mybatisplus.core.metadata.TableInfo;
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
-import io.debezium.embedded.handler.RecordChangeEventEntryHandler;
+import io.debezium.embedded.factory.RecordChangeEventEntryHandler;
 import io.debezium.embedded.model.DebeziumModel;
 import org.springframework.core.ResolvableType;
 

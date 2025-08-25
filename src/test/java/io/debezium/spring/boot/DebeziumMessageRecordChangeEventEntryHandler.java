@@ -1,6 +1,6 @@
 package io.debezium.spring.boot;
 
-import io.debezium.embedded.handler.RecordChangeEventEntryHandler;
+import io.debezium.embedded.factory.RecordChangeEventEntryHandler;
 import org.springframework.stereotype.Component;
 
 @Component

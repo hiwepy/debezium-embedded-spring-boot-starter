@@ -10,6 +10,7 @@ import io.debezium.embedded.configurer.history.DatabaseHistoryConfigurerFactory;
 import io.debezium.embedded.configurer.storage.OffsetStorageConfigurer;
 import io.debezium.embedded.configurer.storage.OffsetStorageConfigurerFactory;
 import io.debezium.embedded.factory.MapColumnModelFactory;
+import io.debezium.embedded.factory.RecordChangeEventEntryHandler;
 import io.debezium.embedded.handler.*;
 import io.debezium.embedded.handler.impl.MapRowDataHandlerImpl;
 import io.debezium.engine.ChangeEvent;
