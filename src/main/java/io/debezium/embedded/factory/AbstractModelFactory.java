@@ -4,9 +4,11 @@ package io.debezium.embedded.factory;
 import io.debezium.embedded.handler.RecordChangeEventEntryHandler;
 import io.debezium.embedded.util.GenericUtil;
 
+import java.util.Objects;
+
 /**
  * 抽象模型工厂
- * 
+ *
  * @param <T> 模型类型
  */
 public abstract class AbstractModelFactory<T> implements IModelFactory<T> {
@@ -21,12 +23,15 @@ public abstract class AbstractModelFactory<T> implements IModelFactory<T> {
      */
     @Override
     public <R> R newInstance(T input, RecordChangeEventEntryHandler<R> entryHandler) throws Exception {
-        Class<R> tableClass = GenericUtil.getTableClass(entryHandler);
-        if (tableClass != null) {
-            return newInstance(input, tableClass);
+        // 1、获取泛型类型
+        Class<R> genericType = GenericUtil.getGenericType(entryHandler);
+        // 2、如果泛型类型为空，则抛出异常
+        if (Objects.isNull(genericType)) {
+            throw new RuntimeException("genericType not found form entryHandler : " + entryHandler.getClass());
         }
-        return null;
+        // 3、创建模型实例
+        return this.newInstance(input, genericType);
     }
 
-    abstract <R> R newInstance(T input, Class<R> tableClass) throws Exception;
+    abstract <R> R newInstance(T input, Class<R> genericType) throws Exception;
 }

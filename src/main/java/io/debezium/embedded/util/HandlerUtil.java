@@ -37,11 +37,9 @@ public class HandlerUtil {
             if (debeziumTableNameCombination.equals(joiner.toString().toLowerCase())) {
                 return handler;
             }
-            String name = GenericUtil.getTableGenericProperties(handler);
-            if (name != null) {
-                if (name.equals(tableName)) {
-                    return handler;
-                }
+            String tbName = GenericUtil.getTableName(handler);
+            if (StringUtils.isNotBlank(tbName) && StringUtils.isNotBlank(tableName) && tbName.equalsIgnoreCase(tableName)) {
+                return handler;
             }
         }
         return globalHandler;
@@ -58,9 +56,9 @@ public class HandlerUtil {
             if (StringUtils.isNotBlank(debeziumTableNameCombination)) {
                 map.putIfAbsent(debeziumTableNameCombination.toLowerCase(), handler);
             } else {
-                String name = GenericUtil.getTableGenericProperties(handler);
-                if (name != null) {
-                    map.putIfAbsent(name.toLowerCase(), handler);
+                String tbName = GenericUtil.getTableName(handler);
+                if (StringUtils.isNotBlank(tbName)) {
+                    map.putIfAbsent(tbName.toLowerCase(), handler);
                 }
             }
         }

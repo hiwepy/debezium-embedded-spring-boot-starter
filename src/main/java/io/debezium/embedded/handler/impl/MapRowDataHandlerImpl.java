@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
 import java.util.Objects;
-
 /**
  * 将 Debezium 的 RowData 转换为 Map 类型，并调用 entryHandler 处理
  */
