@@ -24,6 +24,7 @@ import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -107,15 +108,19 @@ public class DefaultChangeEventHandler implements ChangeEventHandler, Applicatio
                     JSONObject beforeData = jsonPayload.getJSONObject(Envelope.FieldName.BEFORE);
                     if (Objects.nonNull(beforeData)) {
                         rowEvent.setBeforeData(beforeData.toJSONString());
+                        rowEvent.setBeforeColumns(beforeData.keySet().stream().map(key -> new RowEvent.Column(key, beforeData.get(key))).collect(Collectors.toList()));
                     } else {
                         rowEvent.setBeforeData(JSON_OBJECT.toJSONString());
+                        rowEvent.setBeforeColumns(Collections.emptyList());
                     }
                     // 设置变更后的数据
                     JSONObject afterData = jsonPayload.getJSONObject(Envelope.FieldName.AFTER);
                     if (Objects.nonNull(afterData)) {
                         rowEvent.setAfterData(afterData.toJSONString());
+                        rowEvent.setBeforeColumns(afterData.keySet().stream().map(key -> new RowEvent.Column(key, afterData.get(key))).collect(Collectors.toList()));
                     } else {
                         rowEvent.setAfterData(JSON_OBJECT.toJSONString());
+                        rowEvent.setAfterColumns(Collections.emptyList());
                     }
                     // 获取表对应的注解处理器
                     String destination = props.getProperty(ConnectorConfig.NAME_CONFIG);

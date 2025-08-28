@@ -61,22 +61,30 @@ public class DebeziumUtil {
         return map;
     }
 
-    public static void setChangeDataInfo(RowEvent model, Struct sourceRecordChangeValue) {
+    public static void setChangeDataInfo(RowEvent rowEvent, Struct sourceRecordChangeValue) {
         // 操作类型过滤,只处理增删改
         String op = sourceRecordChangeValue.getString(Envelope.FieldName.OPERATION);
         Envelope.Operation operation = Envelope.Operation.forCode(op);
-        model.setOperation(operation);
+        rowEvent.setOperation(operation);
         if (operation != Envelope.Operation.READ) {
             if (operation == Envelope.Operation.CREATE) {
-                model.setAfterData(getChangeData(sourceRecordChangeValue, Envelope.FieldName.AFTER));
-                model.setBeforeData(null);
+                Map<String, Object> afterMap = getChangeDataMap(sourceRecordChangeValue, Envelope.FieldName.AFTER);
+                rowEvent.setAfterColumns(afterMap.keySet().stream().map(key -> new RowEvent.Column(key, afterMap.get(key))).collect(Collectors.toList()));
+                rowEvent.setAfterData(JSON.toJSONString(afterMap));
             }
             // 修改需要特殊处理，拿到前后的数据
-            if (operation == Envelope.Operation.UPDATE || operation == Envelope.Operation.DELETE) {
+            if (operation == Envelope.Operation.UPDATE) {
                 Map<String, Object> afterMap = getChangeDataMap(sourceRecordChangeValue, Envelope.FieldName.AFTER);
                 Map<String, Object> beforeMap = getChangeDataMap(sourceRecordChangeValue, Envelope.FieldName.BEFORE);
-                model.setAfterData(JSON.toJSONString(afterMap));
-                model.setBeforeData(JSON.toJSONString(beforeMap));
+                rowEvent.setAfterData(JSON.toJSONString(afterMap));
+                rowEvent.setAfterColumns(afterMap.keySet().stream().map(key -> new RowEvent.Column(key, afterMap.get(key))).collect(Collectors.toList()));
+                rowEvent.setBeforeData(JSON.toJSONString(beforeMap));
+                rowEvent.setBeforeColumns(beforeMap.keySet().stream().map(key -> new RowEvent.Column(key, beforeMap.get(key))).collect(Collectors.toList()));
+            }
+            if (operation == Envelope.Operation.DELETE) {
+                Map<String, Object> beforeMap = getChangeDataMap(sourceRecordChangeValue, Envelope.FieldName.BEFORE);
+                rowEvent.setBeforeData(JSON.toJSONString(beforeMap));
+                rowEvent.setBeforeColumns(beforeMap.keySet().stream().map(key -> new RowEvent.Column(key, beforeMap.get(key))).collect(Collectors.toList()));
             }
         }
     }

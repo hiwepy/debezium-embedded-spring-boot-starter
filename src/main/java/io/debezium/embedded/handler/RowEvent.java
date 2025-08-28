@@ -2,6 +2,7 @@ package io.debezium.embedded.handler;
 
 
 import io.debezium.data.Envelope;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -68,10 +69,10 @@ public class RowEvent {
     @Setter
     @Getter
     @NoArgsConstructor
+    @AllArgsConstructor
     public static class Column{
         private String name;
         private Object value;
-        private String type;
     }
 
     @Override
