@@ -5,7 +5,7 @@ import io.debezium.embedded.handler.RowEvent;
 import java.util.List;
 import java.util.Objects;
 
-public class RowDataUtil {
+public class RowEventUtil {
 
     public static String getBeforeValue(RowEvent rowEvent, String columnName) {
         if(Objects.isNull(rowEvent)){
