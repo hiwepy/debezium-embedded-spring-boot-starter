@@ -1,9 +1,13 @@
 package io.debezium.embedded.configurer.connector;
 
+import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import io.debezium.config.Configuration;
 import io.debezium.embedded.spring.boot.DebeziumConnectorProperties;
 import org.apache.kafka.connect.runtime.ConnectorConfig;
 import org.springframework.boot.context.properties.PropertyMapper;
+
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public abstract class AbstractConnectorConfigurer implements ConnectorConfigurer {
 
@@ -27,6 +31,8 @@ public abstract class AbstractConnectorConfigurer implements ConnectorConfigurer
     protected static final String DATABASE_SERVER_ID_NAME = "database.server.id";
     protected static final String DATABASE_SERVER_NAME_NAME = "database.server.name";
 
+    protected static final String AMPERSAND = "&";
+    protected static final String COMMA = ",";
     @Override
     public final void apply(Configuration.Builder builder, DebeziumConnectorProperties properties) {
 
@@ -52,10 +58,22 @@ public abstract class AbstractConnectorConfigurer implements ConnectorConfigurer
         map.from(properties::getDatabaseBlacklist).whenHasText().to(value -> builder.with(DATABASE_BLACKLIST_NAME, value));
         map.from(properties::getDatabaseIncludeList).whenHasText().to(value -> builder.with(DATABASE_INCLUDE_LIST_NAME, value));
         map.from(properties::getDatabaseExcludeList).whenHasText().to(value -> builder.with(DATABASE_EXCLUDE_LIST_NAME, value));
-        map.from(properties::getTableWhitelist).whenHasText().to(value -> builder.with(TABLE_WHITELIST_NAME, value));
-        map.from(properties::getTableBlacklist).whenHasText().to(value -> builder.with(TABLE_BLACKLIST_NAME, value));
-        map.from(properties::getTableIncludeList).whenHasText().to(value -> builder.with(TABLE_INCLUDE_LIST_NAME, value));
-        map.from(properties::getTableExcludeList).whenHasText().to(value -> builder.with(TABLE_EXCLUDE_LIST_NAME, value));
+        map.from(properties::getTableWhitelist).whenHasText().to(value -> {
+            String tableList = Stream.of(value.split(COMMA)).map(item -> item.contains(AMPERSAND) ? item.substring(0, item.indexOf(AMPERSAND)) : item).collect(Collectors.joining(COMMA));
+            builder.with(TABLE_WHITELIST_NAME, tableList);
+        });
+        map.from(properties::getTableBlacklist).whenHasText().to(value -> {
+            String tableList = Stream.of(value.split(COMMA)).map(item -> item.contains(AMPERSAND) ? item.substring(0, item.indexOf(AMPERSAND)) : item).collect(Collectors.joining(COMMA));
+            builder.with(TABLE_BLACKLIST_NAME, tableList);
+        }); 
+        map.from(properties::getTableIncludeList).whenHasText().to(value -> {
+            String tableList = Stream.of(value.split(COMMA)).map(item -> item.contains(AMPERSAND) ? item.substring(0, item.indexOf(AMPERSAND)) : item).collect(Collectors.joining(COMMA));
+            builder.with(TABLE_INCLUDE_LIST_NAME, tableList);
+        });
+        map.from(properties::getTableExcludeList).whenHasText().to(value -> {
+            String tableList = Stream.of(value.split(COMMA)).map(item -> item.contains(AMPERSAND) ? item.substring(0, item.indexOf(AMPERSAND)) : item).collect(Collectors.joining(COMMA));
+            builder.with(TABLE_EXCLUDE_LIST_NAME, tableList);
+        });
 
         this.apply(map, builder, properties);
     }
