@@ -5,8 +5,8 @@ import com.alibaba.fastjson2.JSON;
 import io.debezium.data.Envelope;
 import io.debezium.embedded.factory.IModelFactory;
 import io.debezium.embedded.handler.RowEntryHandler;
-import io.debezium.embedded.handler.RowEventHandler;
 import io.debezium.embedded.handler.RowEvent;
+import io.debezium.embedded.handler.RowEventHandler;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;

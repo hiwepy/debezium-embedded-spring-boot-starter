@@ -1,6 +1,5 @@
 package io.debezium.embedded.configurer.connector;
 
-import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import io.debezium.config.Configuration;
 import io.debezium.embedded.spring.boot.DebeziumConnectorProperties;
 import org.apache.kafka.connect.runtime.ConnectorConfig;
