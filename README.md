@@ -33,7 +33,7 @@
 
 ```xml
 <dependency>
-    <groupId>com.github.hiwepy</groupId>
+    <groupId>io.github.hiwepy</groupId>
     <artifactId>debezium-embedded-spring-boot-starter</artifactId>
     <version>3.3.x.20240823.RELEASE</version>
 </dependency>
